@@ -7,6 +7,8 @@ import lombok.*;
 @Entity
 @Table(name = "t_student_detail")
 @NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class StudentDetail {

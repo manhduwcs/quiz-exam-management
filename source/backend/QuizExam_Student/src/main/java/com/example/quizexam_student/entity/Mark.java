@@ -8,6 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_mark")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

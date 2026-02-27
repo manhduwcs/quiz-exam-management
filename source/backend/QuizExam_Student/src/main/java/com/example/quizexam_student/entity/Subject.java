@@ -9,6 +9,8 @@ import java.util.Set;
 @Table(name = "t_subject")
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Subject {

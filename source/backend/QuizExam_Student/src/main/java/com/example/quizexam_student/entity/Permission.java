@@ -9,6 +9,8 @@ import java.util.Set;
 @Data
 @Table(name = "t_permission")
 @NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Permission {

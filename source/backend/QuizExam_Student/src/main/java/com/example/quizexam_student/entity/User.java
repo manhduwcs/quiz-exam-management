@@ -9,6 +9,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "t_user")
 @NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class User {

@@ -8,6 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_question_record")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -36,9 +38,9 @@ public class QuestionRecord {
     @JoinColumn(name = "examination_id")
     private Examination examination;
 
-    @OneToMany(mappedBy = "questionRecord")
+    @OneToMany(mappedBy = "question_record")
     private Set<AnswerRecord> answerRecords;
 
-    @OneToMany(mappedBy = "questionRecord")
+    @OneToMany(mappedBy = "question_record")
     private Set<StudentAnswer> studentAnswers;
 }
