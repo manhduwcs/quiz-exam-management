@@ -1,13 +1,12 @@
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {ToastrModule} from 'ngx-toastr';
+import { StudentModule } from './student/student.module';
+
 
 @NgModule({
   declarations: [
@@ -15,13 +14,11 @@ import {ToastrModule} from 'ngx-toastr';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
     AppRoutingModule,
-    ToastrModule.forRoot()
+    StudentModule
   ],
   providers: [
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
     provideClientHydration()
   ],
   bootstrap: [AppComponent]

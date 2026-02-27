@@ -1,24 +1,35 @@
 import { NgModule } from '@angular/core';
-import { StudentRoutingModule } from './student-routing.module';
+import { CommonModule } from '@angular/common';
+import { AppRoutingModule } from '../app-routing.module';
 
-import { FormsModule, NgModel } from '@angular/forms';
-import {ToastrModule, ToastrService} from 'ngx-toastr';
-import { StudentComponent } from './student.component';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StudentComponent } from './student.component'; 
+
 import { LoginComponent } from './login/login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
   declarations: [
     StudentComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
-    ToastrModule,
-    StudentRoutingModule,
+    CommonModule,
+    BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule,
+    AppRoutingModule
   ],
   providers: [
-    NgModule
+    provideHttpClient(),
+    provideClientHydration()
   ],
   bootstrap: []
 })
