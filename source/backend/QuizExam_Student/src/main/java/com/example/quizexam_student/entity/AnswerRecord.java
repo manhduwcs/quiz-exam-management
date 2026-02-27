@@ -6,6 +6,8 @@ import lombok.*;
 @Entity
 @Table(name = "t_answer_record")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

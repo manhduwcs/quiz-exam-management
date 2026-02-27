@@ -9,6 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_status")
 @NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Status {
