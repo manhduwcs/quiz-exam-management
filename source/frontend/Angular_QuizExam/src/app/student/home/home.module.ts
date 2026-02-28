@@ -1,22 +1,27 @@
 import { NgModule } from '@angular/core';
-import { HeaderComponent } from './common/header/header.component';
-import { FooterComponent } from './common/footer/footer.component';
-import { HomeComponent } from './home.component';
-import { HomeRoutingModule } from './home-routing.module';
-import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { AppRoutingModule } from '../../app-routing.module'; 
+import { HomepageComponent } from './homepage/homepage.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MarkComponent } from './mark/mark.component';
 
 
 @NgModule({
   declarations: [
-    HomeComponent,
-    HeaderComponent,
-    FooterComponent
+    HomepageComponent,
+    ProfileComponent,
+    MarkComponent
   ],
   imports: [
-    HomeRoutingModule,
-    NgClass
+    BrowserModule,
+    AppRoutingModule,
+    CommonModule
   ],
   providers: [
+    provideHttpClient(),
+    provideClientHydration()
   ],
   bootstrap: []
 })
