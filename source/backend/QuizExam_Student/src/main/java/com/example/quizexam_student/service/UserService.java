@@ -10,6 +10,5 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     public User findUserByEmail(String email);
     public Boolean existUserByEmail(String email);
-    public Boolean existUserByPhone(String phone);
     public User saveUser(UserRequest userRequest);
 }
