@@ -29,7 +29,7 @@ public class JwtUtil {
 
     public String getEmailFromJwtToken(String token) {
         Claims claims  = Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(secret.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -37,7 +37,7 @@ public class JwtUtil {
 
     public Boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
