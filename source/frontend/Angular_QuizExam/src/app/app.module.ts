@@ -1,27 +1,29 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; 
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {ToastrModule} from 'ngx-toastr';
+import { LoginComponent } from './student/login/login.component';
+import {HeaderComponent} from './student/home/common/header/header.component';
+import {FooterComponent} from './student/home/common/footer/footer.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
     AppRoutingModule,
-    ToastrModule.forRoot()
+    FormsModule
   ],
   providers: [
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
     provideClientHydration()
   ],
   bootstrap: [AppComponent]
