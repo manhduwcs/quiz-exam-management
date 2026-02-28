@@ -1,8 +1,6 @@
-
 .profile-container {
     max-width: 750px;
-    padding: 50px 0 50px 0;
-    
+    margin: 50px auto;
 }
 
 .profile-header {
@@ -32,8 +30,6 @@
 .profile-info input {
     border: none !important;
     cursor: pointer;
-    background-color: var(--color-background);
-    color: var(--color-text);
 }
 
 .profile-text {
@@ -41,14 +37,13 @@
 }
 
 .change-password-form {
-    background-color: var(--color-change-password-form);
+    background-color: #ffe4e4;
     padding: 20px;
     border-radius: 8px;
 }
 
 .container {
     cursor: pointer;
-    
 }
 
 td {
@@ -75,4 +70,3 @@ input:active {
 .btn-profile {
     margin-right: 20px;
 }
-

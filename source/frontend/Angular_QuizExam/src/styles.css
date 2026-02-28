@@ -3,11 +3,6 @@ body {
     margin: 0;
     padding: 0;
 }
-.body {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    margin: 0;
-}
 
 /* region switch light-dark */
 
@@ -28,8 +23,6 @@ body {
     .slider:after {
         right: 0.5em;
     }
-    /* profile user */
-    --color-change-password-form: #ffe4e4;
 }
 
 [QuizTech-theme=dark] {
@@ -50,8 +43,6 @@ body {
     .slider:after {
         left: 0.5em;
     }
-    /* profile user */
-    --color-change-password-form: #35393f;
 }
 
 /* endregion switch light-dark */
