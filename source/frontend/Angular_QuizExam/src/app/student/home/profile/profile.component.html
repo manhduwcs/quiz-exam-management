@@ -1,60 +1,31 @@
 <div class="body">
     <div class="container profile-container ">
-        <div class="profile-header text-center">
+        <div class="profile-header ">
             <h1>Profile</h1>
         </div>
         <form action="" method="post">
             <div class="profile-info">
-                <table>
-                    <tr>
-                        <th>
-                            <p>Name</p>
-                        </th>
-                        <td>
-                            <p>Nguyen Thi Thu Huyen</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <p>Email</p>
-                        </th>
-                        <td>
-                            <p>huyen.ntt.2230&#64;aptechlearning.edu.vn</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <p>Class</p>
-                        </th>
-                        <td>
-                            <p>C2209I</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <p>Roll Number</p>
-                        </th>
-                        <td>
-                            <p>C2209i132245</p>
-                        </td>
-                    </tr>
-                    <tr id="userPassword">
-                        <th>
-                            <p>Password</p>
-                        </th>
-                        <td class="d-flex">
-                            <div><input type="password" name="password" id="password" value="asdfghjkytre"></div>
-                            <div>
-                                <a id="changePassword"
-                                    onclick="document.getElementById('userPassword').style.display='none'"
-                                    data-bs-toggle="collapse" href="#collapseExample" role="button"
-                                    aria-expanded="false" aria-controls="collapseExample">
-                                    Change password
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <p class="profile-info-span"><strong>Name</strong><span>Nguyen Thi Thu Huyen</span></p>
+                <p class="profile-info-span1"><strong>Email</strong><span>huyen.ntt.2230&#64;aptechlearning.edu.vn</span>
+                </p>
+                <p class="profile-info-span2"><strong>Class</strong><span>C2209I</span></p>
+                <p class="profile-info-span3"><strong>Roll Number</strong><span>C2209I2345</span></p>
+                <div id="userPassword">
+                    <div class="d-flex">
+                        <div class="d-flex profile-info-span4">
+                            <p><strong>Password</strong></p>
+                            <span><input type="password" name="password" id="password" value="asdfghjkytre"></span>                           
+                        </div>
+                        <div>
+                            <a id="changePassword"
+                                onclick="document.getElementById('userPassword').style.display='none'"
+                                data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                aria-controls="collapseExample">
+                               <span>Change password</span> 
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="collapse change-password-form" id="collapseExample">
@@ -64,7 +35,7 @@
                         <input type="password" class="w-95 border-none" id="currentPassword"
                             placeholder="Enter current password">
                         <div class="toggle-password eye" id="togglecurrentPassword"
-                            onclick="visiblePassword('currentPassword')"><i class="fa-regular fa-eye"></i>
+                            (click)="visiblePassword('currentPassword', 'icon1')"><i id="icon1" class="fa-regular fa-eye-slash"></i>                           
                         </div>
                     </div>
                 </div>
@@ -74,8 +45,8 @@
                         <input type="password" class="w-95 border-none" id="newPassword"
                             placeholder="Enter new password">
                         <div class="toggle-newPassword eye" id="togglenewPassword"
-                            onclick="visiblePassword('newPassword')">
-                            <i class="fa-regular fa-eye"></i>
+                            (click)="visiblePassword('newPassword', 'icon3')">
+                            <i id="icon3" class="fa-regular fa-eye-slash"></i>
                         </div>
                     </div>
                 </div>
@@ -85,7 +56,7 @@
                         <input type="password" class="w-95 border-none" id="confirmPassword"
                             placeholder="Confirm new password">
                         <div class="toggle-confirmPassword eye" id="toggleconfirmPassword"
-                            onclick="visiblePassword('confirmPassword')"><i class="fa-regular fa-eye"></i>
+                            (click)="visiblePassword('confirmPassword', 'icon2')"><i id="icon2" class="fa-regular fa-eye-slash"></i>
                         </div>
                     </div>
 
