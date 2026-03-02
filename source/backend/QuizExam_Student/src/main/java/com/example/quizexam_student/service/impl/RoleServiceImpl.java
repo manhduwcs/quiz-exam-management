@@ -7,14 +7,16 @@ import com.example.quizexam_student.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     @Override
-    public Role findByRoleName(String roleName) {
+    public List<Role> findByRoleName(String roleName) {
         return roleRepository.findByName(roleName);
     }
     @Override
