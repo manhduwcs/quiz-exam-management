@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { response } from 'express';
 
+
 interface User {
   email: string;
   password: string;
@@ -16,7 +17,6 @@ export class AuthService {
 
   public apiUrl = 'http://localhost:8080/api';
 
-  private tokenKey = 'token';
   constructor(private http: HttpClient, private router: Router) { }
 
   // Login user
@@ -26,16 +26,11 @@ export class AuthService {
 
   // Logout user
   logout() {
-    localStorage.removeItem(this.tokenKey);
-    this.router.navigate(['/login']);
+    localStorage.removeItem('jwtToken'); // Delete JWT from localStorage
+    this.router.navigate(['/login']); // redirect to login
   }
 
   isLoggedIn(): boolean {
-    let token = localStorage.getItem(this.tokenKey);
-    return token != null && token.length > 0;  
-  }
-
-  public getToken(): string | null {
-    return this.isLoggedIn() ? localStorage.getItem(this.tokenKey) : null;
+    return !!localStorage.getItem('token'); // Check if token exist
   }
 }
