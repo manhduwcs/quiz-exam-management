@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { response } from 'express';
@@ -8,16 +8,6 @@ interface User {
   email: string;
   password: string;
 }
-const token = localStorage.getItem('jwtToken');
-const httpOptions = {
-  headers: new HttpHeaders({ 
-    'Content-Type': 'application/json' ,
-    'Authorization': `Bearer ${token}`,
-    'Accept': 'application/json'
-  }),
-  responeType: 'json',
-  withCredentials: true
-};
 
 @Injectable({
   providedIn: 'root'
@@ -28,18 +18,21 @@ export class AuthService {
 
   private tokenKey = 'token';
   constructor(private http: HttpClient, private router: Router) { }
-  
 
   // Login user
   login(user: User): Observable<any> {
-
     return this.http.post(`${this.apiUrl}/auth/login`, user, {responseType: 'json'});
   }
 
   // Logout user
-  logout() {
+  // logout() {
+  //   localStorage.removeItem(this.tokenKey);
+  //   this.router.navigate(['/login']);
+  // }
+   // Logout admin
+   logoutAdmin() {
     localStorage.removeItem(this.tokenKey);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/admin/login']);
   }
 
   isLoggedIn(): boolean {

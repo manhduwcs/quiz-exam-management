@@ -12,7 +12,6 @@ import com.example.quizexam_student.service.UserService;
 import com.example.quizexam_student.util.JwtUtil;
 import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,7 +45,6 @@ public class AuthController {
     private final RoleService roleService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final HttpSession httpSession;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
@@ -65,7 +64,7 @@ public class AuthController {
         return roles;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','SRO')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR') or hasRole('SRO')")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody @Valid UserRequest userRequest) {
         userService.saveUser(userRequest);
