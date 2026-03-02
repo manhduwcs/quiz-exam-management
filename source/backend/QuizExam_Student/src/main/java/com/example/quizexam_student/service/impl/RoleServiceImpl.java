@@ -7,16 +7,14 @@ import com.example.quizexam_student.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     @Override
-    public List<Role> findByRoleName(String roleName) {
+    public Role findByRoleName(String roleName) {
         return roleRepository.findByName(roleName);
     }
     @Override
@@ -36,16 +34,13 @@ public class RoleServiceImpl implements RoleService {
         Role role = findById(id);
         List<Role> roles = roleRepository.findAll();
         roles.removeIf(x->x.getName().equals("ADMIN"));
+        roles.removeIf(x->x.getName().equals("STUDENT"));
         if(role.getName().equals("ADMIN")){
             return roles;
         }
         roles.removeIf(x->x.getName().equals("DIRECTOR"));
         if(role.getName().equals("DIRECTOR")){
             roles.removeIf(x->x.getName().equals("STUDENT"));
-            return roles;
-        }
-        roles.removeIf(x->x.getName().equals("SRO")||x.getName().equals("TEACHER"));
-        if(role.getName().equals("SRO")){
             return roles;
         }
         return null;
