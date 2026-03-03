@@ -47,15 +47,7 @@ export class LoginComponent implements OnInit {
               timeOut: 2000,
             });
           } else {
-            let msg = '';
-            if (error.error.message) {
-              msg = error.error.message;
-            } else {
-              error.error.forEach((err: any) => {
-                msg += ' ' + err.message;
-              })
-            }
-            this.toastr.error(msg, 'Failed', {
+            this.toastr.error('Login failed due to server error', 'Failed', {
               timeOut: 2000,
             });
           }

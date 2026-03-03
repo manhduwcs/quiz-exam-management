@@ -56,7 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token, loginRequest.getEmail()));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR') or hasRole('SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','SRO')")
     @GetMapping("/register")
     public List<Role> register() {
         String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -65,7 +65,7 @@ public class AuthController {
         return roles;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','SRO')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR') or hasRole('SRO')")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody @Valid UserRequest userRequest) {
         userService.saveUser(userRequest);
