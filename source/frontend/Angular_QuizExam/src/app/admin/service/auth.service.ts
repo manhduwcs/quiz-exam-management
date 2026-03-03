@@ -37,14 +37,9 @@ export class AuthService {
   }
 
   // Logout user
-  // logout() {
-  //   localStorage.removeItem(this.tokenKey);
-  //   this.router.navigate(['/login']);
-  // }
-   // Logout admin
-   logoutAdmin() {
+  logout() {
     localStorage.removeItem(this.tokenKey);
-    this.router.navigate(['/admin/login']);
+    this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {

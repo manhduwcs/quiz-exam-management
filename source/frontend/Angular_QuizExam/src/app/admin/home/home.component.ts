@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AppComponent } from '../../app.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +19,7 @@ export class HomeComponent {
     this.windowScrolled = Math.round(window.scrollY) !=0;
   }
 
-  constructor(public app : AppComponent, private router: Router,  public authService: AuthService) {
+  constructor(public app : AppComponent, private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -33,10 +32,5 @@ export class HomeComponent {
 
   isActive(route: string): boolean {
     return this.currentRoute ===  this.thisRouter + route;
-  }
-
-   // Logout process
-   onLogout() {
-    this.authService.logoutAdmin(); // call method logout
   }
 }
