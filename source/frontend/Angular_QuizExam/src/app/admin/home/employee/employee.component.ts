@@ -14,7 +14,7 @@ declare var $: any;
 })
 
 export class EmployeeComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private http: HttpClient, public toastr: ToastrService, private router: Router, public home: HomeComponent) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router) { }
 
   dataTable: any;
   apiData: any;
@@ -25,10 +25,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   role: any;
 
   ngOnInit(): void {
-    //this.loadToken();
-    this.httpOptions = this.home.httpOptions;
-    
-    this.http.get<any>(`${this.authService.apiUrl}/user`, this.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });

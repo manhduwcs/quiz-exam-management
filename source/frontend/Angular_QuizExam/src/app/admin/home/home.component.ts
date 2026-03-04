@@ -51,26 +51,6 @@ export class HomeComponent {
     });
   }
 
-  httpOptions: any;
-
-  private loadToken() {
-    if (this.authService.isLoggedIn()) {
-      const token = localStorage.getItem('jwtToken');
-      this.httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }),
-        responeType: 'json',
-        withCredentials: true
-      };
-    }
-    else {
-      this.router.navigate(['admin/login']);
-    }
-  }
-
   currentRoute: string = '';
 
   isActive(route: string): boolean {
