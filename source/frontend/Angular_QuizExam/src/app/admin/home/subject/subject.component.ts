@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { AppComponent } from '../../app.component';
+import { AppComponent } from '../../../app.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../../service/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  selector: 'app-subject',
+  templateUrl: './subject.component.html',
 })
-export class HomeComponent {
+export class SubjectComponent {
   title = 'Angular_QuizExam';
   thisRouter = '/admin/home'
   windowScrolled = false;
