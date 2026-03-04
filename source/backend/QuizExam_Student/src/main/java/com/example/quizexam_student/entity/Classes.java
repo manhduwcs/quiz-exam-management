@@ -25,11 +25,11 @@ public class Classes {
     private String name;
 
     @Column(name = "class_day", nullable = false)
-    @NotBlank(message = "Class Day is required")
+    @NotNull(message = "Class Day is required")
     private String classDay;
 
     @Column(name = "class_time", nullable = false)
-    @NotBlank(message = "Class Time is required")
+    @NotNull(message = "Class Time is required")
     private String classTime;
 
     @Column(name = "admission_date", nullable = false)
