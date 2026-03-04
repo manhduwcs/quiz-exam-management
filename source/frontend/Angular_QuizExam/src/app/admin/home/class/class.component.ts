@@ -12,7 +12,7 @@ declare var $: any;
   styleUrl: './class.component.css'
 })
 export class ClassComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private http: HttpClient, public toastr: ToastrService, private router: Router, public home: HomeComponent) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router) { }
 
   dataTable: any;
   apiData: any;
@@ -23,9 +23,7 @@ export class ClassComponent implements OnInit, OnDestroy {
   classId: any;
 
   ngOnInit(): void {
-    this.httpOptions = this.home.httpOptions;
-
-    this.http.get<any>(`${this.authService.apiUrl}/class`, this.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
@@ -83,6 +81,12 @@ export class ClassComponent implements OnInit, OnDestroy {
 
         $('.create').on('click', () => {
           this.isPopupCreate = true;
+        });
+
+        $('.delete-icon').on('click', (event: any) => {
+          const id = $(event.currentTarget).data('id');
+          this.classId = id;
+          this.deleteClass(this.classId);
         });
       }
     });
@@ -190,6 +194,21 @@ export class ClassComponent implements OnInit, OnDestroy {
         });
       }
     )
+  }
+
+  deleteClass(id: number): void {
+    if (!window.confirm('Are you sure you want to delete this class?')) {
+      return;
+    }
+    this.http.delete(`${this.authService.apiUrl}/class/${id}`, this.home.httpOptions).subscribe(
+      () => {
+        console.log(`Class with ID ${id} deleted successfully`);
+        this.router.navigate(['/admin/home/class']);
+      },
+      error => {
+        console.error('Error deleting item:', error);
+      }
+    );
   }
 
   ngOnDestroy(): void {
