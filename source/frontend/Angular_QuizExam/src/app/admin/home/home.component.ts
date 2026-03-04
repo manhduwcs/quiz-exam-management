@@ -23,7 +23,7 @@ export class HomeComponent {
 
   httpOptions: any;
 
-  loadToken() {
+  private loadToken() {
     if (this.authService.isLoggedIn()) {
       const token = localStorage.getItem('jwtToken');
       this.httpOptions = {
@@ -49,6 +49,26 @@ export class HomeComponent {
       this.currentRoute = this.router.url;
       console.log(this.currentRoute)
     });
+  }
+
+  httpOptions: any;
+
+  private loadToken() {
+    if (this.authService.isLoggedIn()) {
+      const token = localStorage.getItem('jwtToken');
+      this.httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }),
+        responeType: 'json',
+        withCredentials: true
+      };
+    }
+    else {
+      this.router.navigate(['admin/login']);
+    }
   }
 
   currentRoute: string = '';
