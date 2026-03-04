@@ -40,11 +40,12 @@ public class SubjectController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
     @PostMapping("/save")
-    public ResponseEntity<Subject> saveSubject(
+    public ResponseEntity<String> saveSubject(
             @Valid @RequestBody SubjectRequest subjectRequest,
             @RequestParam(value = "image", required = false) MultipartFile image)
             throws IOException {
-        return  ResponseEntity.ok(subjectService.save(subjectRequest, image));
+        subjectService.save(subjectRequest, image);
+        return new ResponseEntity<>("Save subject successfully", HttpStatus.OK);
     }
 
     @GetMapping("/update/{id}")
@@ -53,12 +54,13 @@ public class SubjectController {
     }
 
     @PutMapping ("/update/{id}")
-    public Subject updateSubject(
+    public ResponseEntity<String> updateSubject(
             @PathVariable int id,
             @Valid @RequestBody SubjectRequest subjectRequest,
             @RequestParam(value = "image", required = false) MultipartFile image
     ) throws IOException {
-        return subjectService.update(id,subjectRequest,image);
+        subjectService.update(id,subjectRequest,image);
+        return new ResponseEntity<>("Update subject successfully", HttpStatus.OK);
     }
 
     @PutMapping("/remove/{id}")
