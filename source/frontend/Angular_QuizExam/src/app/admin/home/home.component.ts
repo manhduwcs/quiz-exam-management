@@ -21,24 +21,14 @@ export class HomeComponent {
     this.windowScrolled = Math.round(window.scrollY) !=0;
   }
 
-  constructor(public app : AppComponent, private router: Router,  public authService: AuthService) {
-    this.loadToken();
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.currentRoute = this.router.url;
-      console.log(this.currentRoute)
-    });
-  }
-
   httpOptions: any;
 
-  private loadToken() {
+  loadToken() {
     if (this.authService.isLoggedIn()) {
       const token = localStorage.getItem('jwtToken');
       this.httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
+        headers: new HttpHeaders({ 
+          'Content-Type': 'application/json' ,
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
         }),
@@ -49,6 +39,16 @@ export class HomeComponent {
     else {
       this.router.navigate(['admin/login']);
     }
+  }
+
+  constructor(public app : AppComponent, private router: Router,  public authService: AuthService) {
+    this.loadToken();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.currentRoute = this.router.url;
+      console.log(this.currentRoute)
+    });
   }
 
   currentRoute: string = '';

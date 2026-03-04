@@ -21,38 +21,16 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   infoDetail: any = null;
   isPopupDetail = false;
   isPopupCreate = false;
-  
   role: any;
-  httpOptions: any;
-
-  private loadToken() {
-    if (this.authService.isLoggedIn()) {
-      const token = localStorage.getItem('jwtToken');
-      this.httpOptions = {
-        headers: new HttpHeaders({ 
-          'Content-Type': 'application/json' ,
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }),
-        responeType: 'json',
-        withCredentials: true
-      };
-    }
-    else {
-      this.router.navigate(['admin/login']);
-    }
-  }
 
   ngOnInit(): void {
-    //this.loadToken();
-    this.httpOptions = this.home.httpOptions;
     
-    this.http.get<any>(`${this.authService.apiUrl}/user`, this.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
 
-    this.http.get<any>(`${this.authService.apiUrl}/auth/register`, this.httpOptions).subscribe(response=>{
+    this.http.get<any>(`${this.authService.apiUrl}/auth/register`, this.home.httpOptions).subscribe(response=>{
       this.role = response;
     })
   }
@@ -140,7 +118,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       gender: this.gender, roleId: this.roleId
     }
 
-    this.http.post(`${this.authService.apiUrl}/auth/register`, employee, {responseType: 'json'}).subscribe(
+    this.http.post(`${this.authService.apiUrl}/auth/register`, employee, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
@@ -162,5 +140,41 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     if (this.dataTable) {
       this.dataTable.destroy();
     }
+  }
+
+exportExcel() {
+    this.authService.exportDataExcel().subscribe(
+      (response) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      (error) => {
+        console.error('Export failed', error);
+      }
+    );
+  }
+
+  exportPDF() {
+    this.authService.exportDataPDF().subscribe(
+      (response) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      (error) => {
+        console.error('Export failed', error);
+      }
+    );
   }
 }
