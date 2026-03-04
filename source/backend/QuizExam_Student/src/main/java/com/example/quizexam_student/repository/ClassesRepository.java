@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ClassesRepository extends JpaRepository<Classes, Integer> {
-    List<Classes> findByStatusOrderByIdDesc(int status);
+    List<Classes> findByStatus(int status);
 
     boolean existsByName(String name);
 
