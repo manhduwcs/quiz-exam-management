@@ -7,7 +7,7 @@ import { HomeComponent } from '../../home.component';
 declare var $: any;
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-class',
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })

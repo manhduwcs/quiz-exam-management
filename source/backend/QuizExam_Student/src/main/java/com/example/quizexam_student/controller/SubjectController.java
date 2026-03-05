@@ -33,34 +33,24 @@ public class SubjectController {
         return subjectService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Subject getById(@PathVariable int id){
-        return subjectService.findById(id);
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
+    //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
     @PostMapping("/save")
-    public ResponseEntity<String> saveSubject(
-            @Valid @RequestBody SubjectRequest subjectRequest,
-            @RequestParam(value = "image", required = false) MultipartFile image)
-            throws IOException {
-        subjectService.save(subjectRequest, image);
-        return new ResponseEntity<>("Save subject successfully", HttpStatus.OK);
+    public ResponseEntity<Subject> saveSubject(
+            @Valid @RequestBody SubjectRequest subjectRequest) throws IOException {
+        return  ResponseEntity.ok(subjectService.save(subjectRequest));
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/{id}")
     public Subject updateSubject(@PathVariable int id){
         return subjectService.findById(id);
     }
 
-    @PutMapping ("/update/{id}")
-    public ResponseEntity<String> updateSubject(
+    @PutMapping ("/{id}")
+    public Subject updateSubject(
             @PathVariable int id,
-            @Valid @RequestBody SubjectRequest subjectRequest,
-            @RequestParam(value = "image", required = false) MultipartFile image
+            @Valid @RequestBody SubjectRequest subjectRequest
     ) throws IOException {
-        subjectService.update(id,subjectRequest,image);
-        return new ResponseEntity<>("Update subject successfully", HttpStatus.OK);
+        return subjectService.update(id,subjectRequest);
     }
 
     @PutMapping("/remove/{id}")
