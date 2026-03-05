@@ -43,7 +43,10 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject save(SubjectRequest subjectRequest){
+    public Subject save(SubjectRequest subjectRequest, MultipartFile multipartFile) throws IOException {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            subjectRequest.setImage(multipartFile.getBytes());
+        }
         Subject subject = new Subject();
         subject.setName(subjectRequest.getName());
         subject.setImage(subjectRequest.getImage());
@@ -62,10 +65,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject update(int id, SubjectRequest subjectRequest){
+    public Subject update(int id, SubjectRequest subjectRequest, MultipartFile multipartFile) throws IOException {
         Subject subject = subjectRepository.findById(id).orElseThrow(() -> new NotFoundException("NotFoundSubject","Subject not found"));
-        if (existSubjectByName(subject.getName()) && subject.getName().equals(subjectRequest.getName())) {
+        if (existSubjectByName(subject.getName())) {
             throw new AlreadyExistException("AlreadyExistSubject","Subject already exist");
+        }
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            subjectRequest.setImage(multipartFile.getBytes());
         }
         subject.setName(subjectRequest.getName());
         subject.setImage(subjectRequest.getImage());

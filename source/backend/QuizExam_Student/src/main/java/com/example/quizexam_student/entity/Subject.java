@@ -24,9 +24,10 @@ public class Subject {
     private int status;
 
     @Column(name = "image")
-    private String image;
+    @Lob
+    private byte[] image;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "sem_id")
     private Sem sem;
 

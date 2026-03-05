@@ -71,31 +71,27 @@ public class SubjectExcelExporter {
             cell.setCellValue(subject.getSem().getName());
             sheet.autoSizeColumn(2);
 
-            cell = row.createCell(3);
-            cell.setCellValue(subject.getImage());
-            sheet.autoSizeColumn(3);
+            if (subject.getImage() != null) {
+                int pictureIndex = addImageToWorkBook(subject.getImage());
+                Drawing<?> drawing = sheet.createDrawingPatriarch();
 
-//            if (subject.getImage() != null) {
-//                int pictureIndex = addImageToWorkBook(subject.getImage());
-//                Drawing<?> drawing = sheet.createDrawingPatriarch();
-//
-//                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
-//                anchor.setCol1(3);
-//                anchor.setRow1(rowCount -1);
-//
-//                Picture picture = drawing.createPicture(anchor, pictureIndex);
-//                picture.resize();
-//            }
+                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
+                anchor.setCol1(3);
+                anchor.setRow1(rowCount -1);
+
+                Picture picture = drawing.createPicture(anchor, pictureIndex);
+                picture.resize();
+            }
         }
     }
 
-//    private int addImageToWorkBook(byte[] imageBytes) throws IOException {
-//        ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
-//        byte[] imageInputBytes = IOUtils.toByteArray(bis);
-//        int pictureIndex = workbook.addPicture(imageInputBytes, XSSFWorkbook.PICTURE_TYPE_PNG);
-//        bis.close();
-//        return pictureIndex;
-//    }
+    private int addImageToWorkBook(byte[] imageBytes) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+        byte[] imageInputBytes = IOUtils.toByteArray(bis);
+        int pictureIndex = workbook.addPicture(imageInputBytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+        bis.close();
+        return pictureIndex;
+    }
 
     public void export(HttpServletResponse response) throws IOException {
         writeHeaderRow();
