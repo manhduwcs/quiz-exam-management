@@ -16,29 +16,16 @@ export class ChapterComponent implements OnInit, OnDestroy {
 
   dataTable: any;
   apiData: any;
-  subjects: any;
-  sems: any;
-  
+  subjectDetail: any = null;
+  isPopupDetail = false;
+  isPopupCreate = false;
+  isPopupUpdate = false;
 
   ngOnInit(): void {
-     // trả về trang subject
-     const returnSubject = document.getElementById('returnSubject');
-     if(returnSubject) {
-       returnSubject.addEventListener("click", () => {
-        this.router.navigate(['admin/home/subject']);
-         });
-     }
-
-    this.http.get<any>(`${this.authService.apiUrl}/chapter`, this.home.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/subject`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
-    this.http.get<any>(`${this.authService.apiUrl}/subject`, this.home.httpOptions).subscribe(response => {
-      this.subjects = response;
-    });
-    // this.http.get<any>(`${this.authService.apiUrl}/subject/sem`, this.home.httpOptions).subscribe(response=>{
-    //   this.sems = response;
-    // })
   }
 
   initializeDataTable(): void {
@@ -59,14 +46,13 @@ export class ChapterComponent implements OnInit, OnDestroy {
             return meta.row + 1; // Trả về số thứ tự, `meta.row` là chỉ số của hàng bắt đầu từ 0
           }
         },
-        { title: 'Chapter', data: 'name' },
+        { title: 'Chapter', data: 'subject' },
         {
           title: 'Action',
           data: null,
           render: function (data: any, type: any, row: any) {
-            return `<span data-bs-toggle="collapse" href="#addChapter" role="button" aria-expanded="false"
-                    aria-controls="collapseExample" class="mdi mdi-pencil icon-action edit-icon" data-id="${row.id}"></span>
-            <span class="mdi mdi-delete-forever icon-action delete-icon" data-id="${row.id}"></span>`;
+            return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.id}"></span>
+            <span class="mdi mdi-delete-forever icon-action delete-icon"></span>`;
           }
         }
 
@@ -81,57 +67,23 @@ export class ChapterComponent implements OnInit, OnDestroy {
         // Thêm placeholder vào input của DataTables
         $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search');
 
-       
+        // Click vào info icon sẽ hiện ra popup
+        // $('.info-icon').on('click', (event: any) => {
+        //   const id = $(event.currentTarget).data('id');
+        //   this.showPopupDetail(id);
+        // });
+
+        // $('.create').on('click', () => {
+        //   this.isPopupCreate = true;
+        // });
+
+        // $('.update').on('click', () => {
+        //   this.isPopupUpdate = true;
+        // });
       }
     });
   }
-  semId: number=1;
-  subjectId: number = 1;
-  name: String = '';
-  createChapter(): void {
-    const chapter =
-    {
-      name: this.name,
-      subjectId: this.subjectId
-    }
 
-    this.http.post(`${this.authService.apiUrl}/chapter/save`, chapter, this.home.httpOptions).subscribe(
-      response => {
-        this.toastr.success('Create new chapter Successful!', 'Success', {
-          timeOut: 2000,
-        });
-        this.closeform();
-        setInterval(function () {
-           window.location.reload();
-        }, 2000);      
-      },
-      error => {
-        if (error.status === 401) {
-          this.toastr.error('Not found', 'Failed', {
-            timeOut: 2000,
-          });
-        } else {
-          let msg = '';
-          if (error.error.message) {
-            msg = error.error.message;
-          } else {
-            error.error.forEach((err: any) => {
-              msg += ' ' + err.message;
-            })
-          }
-          this.toastr.error(msg, 'Failed', {
-            timeOut: 2000,
-          });
-        }
-        console.log('Error', error);
-      }
-    )
-  }
-
-  closeform() {
-    (document.getElementById('addChapter') as HTMLElement).style.display = 'none';
-  }
-  
   ngOnDestroy(): void {
     if (this.dataTable) {
       this.dataTable.destroy();
