@@ -21,7 +21,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   infoDetail: any = null;
   isPopupDetail = false;
   isPopupCreate = false;
-  
+
   role: any;
 
   ngOnInit(): void {
@@ -124,7 +124,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
         });
-        setInterval(function() {
+        setInterval(function () {
           window.location.reload();
         }, 2000);
       },
@@ -143,10 +143,10 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
-exportExcel() {
-    this.authService.exportDataExcel().subscribe(
+  exportExcel() {
+    this.http.get(`${this.authService.apiUrl}/auth/export/excel`, this.home.httpOptions).subscribe(
       (response) => {
-        const url = window.URL.createObjectURL(response);
+        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
         const a = document.createElement('a');
         a.href = url;
         a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
@@ -162,9 +162,9 @@ exportExcel() {
   }
 
   exportPDF() {
-    this.authService.exportDataPDF().subscribe(
+    this.http.get(`${this.authService.apiUrl}/auth/export/pdf`, this.home.httpOptions).subscribe(
       (response) => {
-        const url = window.URL.createObjectURL(response);
+        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
         a.href = url;
         a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
