@@ -26,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @Validated
+@PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR')")
 public class SubjectController {
     private final SubjectService subjectService;
     private final ExportService exportService;
@@ -36,35 +37,30 @@ public class SubjectController {
         return subjectService.findAll();
     }
 
-    @GetMapping("/sem")
-    public List<Sem> getAllSemesters() {
-        return semService.getAllSem();
-    }
-
     //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
     @PostMapping("/save")
-    public ResponseEntity<Subject> saveSubject(
-            @Valid @RequestBody SubjectRequest subjectRequest) throws IOException {
+    public ResponseEntity<Subject> saveSubject(@Valid @RequestBody SubjectRequest subjectRequest) {
         return  ResponseEntity.ok(subjectService.save(subjectRequest));
     }
 
     @GetMapping("/{id}")
-    public Subject updateSubject(@PathVariable int id){
+    public Subject getSubjectById(@PathVariable int id){
         return subjectService.findById(id);
     }
 
+    @GetMapping("/sem/{id}")
+    public List<Subject> getAllSubjects(@PathVariable Integer id){
+        return subjectService.getAllSubjectBySem(id);
+    }
+
     @PutMapping ("/{id}")
-    public Subject updateSubject(
-            @PathVariable int id,
-            @Valid @RequestBody SubjectRequest subjectRequest
-    ) throws IOException {
+    public Subject updateSubject(@PathVariable int id, @Valid @RequestBody SubjectRequest subjectRequest) {
         return subjectService.update(id,subjectRequest);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSubject(@PathVariable int id){
+    public void deleteSubject(@PathVariable int id){
         subjectService.deleteById(id);
-        return new ResponseEntity<>("Delete subject successfully", HttpStatus.OK);
     }
 
     @GetMapping("/export/excel")

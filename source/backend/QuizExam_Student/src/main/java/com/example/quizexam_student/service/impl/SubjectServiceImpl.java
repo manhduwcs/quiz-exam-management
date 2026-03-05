@@ -1,6 +1,7 @@
 package com.example.quizexam_student.service.impl;
 
 import com.example.quizexam_student.bean.request.SubjectRequest;
+import com.example.quizexam_student.entity.Sem;
 import com.example.quizexam_student.entity.Subject;
 import com.example.quizexam_student.exception.AlreadyExistException;
 import com.example.quizexam_student.exception.EmptyException;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +32,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findAll() {
-        List<Subject> subjects = subjectRepository.findByStatus(1);
-        if (subjects.isEmpty()) {
-            throw new EmptyException("EmptySubject","Subject list is empty");
-        }
-        return subjects;
+        return subjectRepository.findByStatus(1);
     }
 
     @Override
@@ -70,5 +68,11 @@ public class SubjectServiceImpl implements SubjectService {
         subject.setName(subjectRequest.getName());
         subject.setImage(subjectRequest.getImage());
         return subjectRepository.save(subject);
+    }
+
+    @Override
+    public List<Subject> getAllSubjectBySem(int id) {
+        Sem sem = semRepository.findById(id).orElse(null);
+        return subjectRepository.findBySemAndStatus(sem, 1);
     }
 }
