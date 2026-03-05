@@ -21,17 +21,11 @@ export class ListComponent implements OnInit, OnDestroy {
   isPopupCreate = false;
   isPopupUpdate = false;
 
-  subjectId: any;
-  sem: any;
   ngOnInit(): void {
     this.http.get<any>(`${this.authService.apiUrl}/subject`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
-
-    this.http.get<any>(`${this.authService.apiUrl}/subject/sem`, this.home.httpOptions).subscribe(response=>{
-      this.sem = response;
-    })
   }
 
   initializeDataTable(): void {
@@ -52,14 +46,13 @@ export class ListComponent implements OnInit, OnDestroy {
             return meta.row + 1; // Trả về số thứ tự, `meta.row` là chỉ số của hàng bắt đầu từ 0
           }
         },
-        { title: 'Subject', data: 'name' },
+        { title: 'Subject', data: 'subject' },
         {
           title: 'Action',
           data: null,
           render: function (data: any, type: any, row: any) {
             return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.id}"></span>
-            <span class="mdi mdi-pencil icon-action edit-icon" data-id="${row.id}"></span>
-            <span class="mdi mdi-delete-forever icon-action delete-icon data-id="${row.id}""></span>`;
+            <span class="mdi mdi-delete-forever icon-action delete-icon"></span>`;
           }
         }
 
@@ -77,39 +70,23 @@ export class ListComponent implements OnInit, OnDestroy {
         // Click vào info icon sẽ hiện ra popup
         $('.info-icon').on('click', (event: any) => {
           const id = $(event.currentTarget).data('id');
-          this.subjectId = id;
+          this.showPopupDetail(id);
         });
 
         $('.create').on('click', () => {
           this.isPopupCreate = true;
         });
 
-        $('.delete-icon').on('click', (event: any) => {
-          const id = $(event.currentTarget).data('id');
-          this.subjectId = id;
-          this.deleteSubject(id);
+        $('.update').on('click', () => {
+          this.isPopupUpdate = true;
         });
-
-        $('.edit-icon').on('click', (event: any) => {
-          const id = $(event.currentTarget).data('id');
-          this.subjectId = id;
-          this.showPopupEdit(id);
-        });
-
       }
     });
   }
 
-  selectedSem: number = 1; // Default chọn Sem 1
-  selectSem(sem: number): void {
-    this.selectedSem = sem;
-    // Thực hiện các logic nếu cần thiết khi chọn Sem
-    console.log('Selected Sem:', sem);
-  }
-
-  showPopupEdit(id: number): void {
+  showPopupDetail(id: number): void {
     this.subjectDetail = this.apiData.find((item: any) => item.id === id);
-    this.isPopupUpdate = true;
+    this.isPopupDetail = true;
   }
 
   closePopup(event?: MouseEvent): void {
@@ -122,17 +99,17 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
 
-  semId: number = 1;
+  sem: String = '';
   name: String = '';
   img: String = '';
 
   createSubject(): void {
-    const _subject =
+    const _class =
     {
-      semId: this.semId, name: this.name, img: this.img,
+      sem: this.sem, name: this.name, img: this.img,
     }
 
-    this.http.post(`${this.authService.apiUrl}/subject/save`, _subject, this.home.httpOptions).subscribe(
+    this.http.post(`${this.authService.apiUrl}/subject`, _class, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
@@ -150,12 +127,12 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   updateSubject() {
-    const _subject =
+    const _class =
     {
-      semId: this.semId, name: this.name, img: this.img,
+      sem: this.sem, name: this.name, img: this.img,
     }
 
-    this.http.put(`${this.authService.apiUrl}/subject/{id}`, _subject, this.home.httpOptions).subscribe(
+    this.http.post(`${this.authService.apiUrl}/subject/{id}`, _class, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Update Successful!', 'Success', {
           timeOut: 2000,
@@ -170,27 +147,6 @@ export class ListComponent implements OnInit, OnDestroy {
         console.log('Error', error);
       }
     )
-  }
-
-  deleteSubject(id: number): void {
-    if (!window.confirm('Are you sure you want to delete this class?')) {
-      return;
-    }
-    this.http.delete(`${this.authService.apiUrl}/subject/${id}`, this.home.httpOptions).subscribe(
-      () => {
-        this.toastr.success('Delete Successful!', 'Success', {
-          timeOut: 2000,
-        });
-        console.log(`Class with ID ${id} deleted successfully`);
-        this.router.navigate(['/admin/home/subject']);
-      },
-      error => {
-        this.toastr.error('Error', 'Error', {
-          timeOut: 2000,
-        });
-        console.error('Error deleting item:', error);
-      }
-    );
   }
 
   ngOnDestroy(): void {
