@@ -46,7 +46,7 @@ public class SubjectPDFExporter {
         for (Subject subject : subjects) {
             table.addCell(String.valueOf(subject.getId()));
             table.addCell(String.valueOf(subject.getName()));
-            table.addCell(String.valueOf(subject.getImage()));
+            table.addCell(Image.getInstance(subject.getImage()));
             table.addCell(String.valueOf(subject.getSem().getName()));
         }
     }
@@ -59,7 +59,7 @@ public class SubjectPDFExporter {
         Paragraph title = new Paragraph("List of all subject", font);
         title.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(title);
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(8);
         table.setWidthPercentage(100);
         table.setSpacingBefore(15);
         table.setWidths(new float[] {1.5f, 3.5f, 3.5f, 1.5f});

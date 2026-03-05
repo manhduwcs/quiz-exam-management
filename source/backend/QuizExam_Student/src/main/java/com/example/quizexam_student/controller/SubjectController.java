@@ -33,24 +33,32 @@ public class SubjectController {
         return subjectService.findAll();
     }
 
-    //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
-    @PostMapping("/save")
-    public ResponseEntity<Subject> saveSubject(
-            @Valid @RequestBody SubjectRequest subjectRequest) throws IOException {
-        return  ResponseEntity.ok(subjectService.save(subjectRequest));
+    @GetMapping("/{id}")
+    public Subject getById(@PathVariable int id){
+        return subjectService.findById(id);
     }
 
-    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
+    @PostMapping("/save")
+    public ResponseEntity<Subject> saveSubject(
+            @Valid @RequestBody SubjectRequest subjectRequest,
+            @RequestParam(value = "image", required = false) MultipartFile image)
+            throws IOException {
+        return  ResponseEntity.ok(subjectService.save(subjectRequest, image));
+    }
+
+    @GetMapping("/update/{id}")
     public Subject updateSubject(@PathVariable int id){
         return subjectService.findById(id);
     }
 
-    @PutMapping ("/{id}")
+    @PutMapping ("/update/{id}")
     public Subject updateSubject(
             @PathVariable int id,
-            @Valid @RequestBody SubjectRequest subjectRequest
+            @Valid @RequestBody SubjectRequest subjectRequest,
+            @RequestParam(value = "image", required = false) MultipartFile image
     ) throws IOException {
-        return subjectService.update(id,subjectRequest);
+        return subjectService.update(id,subjectRequest,image);
     }
 
     @PutMapping("/remove/{id}")
