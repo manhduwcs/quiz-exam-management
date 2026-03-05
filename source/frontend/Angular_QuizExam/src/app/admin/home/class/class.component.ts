@@ -23,6 +23,7 @@ export class ClassComponent implements OnInit, OnDestroy {
   classId: any;
 
   ngOnInit(): void {
+    this.authService.entityExporter = 'class';
     this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
@@ -129,6 +130,22 @@ export class ClassComponent implements OnInit, OnDestroy {
     this.admissionDateError = '';
   }
 
+  updateDataTable(newData: any[]): void {
+    if (this.dataTable) {
+      this.dataTable.clear(); // Xóa dữ liệu hiện tại
+      this.dataTable.rows.add(newData); // Thêm dữ liệu mới
+      this.dataTable.draw(); // Vẽ lại bảng
+    }
+  }
+
+  reloadTable(): void {
+    this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe((data: any) => {
+      this.apiData = data;
+      this.updateDataTable(this.apiData); // Cập nhật bảng với dữ liệu mới
+    });
+    this.closePopup();
+  }
+
   createClass(): void {
     this.errorEmpty();
     const _class =
@@ -141,7 +158,7 @@ export class ClassComponent implements OnInit, OnDestroy {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.router.navigate(['/admin/home/class']);
+        this.reloadTable();
       },
       error => {
         this.toastr.error(error.error.message, 'Error', {
@@ -177,7 +194,7 @@ export class ClassComponent implements OnInit, OnDestroy {
         this.toastr.success('Update Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.router.navigate(['/admin/home/class']);
+        this.reloadTable();
       },
       error => {
         this.toastr.error(error.error.message, 'Error', {
@@ -209,10 +226,46 @@ export class ClassComponent implements OnInit, OnDestroy {
     this.http.delete(`${this.authService.apiUrl}/class/${id}`, this.home.httpOptions).subscribe(
       () => {
         console.log(`Class with ID ${id} deleted successfully`);
-        this.router.navigate(['/admin/home/class']);
+        this.reloadTable();
       },
       error => {
         console.error('Error deleting item:', error);
+      }
+    );
+  }
+
+  exportExcel() {
+    this.authService.exportDataExcel().subscribe(
+      (response) => {
+        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      (error) => {
+        console.error('Export failed', error);
+      }
+    );
+  }
+
+  exportPDF() {
+    this.authService.exportDataPDF().subscribe(
+      (response) => {
+        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      },
+      (error) => {
+        console.error('Export failed', error);
       }
     );
   }
