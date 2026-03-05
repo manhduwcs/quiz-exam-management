@@ -144,7 +144,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   exportExcel() {
-    this.authService.exportDataExcel().subscribe(
+    this.http.get(`${this.authService.apiUrl}/auth/export/excel`, this.home.httpOptions).subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
         const a = document.createElement('a');
@@ -162,7 +162,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   exportPDF() {
-    this.authService.exportDataPDF().subscribe(
+    this.http.get(`${this.authService.apiUrl}/auth/export/pdf`, this.home.httpOptions).subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
