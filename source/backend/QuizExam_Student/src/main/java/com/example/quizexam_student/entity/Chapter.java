@@ -23,7 +23,7 @@ public class Chapter {
     @Column(name = "status", nullable = false)
     private int status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
