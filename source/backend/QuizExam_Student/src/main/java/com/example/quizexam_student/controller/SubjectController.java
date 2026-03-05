@@ -2,10 +2,8 @@ package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.SubjectRequest;
 import com.example.quizexam_student.bean.response.*;
-import com.example.quizexam_student.entity.Sem;
 import com.example.quizexam_student.entity.Subject;
 import com.example.quizexam_student.service.ExportService;
-import com.example.quizexam_student.service.SemService;
 import com.example.quizexam_student.service.SubjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -29,16 +27,10 @@ import java.util.List;
 public class SubjectController {
     private final SubjectService subjectService;
     private final ExportService exportService;
-    private final SemService semService;
 
     @GetMapping("")
     public List<Subject> getAll(){
         return subjectService.findAll();
-    }
-
-    @GetMapping("/sem")
-    public List<Sem> getAllSemesters() {
-        return semService.getAllSem();
     }
 
     //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
@@ -61,7 +53,7 @@ public class SubjectController {
         return subjectService.update(id,subjectRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/remove/{id}")
     public ResponseEntity<String> deleteSubject(@PathVariable int id){
         subjectService.deleteById(id);
         return new ResponseEntity<>("Delete subject successfully", HttpStatus.OK);

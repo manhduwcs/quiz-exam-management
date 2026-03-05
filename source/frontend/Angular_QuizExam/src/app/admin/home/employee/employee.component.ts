@@ -21,16 +21,17 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   infoDetail: any = null;
   isPopupDetail = false;
   isPopupCreate = false;
-
+  
   role: any;
 
   ngOnInit(): void {
+    this.authService.entityExporter = 'user';
     this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
 
-    this.http.get<any>(`${this.authService.apiUrl}/auth/register`, this.home.httpOptions).subscribe(response => {
+    this.http.get<any>(`${this.authService.apiUrl}/user/employee`, this.home.httpOptions).subscribe(response=>{
       this.role = response;
     })
   }
@@ -118,12 +119,12 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       gender: this.gender, roleId: this.roleId
     }
 
-    this.http.post(`${this.authService.apiUrl}/auth/register`, employee, { responseType: 'json' }).subscribe(
+    this.http.post(`${this.authService.apiUrl}/user`, employee, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
         });
-        setInterval(function () {
+        setInterval(function() {
           window.location.reload();
         }, 2000);
       },
@@ -142,10 +143,10 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
-  exportExcel() {
-    this.http.get(`${this.authService.apiUrl}/auth/export/excel`, this.home.httpOptions).subscribe(
+exportExcel() {
+    this.authService.exportDataExcel().subscribe(
       (response) => {
-        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
+        const url = window.URL.createObjectURL(response);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
@@ -161,9 +162,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   exportPDF() {
-    this.http.get(`${this.authService.apiUrl}/auth/export/pdf`, this.home.httpOptions).subscribe(
+    this.authService.exportDataPDF().subscribe(
       (response) => {
-        const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
+        const url = window.URL.createObjectURL(response);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
