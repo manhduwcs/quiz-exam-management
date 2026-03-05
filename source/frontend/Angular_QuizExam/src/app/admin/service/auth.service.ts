@@ -17,9 +17,6 @@ export class AuthService {
   public apiUrl = 'http://localhost:8080/api';
 
   private tokenKey = 'jwtToken';
-
-  public roleKey = 'role';
-
   constructor(private http: HttpClient, private router: Router) { }
 
   // Kiểm tra xem localStorage có sẵn không trước khi sử dụng
@@ -30,6 +27,7 @@ export class AuthService {
 
   // Login user
   login(user: User): Observable<any> {
+
     return this.http.post(`${this.apiUrl}/auth/login`, user, { responseType: 'json' });
   }
 
@@ -41,15 +39,13 @@ export class AuthService {
   // Logout admin
   logoutAdmin() {
     localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.roleKey);
     this.router.navigate(['admin/login']);
   }
 
   isLoggedIn(): boolean {
     if (this.isLocalStorageAvailable()) {
       let token = localStorage.getItem(this.tokenKey);
-      let role = localStorage.getItem(this.roleKey);
-      return token != null && token.length > 0 && (role == 'ADMIN' || role == 'DIRECTOR' || role == 'TEACHER' || role == 'SRO') ;
+      return token != null && token.length > 0;
     }
     return false;
   }
@@ -58,20 +54,18 @@ export class AuthService {
     return this.isLoggedIn() ? localStorage.getItem(this.tokenKey) : null;
   }
 
-  public entityExporter = '';
+  // exportDataExcel() {
+  //   // return this.http.get(`${this.apiUrl}/auth/export/excel`, { responseType: 'blob' as 'json' });
+  //   const token = this.getToken(); // Lấy token từ AuthService
+  //   const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-  exportDataExcel() {
-    // return this.http.get(`${this.apiUrl}/auth/export/excel`, { responseType: 'blob' as 'json' });
-    const token = this.getToken(); // Lấy token từ AuthService
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+  //   return this.http.get(`${this.apiUrl}/auth/export/excel`, { headers: headers, responseType: 'blob',});
+  // }
 
-    return this.http.get(`${this.apiUrl}/${this.entityExporter}/export/excel`, { headers: headers, responseType: 'blob',});
-  }
+  // exportDataPDF() {
+  //   const token = this.getToken(); // Lấy token từ AuthService
+  //   const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-  exportDataPDF() {
-    const token = this.getToken(); // Lấy token từ AuthService
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    return this.http.get(`${this.apiUrl}/${this.entityExporter}/export/pdf`, { headers: headers, responseType: 'blob',});
-  }
+  //   return this.http.get(`${this.apiUrl}/auth/export/pdf`, { headers: headers, responseType: 'blob',});
+  // }
 }

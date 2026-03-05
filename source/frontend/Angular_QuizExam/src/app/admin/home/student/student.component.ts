@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HomeComponent } from '../home.component';
 declare var $: any;
 
@@ -12,43 +12,20 @@ declare var $: any;
   styleUrl: './student.component.css'
 })
 export class StudentComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router) { }
 
   dataTable: any;
   apiData: any;
-  stdResponse: any = null;
+  stdDetail: any = null;
   isPopupUpdate = false;
   isPopupCreate = false;
   isPopupMove = false;
-  classes: any;
-  _classId: any;
-  classId: any = 1;
-  class: String = '';
-  userIds: Number[] = [];
 
   studentId: any;
   ngOnInit(): void {
-    this._classId = Number(this.activatedRoute.snapshot.params['classId'])??0;
-    if(this._classId!=0 && !Number.isNaN(this._classId)){
-      this.http.get<any>(`${this.authService.apiUrl}/studentManagement/${this.classId}`, this.home.httpOptions).subscribe((data: any) => {
-        this.apiData = data;
-        this.initializeDataTable();
-      });
-    }
-    else{
-      this._classId = 0;
-      this.http.get<any>(`${this.authService.apiUrl}/studentManagement`, this.home.httpOptions).subscribe((data: any) => {
-        this.apiData = data;
-        this.initializeDataTable();
-      });
-    }
-    this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe((data: any) => {
-      this.classes = data;
-      for (let dt of data) {
-        if(this._classId == dt.id){
-          this.class = dt.name;
-        }
-      }
+    this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
+      this.apiData = data;
+      this.initializeDataTable();
     });
   }
 
@@ -72,25 +49,18 @@ export class StudentComponent implements OnInit, OnDestroy {
         },
         { title: 'Roll Number', data: 'rollNumber' },
         { title: 'Roll Portal', data: 'rollPortal' },
-        { title: 'Full Name', data: 'userResponse.fullName' },
-        { title: 'Phone Number', data: 'userResponse.phoneNumber' },
+        { title: 'Full Name', data: 'fullName' },
+        { title: 'Phone Number', data: 'phoneNumber' },
         {
           title: 'Action',
-          data: '_class',
+          data: null,
           render: function (data: any, type: any, row: any) {
-            if(data==null){
-              return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.userResponse.id}"></span>
-              <input type="checkbox" class="icon-action chk_box" data-id="${row.userResponse.id}">
-              <span class="mdi mdi-delete-forever icon-action delete-icon"></span>`;
-            }
-            else{
-              return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.userResponse.id}"></span>
-              <span class="mdi mdi-delete-forever icon-action delete-icon"></span>`;
-            }
-          },
-        },
+            return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.id}"></span>
+            <span class="mdi mdi-delete-forever icon-action delete-icon"></span>`;
+          }
+        }
       ],
-      
+
       drawCallback: () => {
         // Sửa input search thêm button vào
         if (!$('.dataTables_filter button').length) {
@@ -111,24 +81,23 @@ export class StudentComponent implements OnInit, OnDestroy {
           this.isPopupCreate = true;
         });
 
-        $('.chk_box').on('click', (event: any) => {
-          const id = $(event.currentTarget).data('id');
-          this.userIds.includes(id) ? this.userIds.splice(this.userIds.indexOf(id), 1) : this.userIds.push(id);
+        $('.move').on('click', () => {
+          this.isPopupMove = true;
         });
-
-        // $('.move').on('click', () => {
-        //   this.showMovePopup();
-        // });
       }
     });
   }
 
-  showMovePopup():void{
-    this.isPopupMove = true;
-  }
-
   showPopupEdit(id: number): void {
-    this.stdResponse = this.apiData.find((item: any) => item.userResponse.id === id);
+    this.stdDetail = this.apiData.find((item: any) => item.id === id);
+    this.user.fullName = this.stdDetail.fullName
+    this.user.email = this.stdDetail.email
+    this.user.dob = this.stdDetail.dob
+    this.user.phoneNumber = this.stdDetail.phoneNumber
+    this.user.address = this.stdDetail.address
+    this.user.gender = this.stdDetail.gender
+    this.studentDetail.rollNumber = this.stdDetail.rollNumber
+    this.studentDetail.rollPortal = this.stdDetail.rollPortal
     this.isPopupUpdate = true;
   }
 
@@ -140,32 +109,33 @@ export class StudentComponent implements OnInit, OnDestroy {
     this.isPopupCreate = false;
   }
 
-  closeMove():void{
-    this.isPopupMove = false;
+  user: any = {
+    fullName: "",
+    email: "",
+    dob: "",
+    phoneNumber: "",
+    address: "",
+    gender: 1,
   }
-  stdRequest: any = {
-    userRequest: {
-      fullName: "",
-      email: "",
-      dob: "",
-      phoneNumber: "",
-      address: "",
-      gender: 1,
-      roleId: 5
-    },
+
+  studentDetail: any = {
     rollNumber: "",
     rollPortal: ""
   }
   createStudent(): void {
-    this.http.post(`${this.authService.apiUrl}/studentManagement`, this.stdRequest, this.home.httpOptions).subscribe(
+    const student =
+    {
+      user: this.user,
+      studentDetail: this.studentDetail
+    }
+
+    this.http.post(`${this.authService.apiUrl}/studentManagement`, student, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
         });
         console.log('Create successfully', response);
-        setInterval(function() {
-          window.location.reload();
-        }, 2000);
+        this.router.navigate(['/admin/home/student']);
       },
       error => {
         this.toastr.error('Error create Student', 'Error', {
@@ -178,27 +148,17 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   
   updateStudent(): void {
-    const _studentRequest = {
-      userRequest: {
-        fullName: this.stdResponse.userResponse.fullName,
-        email: this.stdResponse.userResponse.email,
-        dob: this.stdResponse.userResponse.dob,
-        phoneNumber: this.stdResponse.userResponse.phoneNumber,
-        address: this.stdResponse.userResponse.address,
-        gender: this.stdResponse.userResponse.gender,
-        roleId: 5
-      },
-      rollNumber: this.stdResponse.rollNumber,
-      rollPortal: this.stdResponse.rollPortal
+    const _student =
+    {
+      user: this.user,
+      studentDetail: this.studentDetail
     }
-    this.http.put(`${this.authService.apiUrl}/studentManagement/${this.studentId}`, _studentRequest, this.home.httpOptions).subscribe(
+    this.http.put(`${this.authService.apiUrl}/studentManagement/${this.studentId}`, _student, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Update Successful!', 'Success', {
           timeOut: 2000,
         });
-        setInterval(function() {
-          window.location.reload();
-        }, 2000);
+        this.router.navigate(['/admin/home/student']);
       },
       error => {
         this.toastr.error(error.error.message, 'Error', {
@@ -209,14 +169,14 @@ export class StudentComponent implements OnInit, OnDestroy {
     )
   }
 
+  class: String = '';
   moveStudent(): void {
-    const _class =
+    const classes =
     {
-      classId: this.classId,
-      userIds: this.userIds
+      class: this.class
     }
 
-    this.http.put(`${this.authService.apiUrl}/studentManagement/update-class`, _class, this.home.httpOptions).subscribe(
+    this.http.post(`${this.authService.apiUrl}/studentManagement`, classes, this.home.httpOptions).subscribe(
       response => {
         this.toastr.success('Move Successful!', 'Success', {
           timeOut: 2000,
