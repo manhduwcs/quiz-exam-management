@@ -229,11 +229,6 @@
     cursor: pointer;
 }
 
-.dataTables_wrapper .table .chk_box {
-    width: 21px;
-    height: 21px;
-}
-
 
 /* Ghi đè CSS cho Pagination của DataTables */
 .dataTables_wrapper .dataTables_paginate {

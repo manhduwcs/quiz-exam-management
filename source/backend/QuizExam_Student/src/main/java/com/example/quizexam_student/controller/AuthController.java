@@ -7,13 +7,10 @@ import com.example.quizexam_student.bean.response.*;
 import com.example.quizexam_student.entity.Role;
 import com.example.quizexam_student.entity.User;
 import com.example.quizexam_student.exception.IncorrectEmailOrPassword;
-import com.example.quizexam_student.mapper.UserMapper;
 import com.example.quizexam_student.service.RoleService;
-import com.example.quizexam_student.service.StudentService;
 import com.example.quizexam_student.service.UserService;
 import com.example.quizexam_student.util.JwtUtil;
 import jakarta.persistence.Id;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -49,8 +46,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final HttpSession httpSession;
-    private final StudentService studentService;
-    private final HttpServletRequest httpServletRequest;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
@@ -61,25 +56,27 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token, loginRequest.getEmail()));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','SRO')")
+    @GetMapping("/register")
+    public List<Role> register() {
+        String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Role role = userService.findUserByEmail(email).getRole();
+        List<Role> roles = roleService.findAllByPermission(role.getId());
+        return roles;
+    }
+
+    @PreAuthorize("permitAll()")
     @GetMapping("/role")
     public Role getCurrentRole() {
-        String email = httpServletRequest.getHeader("Email");
-        //String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userService.findUserByEmail(email).getRole();
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity getDetail(){
-        String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        UserResponse userResponse = UserMapper.convertToResponse(userService.findUserByEmail(email));
-        if (userResponse.getRole().getName().equals("STUDENT")){
-            return ResponseEntity.ok(studentService.getStudentDetailByUser(userService.findUserByEmail(email)));
-        }
-        return ResponseEntity.ok(userResponse);
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','SRO')")
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Valid UserRequest userRequest) {
+        userService.saveUser(userRequest);
+        return ResponseEntity.ok(new RegisterResponse(userRequest.getEmail(), userRequest.getPassword()));
     }
 
-    @PutMapping("/changePassword/{id}")
-    public ResponseEntity<User> updateProfile(@PathVariable int id, @RequestBody @Valid PasswordRequest passwordRequest) {
-        return ResponseEntity.ok(userService.changePassword(id, passwordRequest));
-    }
 }

@@ -17,7 +17,6 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "user")
 public class StudentDetail {
     @Id
-    @Column(name = "user_id")
     private int userId;
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)

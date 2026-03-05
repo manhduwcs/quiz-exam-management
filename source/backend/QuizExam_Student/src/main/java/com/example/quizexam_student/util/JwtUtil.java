@@ -1,7 +1,8 @@
 package com.example.quizexam_student.util;
 
-import com.example.quizexam_student.exception.AuthenticatedException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -38,16 +39,8 @@ public class JwtUtil {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        } catch (SignatureException e) {
-            throw new AuthenticatedException("token", "Invalid JWT signature");
-        } catch (MalformedJwtException e) {
-            throw new AuthenticatedException("token", "Invalid JWT token");
-        } catch (ExpiredJwtException e) {
-            throw new AuthenticatedException("token", "Expired JWT token");
-        } catch (UnsupportedJwtException e) {
-            throw new AuthenticatedException("token", "Unsupported JWT token");
-        } catch (IllegalArgumentException e) {
-            throw new AuthenticatedException("token", "JWT claims string is empty");
+        } catch (Exception e) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
 }

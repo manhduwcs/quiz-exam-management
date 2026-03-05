@@ -28,4 +28,10 @@ public class UserResponse {
     private LocalDate dob;
     private int gender;
     private Role role;
+    private String rollPortal;
+    private String rollNumber;
+    @JsonIgnore
+    private Status status;
+    private Classes _class;
+    private List<Mark> marks;
 }

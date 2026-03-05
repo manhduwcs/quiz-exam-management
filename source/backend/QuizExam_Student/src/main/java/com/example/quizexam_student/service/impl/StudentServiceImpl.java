@@ -1,25 +1,17 @@
 package com.example.quizexam_student.service.impl;
 
-import com.example.quizexam_student.bean.request.StudentRequest;
 import com.example.quizexam_student.bean.request.UserRequest;
-import com.example.quizexam_student.bean.response.StudentResponse;
-import com.example.quizexam_student.bean.response.UserResponse;
 import com.example.quizexam_student.entity.*;
 import com.example.quizexam_student.exception.AlreadyExistException;
-import com.example.quizexam_student.exception.EmptyException;
 import com.example.quizexam_student.exception.NotFoundException;
-import com.example.quizexam_student.mapper.StudentMapper;
-import com.example.quizexam_student.mapper.UserMapper;
 import com.example.quizexam_student.repository.*;
 import com.example.quizexam_student.service.StudentService;
-import com.example.quizexam_student.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +27,6 @@ public class StudentServiceImpl implements StudentService {
     private final ClassesRepository classesRepository;
 
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
 
     @Override
     public StudentDetail getStudentDetailByUser(User user) {
@@ -43,45 +34,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentResponse> getAllStudentsNoneClass() {
-        Role role = roleRepository.findByName("STUDENT");
-        List<UserResponse> userResponses = userRepository.findByRole(role).stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
-        if (userResponses.isEmpty()){
-            throw new EmptyException("students", "Student List is Empty");
-        }
-        List<StudentResponse> studentResponses = userResponses.stream().map(userResponse -> StudentMapper.convertToResponse(userResponse, studentRepository.findByUser(userRepository.findById(userResponse.getId()).orElse(null)))).collect(Collectors.toList());
-        studentResponses.removeIf(std->std.get_class()!=null);
-        if (studentResponses.isEmpty()){
-            throw new EmptyException("students", "Student List is Empty");
-        }
-        return studentResponses;
-    }
-
-    @Override
-    public List<StudentResponse> getAllStudentsByClass(int classId) {
-        Role role = roleRepository.findByName("STUDENT");
-        List<UserResponse> userResponses = userRepository.findByRole(role).stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
-        if (userResponses.isEmpty()){
-            throw new EmptyException("students", "Student List is Empty");
-        }
-        List<StudentResponse> studentResponses = userResponses.stream().map(userResponse -> StudentMapper.convertToResponse(userResponse, studentRepository.findByUser(userRepository.findById(userResponse.getId()).orElse(null)))).collect(Collectors.toList());
-        studentResponses.removeIf(std->std.get_class()==null||std.get_class().getId()!=classId);
-        if (studentResponses.isEmpty()){
-            throw new EmptyException("students", "Student List is Empty");
-        }
-        return studentResponses;
-    }
-
-    @Override
-    public StudentDetail addStudent(StudentRequest studentRequest) {
-        if (studentRepository.existsByRollPortal(studentRequest.getRollPortal())) {
+    public StudentDetail addStudent(UserRequest userRequest, StudentDetail studentDetail) {
+        if (studentRepository.existsByRollPortal(studentDetail.getRollPortal())) {
             throw new AlreadyExistException("rollPortal", "Roll Portal already exists.");
         }
-        if (studentRepository.existsByRollNumber(studentRequest.getRollNumber())) {
+        if (studentRepository.existsByRollNumber(studentDetail.getRollNumber())) {
             throw new AlreadyExistException("rollNumber", "Roll Number already exists.");
         }
-        User user = userService.saveUser(studentRequest.getUserRequest());
-        StudentDetail studentDetail = StudentMapper.convertFromRequest(studentRequest);
+        User user = addUser(userRequest);
         Status status = statusRepository.findById(1).orElse(null);
         studentDetail.setStatus(status);
         studentDetail.setUser(user);
@@ -89,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDetail updateStudent(StudentRequest studentRequest, int id) {
+    public StudentDetail updateStudent(UserRequest userInput, StudentDetail studentInput, int id) {
         User userUpdate = userRepository.findById(id).orElse(null);
         Role role = roleRepository.findById(5).orElse(null);
         StudentDetail studentUpdate = studentRepository.findById(id).orElse(null);
@@ -97,32 +57,28 @@ public class StudentServiceImpl implements StudentService {
         if (Objects.isNull(userUpdate) || userUpdate.getStatus() == 0 || Objects.isNull(studentUpdate)) {
             throw new NotFoundException("student", "Student not found.");
         }
-        UserRequest userRequest = studentRequest.getUserRequest();
-        if (userRepository.existsByEmailAndIdNot(userRequest.getEmail(), id)) {
+        if (userRepository.existsByEmailAndIdNot(userInput.getEmail(), id)) {
             throw new AlreadyExistException("email", "Email already exists.");
         }
-        if (userRepository.existsByPhoneNumberAndIdNot(userRequest.getPhoneNumber(), id)) {
+        if (userRepository.existsByPhoneNumberAndIdNot(userInput.getPhoneNumber(), id)) {
             throw new AlreadyExistException("phoneNumber", "Phone Number already exists.");
         }
-        if (studentRepository.existsByRollPortalAndUserNot(studentRequest.getRollPortal(), userUpdate)) {
+        if (studentRepository.existsByRollPortalAndUserNot(studentInput.getRollPortal(), userUpdate)) {
             throw new AlreadyExistException("rollPortal", "Roll Portal already exists.");
         }
-        if (studentRepository.existsByRollNumberAndUserNot(studentRequest.getRollNumber(), userUpdate)) {
+        if (studentRepository.existsByRollNumberAndUserNot(studentInput.getRollNumber(), userUpdate)) {
             throw new AlreadyExistException("rollNumber", "Roll Number already exists.");
         }
 
         // Cập nhật bảng user
-        userUpdate = UserMapper.convertFromRequest(userRequest);
-        userUpdate.setRole(role);
-        userUpdate.setId(id);
-        userUpdate.setPassword(passwordEncoder.encode("@1234567"));
-        userUpdate.setStatus(1);
+        setUser(userUpdate, userInput);
         userRepository.save(userUpdate);
 
         // Cập nhật bảng student_detail
-        studentUpdate.setRollPortal(studentRequest.getRollPortal());
-        studentUpdate.setRollNumber(studentRequest.getRollNumber());
-        return studentRepository.save(studentUpdate);
+        studentUpdate.setRollPortal(studentInput.getRollPortal());
+        studentUpdate.setRollNumber(studentInput.getRollNumber());
+        studentRepository.save(studentUpdate);
+        return null;
     }
 
     @Override

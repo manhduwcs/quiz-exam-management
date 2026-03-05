@@ -3,7 +3,6 @@ import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var $: any;
 
 @Component({
@@ -15,7 +14,7 @@ declare var $: any;
 export class LoginComponent implements AfterContentInit {
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, public toastr: ToastrService, private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(private authService: AuthService, private router: Router, public toastr: ToastrService, private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -31,23 +30,12 @@ export class LoginComponent implements AfterContentInit {
     if (this.loginForm.valid) {
       this.authService.login({ email: this.loginForm.get('email')?.value, password: this.loginForm.get('password')?.value }).subscribe(
         response => {
+          this.toastr.success('Login Successful!', 'Success', {
+            timeOut: 2000,
+          });
           window.localStorage.setItem('jwtToken', JSON.stringify(response.token));
           console.log('User logged in successfully', response);
-          const headers = new HttpHeaders().set('Email', this.loginForm.get('email')?.value);
-          this.http.get<any>(`${this.authService.apiUrl}/auth/role`, {headers: headers, responseType: 'json'}).subscribe((data: any) => {
-            let role = data.name;
-            window.localStorage.setItem('role', data.name);
-            if(role=='ADMIN' || role=='DIRECTOR' || role=='TEACHER' || role=='SRO'){
-              this.toastr.success('Login Successful!', 'Success', {
-                timeOut: 2000,
-              });
-              this.router.navigate(['/admin/home']);
-            } else {
-              this.toastr.error('Unauthorized', 'Failed', {
-                timeOut: 2000,
-              });
-            }
-          });
+          this.router.navigate(['/admin/home/employee']);
         },
         error => {
           if (error.status === 401) {

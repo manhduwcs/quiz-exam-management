@@ -23,5 +23,4 @@ public interface StudentRepository extends JpaRepository<StudentDetail, Integer>
     boolean existsByRollNumberAndUserNot(String rollNumber, User user);
 
     List<StudentDetail> findAllByUserIdIn(List<Integer> userIds);
-
 }
