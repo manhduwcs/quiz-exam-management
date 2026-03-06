@@ -26,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @Validated
-@PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR')")
 public class SubjectController {
     private final SubjectService subjectService;
     private final ExportService exportService;
@@ -37,24 +36,33 @@ public class SubjectController {
         return subjectService.findAll();
     }
 
+    @GetMapping("/sem")
+    public List<Sem> getAllSemesters() {
+        return semService.getAllSem();
+    }
+
     //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
     @PostMapping("/save")
-    public ResponseEntity<Subject> saveSubject(@Valid @RequestBody SubjectRequest subjectRequest) {
+    public ResponseEntity<Subject> saveSubject(
+            @Valid @RequestBody SubjectRequest subjectRequest) throws IOException {
         return  ResponseEntity.ok(subjectService.save(subjectRequest));
     }
 
-    @GetMapping("/{id}")
-    public Subject getSubjectById(@PathVariable int id){
+    /*@GetMapping("/{id}")
+    public Subject updateSubject(@PathVariable int id){
         return subjectService.findById(id);
-    }
+    }*/
 
-    @GetMapping("/sem/{id}")
+    @GetMapping("/{id}")
     public List<Subject> getAllSubjects(@PathVariable Integer id){
         return subjectService.getAllSubjectBySem(id);
     }
 
     @PutMapping ("/{id}")
-    public Subject updateSubject(@PathVariable int id, @Valid @RequestBody SubjectRequest subjectRequest) {
+    public Subject updateSubject(
+            @PathVariable int id,
+            @Valid @RequestBody SubjectRequest subjectRequest
+    ) throws IOException {
         return subjectService.update(id,subjectRequest);
     }
 

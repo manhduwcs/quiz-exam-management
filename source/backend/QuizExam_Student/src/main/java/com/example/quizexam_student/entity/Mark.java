@@ -15,10 +15,10 @@ public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mark_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "score", nullable = false)
-    private int score;
+    private Integer score;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examination_id")

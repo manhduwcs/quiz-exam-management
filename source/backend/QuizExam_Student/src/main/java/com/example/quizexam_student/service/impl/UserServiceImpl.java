@@ -69,12 +69,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
+        List<UserResponse> userResponses = userRepository.findAll().stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
+        if (userResponses.isEmpty()){
+            throw new EmptyException("employees", "Employee List is null");
+        }
+        return userResponses;
     }
 
     @Override
     public List<UserResponse> getUserByRolePermission(Role role) {
-        return userRepository.findByRole(role).stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
+        List<UserResponse> userResponses = userRepository.findByRole(role).stream().map(UserMapper::convertToResponse).collect(Collectors.toList());
+        return userResponses;
     }
 
     @Override

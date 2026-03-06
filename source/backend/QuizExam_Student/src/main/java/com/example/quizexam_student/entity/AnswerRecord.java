@@ -13,7 +13,7 @@ public class AnswerRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_record_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "correct_option", nullable = false)
     private String correctOption;

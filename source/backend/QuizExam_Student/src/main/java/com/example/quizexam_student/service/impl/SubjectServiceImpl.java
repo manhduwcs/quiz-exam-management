@@ -32,7 +32,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> findAll() {
-        return subjectRepository.findByStatus(1);
+        List<Subject> subjects = subjectRepository.findByStatus(1);
+        if (subjects.isEmpty()) {
+            throw new EmptyException("EmptySubject","Subject list is empty");
+        }
+        return subjects;
     }
 
     @Override
@@ -73,6 +77,9 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> getAllSubjectBySem(int id) {
         Sem sem = semRepository.findById(id).orElse(null);
+        if (Objects.isNull(sem)) {
+            throw new NotFoundException("sem","Semeter not found");
+        }
         return subjectRepository.findBySemAndStatus(sem, 1);
     }
 }

@@ -103,22 +103,6 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     this.isPopupCreate = false;
   }
 
-  updateDataTable(newData: any[]): void {
-    if (this.dataTable) {
-      this.dataTable.clear(); // Xóa dữ liệu hiện tại
-      this.dataTable.rows.add(newData); // Thêm dữ liệu mới
-      this.dataTable.draw(); // Vẽ lại bảng
-    }
-  }
-
-  reloadTable(): void {
-    this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
-      this.apiData = data;
-      this.updateDataTable(this.apiData); // Cập nhật bảng với dữ liệu mới
-    });
-    this.closePopup();
-  }
-
 
   fullName: String = '';
   email: String = '';
@@ -140,7 +124,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
         this.toastr.success('Create Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.reloadTable();
+        setInterval(function () {
+          window.location.reload();
+        }, 2000);
       },
       error => {
         this.toastr.error('Error create Employee', 'Error', {
