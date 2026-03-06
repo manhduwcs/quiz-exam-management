@@ -14,9 +14,9 @@ public interface SubjectService {
     Boolean existSubjectByName(String subjectName);
     List<Subject> findAll();
     Subject findById(int id);
-    Subject save(SubjectRequest subjectRequest);
+    Subject save(SubjectRequest subjectRequest) throws IOException;
     void deleteById(int id);
-    Subject update(int id, SubjectRequest subjectRequest);
+    Subject update(int id, SubjectRequest subjectRequest) throws IOException;
 
     List<Subject> getAllSubjectBySem(int id);
 }

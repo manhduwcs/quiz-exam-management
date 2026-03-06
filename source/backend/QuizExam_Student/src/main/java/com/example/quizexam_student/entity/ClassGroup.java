@@ -11,10 +11,7 @@ import lombok.*;
 @Setter
 public class ClassGroup {
     @Id
-    @Column(name = "class_id")
-    private int id;
-    @MapsId
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private Classes _class;
     @Column(name = "count", nullable = false)

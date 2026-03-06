@@ -28,12 +28,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authService.entityExporter = 'subject';
-    this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${this.selectedSem}`, this.home.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/subject/${this.selectedSem}`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();
     });
 
-    this.http.get<any>(`${this.authService.apiUrl}/sem`, this.home.httpOptions).subscribe(response => {
+    this.http.get<any>(`${this.authService.apiUrl}/subject/sem`, this.home.httpOptions).subscribe(response => {
       this.sem = response;
     })
   }
@@ -63,10 +63,10 @@ export class ListComponent implements OnInit, OnDestroy {
           render: function (data: any, type: any, row: any) {
             return `<span class="mdi mdi-information-outline icon-action info-icon" data-id="${row.id}"></span>
             <span class="mdi mdi-pencil icon-action edit-icon" data-id="${row.id}"></span>
-            <span class="mdi mdi-delete-forever icon-action delete-icon" data-id="${row.id}"></span>`;
+            <span class="mdi mdi-comment-question-outline icon-action question-icon" data-id="${row.id}"></span>
+            `;
           }
         }
-
       ],
 
       drawCallback: () => {
@@ -89,10 +89,10 @@ export class ListComponent implements OnInit, OnDestroy {
           this.isPopupCreate = true;
         });
 
-        $('.delete-icon').on('click', (event: any) => {
+        $('.question-icon').on('click', (event: any) => {
           const id = $(event.currentTarget).data('id');
           this.subjectId = id;
-          this.deleteSubject(id);
+          this.router.navigate([`/admin/home/subject/questionForm`])
         });
 
         $('.edit-icon').on('click', (event: any) => {
@@ -114,18 +114,14 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   reloadTable(id: number): void {
-    this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${id}`, this.home.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/subject/${id}`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.updateDataTable(this.apiData); // Cập nhật bảng với dữ liệu mới
     });
-    this.isPopupCreate = false;
-    this.isPopupUpdate = false;
-    this.isPopupDetail = false;
   }
 
   selectSem(sem: number): void {
     this.selectedSem = sem;
-    this.semId = sem;
     // Thực hiện các logic nếu cần thiết khi chọn Sem
     this.reloadTable(this.selectedSem);
     console.log('Selected Sem:', sem);

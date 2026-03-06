@@ -15,7 +15,7 @@ public class QuestionRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_record_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "content", nullable = false)
     private String content;

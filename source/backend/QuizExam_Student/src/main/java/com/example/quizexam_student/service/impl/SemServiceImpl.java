@@ -19,6 +19,9 @@ public class SemServiceImpl implements SemService {
     @Override
     public List<Sem> getAllSem() {
         List<Sem> semList = semRepository.findAll();
+        if (semList.isEmpty()) {
+            throw new EmptyException("EmptySem","Semeter list is empty");
+        }
         return semList;
     }
 
