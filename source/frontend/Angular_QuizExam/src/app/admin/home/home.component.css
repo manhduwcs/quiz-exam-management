@@ -90,14 +90,15 @@
 
 .footer {
     background-color: var(--color-background);
-    padding: 20px 20px;
+    padding: 21px 40px;
     border-top: 1px solid var(--color-switch);
     position: static;
     margin-left: 200px;
+    z-index: 1000;
     height: 50px;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 20px;
     color: #c9c9c9;
 }
 
