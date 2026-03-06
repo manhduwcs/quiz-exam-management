@@ -52,16 +52,18 @@ public class ClassesController {
     }
 
     @GetMapping("/export/excel")
-    public ResponseEntity<String> exportToExcel(HttpServletResponse response,@RequestBody List<Classes> classes) throws IOException {
+    public ResponseEntity<String> exportToExcel(HttpServletResponse response) throws IOException {
         exportService.export(response, "classes", "xlsx");
+        List<Classes> classes = classesService.getAllClasses();
         ClassesExcelExporter excelExporter = new ClassesExcelExporter(classes);
         excelExporter.export(response);
         return new ResponseEntity<>("Export To Excel Successfully", HttpStatus.OK);
     }
 
     @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<String> exportToPDF(HttpServletResponse response, @RequestBody List<Classes> classes) throws IOException {
+    public ResponseEntity<String> exportToPDF(HttpServletResponse response) throws IOException {
         exportService.export(response, "classes", "pdf");
+        List<Classes> classes = classesService.getAllClasses();
         ClassesPDFExporter pdfExporter = new ClassesPDFExporter(classes);
         pdfExporter.export(response);
         return new ResponseEntity<>("Export To PDF Successfully", HttpStatus.OK);
