@@ -6,6 +6,7 @@ import { ListComponent } from './list/list.component';
 import { ChapterComponent } from './chapter/chapter.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { QuestionFormComponent } from './question-form/question-form.component';
+import { AuthGuard } from '../../service/authguard.service';
 
 const routes: Routes = [
   {
@@ -30,10 +31,12 @@ const routes: Routes = [
         component: QuestionListComponent, 
       },
       {
-        path: ':subjectId/questionForm',
+        path: 'questionForm',
         component: QuestionFormComponent
       },
-    ]
+    ],
+    canActivate: [AuthGuard],
+    data: {roles: ['ADMIN', 'DIRECTOR']},
   },
 ];
 
