@@ -6,49 +6,31 @@ import { EmployeeComponent } from './employee/employee.component';
 import { ClassComponent } from './class/class.component';
 import { StudentComponent } from './student/student.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from '../service/authguard.service';
 
 const routes: Routes = [
     {
     path: '', 
     component: HomeComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ADMIN', 'DIRECTOR', 'TEACHER', 'SRO']},
     children: [
       {
-        path: '',
+        path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ADMIN', 'DIRECTOR', 'TEACHER', 'SRO']},
       },
-      // {
-      //   path: '',
-      //   redirectTo: 'dashboard',
-      //   pathMatch: 'full',
-      // },
       {
         path: 'employee',
-        component: EmployeeComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ADMIN', 'DIRECTOR']},
+        component: EmployeeComponent
       },
       {
         path: 'class',
-        component: ClassComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ADMIN', 'DIRECTOR', 'SRO']},
+        component: ClassComponent
       },
       {
         path: 'student',
-        component: StudentComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ADMIN', 'SRO']},
+        component: StudentComponent
       },
       {
         path: 'class/:classId',
         component: StudentComponent,
-        canActivate: [AuthGuard],
-        data: {roles: ['ADMIN', 'DIRECTOR', 'SRO']},
       },
       {
         path: 'profile',
