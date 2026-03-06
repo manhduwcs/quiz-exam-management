@@ -11,7 +11,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
 import { SubjectModule } from './subject/subject.module';
-import { ExaminationModule } from './examination/examination.module';
+
 
 
 @NgModule({
@@ -28,8 +28,7 @@ import { ExaminationModule } from './examination/examination.module';
     CommonModule,
     HomeRoutingModule,
     FormsModule,
-    SubjectModule,
-    ExaminationModule
+    SubjectModule
   ]
 })
 export class HomeModule { }
