@@ -48,19 +48,21 @@
 
 /* button add*/
 
-.btn-action {
-    width: 40px;
-    height: 111px;
+.btn-chapter {
+    /* width: 34px; */
+    height: 72px;
     border: 1px solid #ddd;
     text-align: center;
     /* border-radius: 5px; */
 }
 
-.btn-action .icon-action {
-    font-size: 24px;
-    cursor: pointer;
-}
+.btn-chapter i {
+    font-size: x-large;
+    margin: 6px;
+    color: grey;
+    
 
+}
 .btn-chapter .btn-list:hover, .btn-chapter .btn-add:hover {
     cursor: pointer;
     box-shadow: #e9ecef 0px 0px 3px 3px inset;
