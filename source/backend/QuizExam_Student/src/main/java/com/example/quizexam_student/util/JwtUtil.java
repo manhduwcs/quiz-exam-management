@@ -1,11 +1,8 @@
 package com.example.quizexam_student.util;
 
 import com.example.quizexam_student.exception.AuthenticatedException;
-import com.example.quizexam_student.handle.CustomAccessDeniedHandler;
 import io.jsonwebtoken.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -13,9 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-@RequiredArgsConstructor
 public class JwtUtil {
-    private final CustomAccessDeniedHandler accessDeniedHandler;
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expiration}")
@@ -40,21 +35,19 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token) {
-        String msg;
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
-            msg = "Invalid JWT signature";
+            throw new AuthenticatedException("token", "Invalid JWT signature");
         } catch (MalformedJwtException e) {
-            msg = "Invalid JWT token";
+            throw new AuthenticatedException("token", "Invalid JWT token");
         } catch (ExpiredJwtException e) {
-            msg = "Expired JWT token";
+            throw new AuthenticatedException("token", "Expired JWT token");
         } catch (UnsupportedJwtException e) {
-            msg = "Unsupported JWT token";
+            throw new AuthenticatedException("token", "Unsupported JWT token");
         } catch (IllegalArgumentException e) {
-            msg = "JWT claims string is empty";
+            throw new AuthenticatedException("token", "JWT claims string is empty");
         }
-        throw new AccessDeniedException(msg);
     }
 }

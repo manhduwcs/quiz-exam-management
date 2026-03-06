@@ -11,5 +11,4 @@ import java.util.List;
 public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
     Chapter findByName(String name);
     List<Chapter> findAllByStatusAndSubjectId(int status, int subjectId);
-    List<Chapter> findByIdIn(List<Integer> ids);
 }
