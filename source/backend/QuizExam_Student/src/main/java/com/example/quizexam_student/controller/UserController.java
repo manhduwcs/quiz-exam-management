@@ -36,7 +36,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @Validated
-//@PreAuthorize("hasAnyRole('ADMIN','DIRECTOR')")
+@PreAuthorize("hasAnyRole('ADMIN','DIRECTOR')")
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
@@ -87,24 +87,18 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, userRequest));
     }
 
-    @PostMapping("/export/excel")
-    public ResponseEntity<String> exportToExcel(
-            HttpServletResponse response,
-            @RequestBody List<UserResponse> userResponseList)
-            throws IOException {
+    @GetMapping("/export/excel")
+    public ResponseEntity<String> exportToExcel(HttpServletResponse response) throws IOException {
         exportService.export(response, "user", "xlsx");
-        EmpExcelExporter excelExporter = new EmpExcelExporter(userResponseList);
+        EmpExcelExporter excelExporter = new EmpExcelExporter(getAll());
         excelExporter.export(response);
         return new ResponseEntity<>("Export To Excel Successfully", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<String> exportToPDF(
-            HttpServletResponse response,
-            @RequestBody List<UserResponse> userResponseList)
-            throws IOException {
+    @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<String> exportToPDF(HttpServletResponse response) throws IOException {
         exportService.export(response, "user", "pdf");
-        EmpPDFExporter userPDFExporter = new EmpPDFExporter(userResponseList);
+        EmpPDFExporter userPDFExporter = new EmpPDFExporter(getAll());
         userPDFExporter.export(response);
         return new ResponseEntity<>("Export To PDF Successfully", HttpStatus.OK);
     }

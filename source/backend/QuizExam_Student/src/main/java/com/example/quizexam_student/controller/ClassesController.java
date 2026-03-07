@@ -51,7 +51,7 @@ public class ClassesController {
         classesService.deleteClass(id);
     }
 
-    @PostMapping("/export/excel")
+    @GetMapping("/export/excel")
     public ResponseEntity<String> exportToExcel(HttpServletResponse response,@RequestBody List<Classes> classes) throws IOException {
         exportService.export(response, "classes", "xlsx");
         ClassesExcelExporter excelExporter = new ClassesExcelExporter(classes);
@@ -59,7 +59,7 @@ public class ClassesController {
         return new ResponseEntity<>("Export To Excel Successfully", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<String> exportToPDF(HttpServletResponse response, @RequestBody List<Classes> classes) throws IOException {
         exportService.export(response, "classes", "pdf");
         ClassesPDFExporter pdfExporter = new ClassesPDFExporter(classes);
