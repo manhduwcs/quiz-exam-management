@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 @Validated
-//@PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+@PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
 public class StudentController {
     private final StudentService studentService;
     private final ExportService exportService;
@@ -69,7 +69,7 @@ public class StudentController {
         return new ResponseEntity<>("Export To Excel Successfully", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<String> exportToPDF(HttpServletResponse response
             ,@RequestBody List<StudentResponse> studentResponses) throws IOException {
         exportService.export(response, "student", "pdf");

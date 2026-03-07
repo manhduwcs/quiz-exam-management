@@ -1,7 +1,6 @@
 package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.StudentRequest;
-import com.example.quizexam_student.bean.request.UserRequest;
 import com.example.quizexam_student.bean.response.RegisterResponse;
 import com.example.quizexam_student.bean.response.StudentResponse;
 import com.example.quizexam_student.service.StudentService;
@@ -28,18 +27,10 @@ public class StudentControllerTest {
     private StudentRequest studentRequest;
     private List<StudentResponse> studentResponseList;
     private RegisterResponse registerResponse;
-    private UserRequest userRequest;
 
     @BeforeEach
     void initData(){
-//        userRequest = UserRequest.builder()
-//                .fullName("Dang Dinh Thuan")
-//                .email("thuan@aptech.com")
-//                .
-//                .build();
-//        studentRequest = StudentRequest.builder()
-//                .
-//                .build();
+
     }
 
 
