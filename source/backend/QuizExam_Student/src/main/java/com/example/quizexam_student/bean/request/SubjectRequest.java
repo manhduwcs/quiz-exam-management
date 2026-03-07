@@ -14,5 +14,5 @@ public class SubjectRequest {
     private String name;
     private String image;
     @NotNull(message = "Semeter is required")
-    private Integer semId;
+    private int semId;
 }

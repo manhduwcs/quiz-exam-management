@@ -3,7 +3,7 @@ import { AppComponent } from '../../app.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -20,16 +20,9 @@ export class HomeComponent implements OnInit {
   userRole: string = ''; 
 
   ngOnInit() {
-    this.http.get<any>(`${this.authService.apiUrl}/auth/profile`, this.httpOptions).subscribe((user: any) => {
-      this.authService.myUser = user;
-      console.log(user);
-      //user = this.authService.myUser;
-      this.userName = user.fullName;
-      this.userRole = user.role.name;
-    });
-    // const user = this.authService.myUser;
-    // this.userName = user.userName;
-    // this.userRole = user.role;
+    const user = this.authService.userLogged;
+    this.userName = user.fullName;
+    this.userRole = user.role;
   }
 
   scrollToTop(): void {
@@ -60,7 +53,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  constructor(public app : AppComponent, private router: Router,  public authService: AuthService, private http: HttpClient) {
+  constructor(public app : AppComponent, private router: Router,  public authService: AuthService) {
     this.loadToken();
     this.role = localStorage.getItem(authService.roleKey);
     this.router.events.pipe(
