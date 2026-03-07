@@ -11,8 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
