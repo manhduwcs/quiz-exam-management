@@ -25,7 +25,6 @@
     border-radius: 8px;
     border: none;
     color: black;
-    font-size: 12px;
 }
 
 .sem-container .btn.active {
@@ -41,7 +40,7 @@
 }
 
 .button {
-    font-size: 10px;
+    font-size: 15px;
     background-color: #aa1210;
     border: none;
     border-radius: 8px;
