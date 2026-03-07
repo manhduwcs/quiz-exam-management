@@ -1,7 +1,5 @@
 package com.example.quizexam_student.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +23,5 @@ public class Answer {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
-    @JsonBackReference
     private Question question;
 }

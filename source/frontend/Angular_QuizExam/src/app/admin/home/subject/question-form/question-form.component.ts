@@ -7,17 +7,15 @@ import { HomeComponent } from '../../home.component';
 declare var $: any;
 
 interface Answer {
-  content: string; // Đổi từ text thành content
-  isCorrect: number; // Thêm thuộc tính isCorrect
+  type: 'radio' | 'checkbox';
+  text: string;
 }
 
 interface QuestionForm {
-  content: string; // Thuộc tính để lưu nội dung câu hỏi
-  subjectId: number; // Thuộc tính để lưu ID chủ đề
-  chapters: number[]; // Thuộc tính để lưu chapters
-  levelId: number; // Thuộc tính để lưu levelId
-  imageFile?: File | null; // Thông tin file ảnh
-  answers: Answer[]; // Danh sách các câu trả lời
+  answers: Answer[];
+  type: 'Single' | 'Multi';
+  imageSelected?: boolean;
+  // thêm các thuộc tính khác nếu cần
 }
 
 @Component({
@@ -26,117 +24,35 @@ interface QuestionForm {
   styleUrl: './question-form.component.css'
 })
 
-export class QuestionFormComponent implements OnInit {
+export class QuestionFormComponent {
   constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  subjects: any;
-  subjectId: number = 0;
-  subjectName: any;
-
-  listChapter: any;
-  listLevel = [
-    { id: 1, name: 'Easy', point: 1 },
-    { id: 2, name: 'Hard', point: 2 }
+  subjects = ['C'];
+  chapters = ['Choose Chapter'];
+  levels = ['Easy', 'Hard'];
+  types = ['Single', 'Multi'];
+  questionForms: QuestionForm[] = [
+    {
+      answers: [
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' }
+      ],
+      type: 'Single' // Khởi tạo với giá trị mặc định
+    }
   ];
-  
-  questionForms: QuestionForm[] = [];
-
-  ngOnInit(): void {
-    this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
-
-    this.http.get<any>(`${this.authService.apiUrl}/subject/${this.subjectId}`, this.home.httpOptions).subscribe((data: any) => {
-      this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${data.sem.id}`, this.home.httpOptions).subscribe(response => {
-        this.subjects = response;
-        for (let sub of this.subjects) {
-          if (sub.id == this.subjectId) {
-            this.subjectName = sub.name;
-          }
-        }
-      });
-    });
-
-    this.http.get<any>(`${this.authService.apiUrl}/chapter/${this.subjectId}`, this.home.httpOptions).subscribe((data: any) => {
-      this.listChapter = data;
-    });
-
-    this.initializeQuestion();
-  }
-
-  initializeQuestion(): void {
-    this.questionForms = [
-      {
-        content: '',
-        subjectId: this.subjectId,
-        chapters: [],
-        levelId: this.listLevel[0].id,
-        imageFile: null,
-        answers: [
-          { content: '', isCorrect: 0 },
-          { content: '', isCorrect: 0 },
-          { content: '', isCorrect: 0 },
-          { content: '', isCorrect: 0 }
-        ]
-      }
-    ];
-  }
-
-  isPopupChapter = false;
-  popupChapterIndex: number = 0;
-
-  openPopup(questionIndex: number) {
-    this.popupChapterIndex = questionIndex;
-    this.isPopupChapter = true;
-    console.log(this.questionForms[questionIndex].chapters);
-  }
-
-  // Hàm này được gọi khi người dùng nhấn checkbox
-  toggleChapterSelection(questionIndex: number, chapterId: number, event: Event) {
-    const checkbox = (event.target as HTMLInputElement);
-
-    if (!this.questionForms[questionIndex].chapters) {
-      this.questionForms[questionIndex].chapters = [];
-    }
-
-    if (checkbox.checked) {
-      this.questionForms[questionIndex].chapters.push(chapterId);
-    } else {
-      this.questionForms[questionIndex].chapters = this.questionForms[questionIndex].chapters.filter(id => id !== chapterId);
-    }
-
-    console.log(this.questionForms[questionIndex].chapters);
-  }
-
-  closePopup(event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation(); // Ngăn việc sự kiện click ra ngoài ảnh hưởng đến việc đóng modal
-    }
-    this.isPopupChapter = false;
-    this.popupChapterIndex = 0; // Reset khi đóng popup
-  }
 
   addQuestionForm() {
-    const newQuestionIndex = this.questionForms.length;
-    
     this.questionForms.push({
-      content: '',
-      subjectId: this.subjectId,
-      chapters: [],
-      levelId: this.listLevel[0].id,
       answers: [
-        { content: '', isCorrect: 0 },
-        { content: '', isCorrect: 0 },
-        { content: '', isCorrect: 0 },
-        { content: '', isCorrect: 0 }
-      ]
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' },
+        { text: '', type: 'radio' }
+      ],
+      type: 'Single' // Hoặc 'Multi', tùy thuộc vào mặc định bạn muốn
     });
-
-    // Cuộn xuống form mới thêm
-    setTimeout(() => {
-      const newQuestionForm = document.getElementById(`question-form-${newQuestionIndex}`);
-      if (newQuestionForm) {
-          newQuestionForm.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 0);
   }
 
   removeQuestionForm(index: number) {
@@ -148,92 +64,45 @@ export class QuestionFormComponent implements OnInit {
   }
 
   addAnswer(index: number) {
-    this.questionForms[index].answers.push({ content: '', isCorrect: 0 }); // Thêm câu trả lời mới
-  }
-
-  toggleIsCorrect(answer: Answer) {
-    answer.isCorrect = answer.isCorrect === 1 ? 0 : 1; // Chuyển đổi giữa 0 và 1
-    console.log('Current isCorrect value:', answer.isCorrect); // In ra giá trị
+    const currentType = this.questionForms[index].type; // Lấy kiểu hiện tại của câu hỏi
+    const newType = currentType === 'Multi' ? 'checkbox' : 'radio'; // Xác định kiểu mới cho câu trả lời
+    console.log(currentType + " - " + newType);
+    this.questionForms[index].answers.push({ text: '', type: newType }); // Thêm câu trả lời với kiểu đã xác định
   }
 
   removeAnswer(questionIndex: number, answerIndex: number) {
     this.questionForms[questionIndex].answers.splice(answerIndex, 1);
   }
 
+  toggleAnswerType(questionIndex: number, event: Event) {
+    const target = event.target as HTMLSelectElement; // Ép kiểu thành HTMLSelectElement
+    const type = target.value as 'Single' | 'Multi'; // Ép kiểu giá trị về 'Single' hoặc 'Multi'
+
+    this.questionForms[questionIndex].type = type; // Gán giá trị đã ép kiểu
+    console.log(type); // Kiểm tra mảng questionForms
+
+    const answers: Answer[] = this.questionForms[questionIndex].answers;
+    answers.forEach((answer: Answer) => {
+      answer.type = type === 'Multi' ? 'checkbox' : 'radio';
+    });
+  }
+
   previewImage(event: Event, questionIndex: number) {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files ? fileInput.files[0] : null;
 
-    const imgPreview = document.getElementById(`imagePreview${questionIndex}`) as HTMLImageElement;
-    const imgContainer = imgPreview.parentElement; // Lấy phần tử cha của img
-
     if (file) {
       const reader = new FileReader();
       reader.onload = (loadEvent) => {
+        const imgPreview = document.getElementById(`imagePreview${questionIndex}`) as HTMLImageElement;
         imgPreview.src = loadEvent.target?.result as string;
         imgPreview.style.display = 'block';
       };
       reader.readAsDataURL(file);
+      console.log(file.name);
 
-      // Đánh dấu là đã chọn ảnh và thêm lớp ẩn border
-      this.questionForms[questionIndex].imageFile = file; // Lưu file vào đối tượng
-      imgContainer?.classList.add('hidden-border'); // Thêm lớp để ẩn border
-    } else {
-      imgContainer?.classList.remove('hidden-border'); // Xóa lớp nếu không có ảnh
+      // Đánh dấu là đã chọn ảnh
+      this.questionForms[questionIndex].imageSelected = true;
     }
-  }
-
-  removeImage(questionIndex: number) {
-    this.questionForms[questionIndex].imageFile = null; // Xóa thông tin file
-    const imgPreview = document.getElementById(`imagePreview${questionIndex}`) as HTMLImageElement;
-    imgPreview.src = ''; // Đặt lại src của ảnh
-    imgPreview.style.display = 'none'; // Ẩn ảnh đi
-  }
-
-  saveQuestions() {
-    const formData = new FormData();
-  
-    // Tạo danh sách câu hỏi
-    const questionsList = this.questionForms.map(question => ({
-      content: question.content,
-      image: null, // Hoặc giá trị tương ứng nếu có ảnh
-      subjectId: question.subjectId,
-      chapters: question.chapters,
-      levelId: question.levelId,
-      answers: question.answers.map(answer => ({
-        content: answer.content,
-        isCorrect: answer.isCorrect
-      }))
-    }));
-  
-    // Thêm danh sách câu hỏi vào FormData
-    formData.append('questions', new Blob([JSON.stringify(questionsList)], { type: 'application/json' }));
-  
-    // Thêm các file vào FormData
-    this.questionForms.forEach((question) => {
-      if (question.imageFile) {
-          formData.append('files', question.imageFile); // Sử dụng file đã lưu
-      }
-      else {
-        formData.append('files', new Blob([]));
-      }
-    });
-  
-    // Gửi yêu cầu POST
-    this.http.post(`${this.authService.apiUrl}/question`, formData, this.home.httpOptions).subscribe(
-      response => {
-        this.toastr.success('Questions saved successfully!', 'Success', {
-          timeOut: 2000,
-        });
-        console.log('Questions saved successfully:', response);
-        this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
-      },
-      error => {
-        this.toastr.error('Error saving questions.', 'Error', {
-          timeOut: 2000,
-        });
-        console.error('Error saving questions:', error);
-      }
-    );
   }
 }

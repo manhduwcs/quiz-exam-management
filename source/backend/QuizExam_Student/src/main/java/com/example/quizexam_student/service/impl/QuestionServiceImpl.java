@@ -11,9 +11,6 @@ import com.example.quizexam_student.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,40 +25,18 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionResponse> getAllQuestionsBySubjectId(int subjectId) {
-        return questionRepository.findAllBySubject(subjectRepository.findById(subjectId).orElse(null)).stream().map(QuestionMapper::convertToResponse).collect(Collectors.toList());
+        return questionRepository.findAllBySubjectAndChaptersIsNotNull(subjectRepository.findById(subjectId).orElse(null)).stream().map(QuestionMapper::convertToResponse).collect(Collectors.toList());
     }
 
     @Override
-    public List<Question> saveQuestions(List<QuestionRequest> questionRequests) throws IOException {
-        List<Question> savedQuestions = new ArrayList<>();
-        for (QuestionRequest questionRequest : questionRequests) {
-            Question question = QuestionMapper.convertFromRequest(questionRequest);
-            question.setStatus(1);
-            question.setSubject(subjectRepository.findById(questionRequest.getSubjectId()).orElse(null));
-            question.setLevel(levelRepository.findById(questionRequest.getLevelId()).orElse(null));
-            question.setChapters(chapterRepository.findByIdIn(questionRequest.getChapters()).stream().collect(Collectors.toSet()));
-            questionRepository.saveAndFlush(question);
-            List<Answer> answers = questionRequest.getAnswers().stream().map(AnswerMapper::convertFromRequest).collect(Collectors.toList());
-            answers.stream().map(answer -> {answer.setQuestion(question); return answer;}).collect(Collectors.toList());
-            answerRepository.saveAll(answers);
-            savedQuestions.add(question);
-        }
-        return savedQuestions;
-    }
-
-    @Override
-    public Question updateQuestion(int id, QuestionRequest questionRequest) throws IOException {
-        Question question = questionRepository.findById(id).orElse(null);
-        question.setContent(questionRequest.getContent());
-        question.setImage(questionRequest.getImage());
+    public Question saveQuestion(QuestionRequest questionRequest) {
+        Question question = QuestionMapper.convertFromRequest(questionRequest);
         question.setSubject(subjectRepository.findById(questionRequest.getSubjectId()).orElse(null));
         question.setLevel(levelRepository.findById(questionRequest.getLevelId()).orElse(null));
         question.setChapters(chapterRepository.findByIdIn(questionRequest.getChapters()).stream().collect(Collectors.toSet()));
-        question.setAnswers(new HashSet<>());
-        questionRepository.save(question);
+        questionRepository.saveAndFlush(question);
         List<Answer> answers = questionRequest.getAnswers().stream().map(AnswerMapper::convertFromRequest).collect(Collectors.toList());
         answers.stream().map(answer -> {answer.setQuestion(question); return answer;}).collect(Collectors.toList());
-        answerRepository.deleteAll(answerRepository.findByQuestion(question).stream().map(answer -> {answer.setQuestion(null); return answer;}).collect(Collectors.toList()));
         answerRepository.saveAll(answers);
         return question;
     }

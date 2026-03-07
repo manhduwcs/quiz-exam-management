@@ -2,14 +2,9 @@
 /* Body */
 .content-wrapper {
     padding: 20px;
-    margin: 0 0 60px 8%;
-    min-height: 80vh;
+    margin: 0 0 60px 200px;
+    min-height: 74vh;
     overflow-x: hidden;
-    transition: margin-left 0.3s ease;
-}
-
-.content-wrapper-collapsed {
-    margin-left: 2%;
 }
 
 .line {
@@ -23,7 +18,7 @@
 }
 
 .button {
-    font-size: 10px;
+    font-size: 15px;
     background-color: #aa1210;
     border: none;
     border-radius: 8px;
