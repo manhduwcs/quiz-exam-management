@@ -21,7 +21,6 @@ export class AuthService {
   public roleKey = 'role';
 
   public userLogged:any = localStorage.getItem('userLogged');
-  public myUser:any;
 
   constructor(private http: HttpClient, private router: Router) { }
 
