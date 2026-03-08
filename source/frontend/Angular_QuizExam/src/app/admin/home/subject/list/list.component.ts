@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
 import { response } from 'express';
+import { SubjectComponent } from '../subject.component';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrl: './list.component.css'
 })
 export class ListComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, public subjectComponent: SubjectComponent) { }
 
   dataTable: any;
   apiData: any;
@@ -35,6 +36,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.authService.entityExporter = 'subject';
     this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${this.selectedSem}`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
+      this.authService.listExporter = data;
       this.initializeDataTable();
     });
 
@@ -224,12 +226,13 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   exportExcel() {
+    this.authService.listExporter = this.apiData;
     this.authService.exportDataExcel().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
+        a.download = 'subject_excel.xlsx'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -242,12 +245,13 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   exportPDF() {
+    this.authService.listExporter = this.apiData;
     this.authService.exportDataPDF().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
+        a.download = 'subject_pdf.pdf'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

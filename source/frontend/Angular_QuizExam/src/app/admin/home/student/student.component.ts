@@ -12,7 +12,7 @@ declare var $: any;
   styleUrl: './student.component.css'
 })
 export class StudentComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private authService: AuthService, public home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   dataTable: any;
   apiData: any;
@@ -282,7 +282,7 @@ export class StudentComponent implements OnInit, OnDestroy {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
+        a.download = 'student_excel.xlsx'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -295,12 +295,13 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   exportPDF() {
+    this.authService.listExporter = this.apiData;
     this.authService.exportDataPDF().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
+        a.download = 'student_pdf.pdf'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
