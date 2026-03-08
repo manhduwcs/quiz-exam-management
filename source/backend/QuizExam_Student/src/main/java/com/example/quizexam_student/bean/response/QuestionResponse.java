@@ -6,7 +6,6 @@ import com.example.quizexam_student.entity.Level;
 import com.example.quizexam_student.entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -20,6 +19,5 @@ public class QuestionResponse {
     private Subject subject;
     private List<Chapter> chapters;
     private Level level;
-    @Getter
     private List <Answer> answers;
 }
