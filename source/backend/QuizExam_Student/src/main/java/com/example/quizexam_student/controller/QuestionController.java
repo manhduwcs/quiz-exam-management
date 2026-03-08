@@ -2,6 +2,7 @@ package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.QuestionRequest;
 import com.example.quizexam_student.bean.response.QuestionResponse;
+import com.example.quizexam_student.entity.Answer;
 import com.example.quizexam_student.entity.Question;
 import com.example.quizexam_student.service.QuestionService;
 import jakarta.validation.Valid;
@@ -73,41 +74,5 @@ public class QuestionController {
         return questionService.updateQuestion(id,questionRequest);
     }
 
-    @GetMapping("/exam/{subjectId}")
-    public List<QuestionResponse> generate(@PathVariable int subjectId) {
-        List<QuestionResponse> questions = questionService.getAllQuestionsBySubjectId(subjectId);
-        Collections.shuffle(questions);
-        AtomicInteger hardCount = new AtomicInteger(0);
-        AtomicInteger easyCount = new AtomicInteger(0);
-//        questions = questions.stream().limit(16).takeWhile(questionResponse -> {
-//            if (questionResponse.getLevel().getId()==1){
-//                hardCount.getAndIncrement();
-//            }
-//            if (hardCount.get()>=4){
-//                return false;
-//            }
-//            return true;
-//        }).collect(Collectors.toList());
-        List<QuestionResponse> selectedQuestions = questions.stream()
-                .filter(questionResponse -> {
-                    if (questionResponse.getLevel().getId() == 2) {
-                        return hardCount.get() < 4;
-                    }
-                    if (questionResponse.getLevel().getId() == 1) {
-                        return easyCount.get() < 12;
-                    }
-                    return true;
-                })
 
-                .peek(questionResponse -> {
-                    if (questionResponse.getLevel().getId() == 2) {
-                        hardCount.getAndIncrement();
-                    }
-                    if (questionResponse.getLevel().getId() == 1) {
-                        easyCount.getAndIncrement();
-                    }
-                }).limit(16)
-                .collect(Collectors.toList());
-        return selectedQuestions;
-    }
 }
