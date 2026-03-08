@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
-    List<Question> findAllBySubjectAndStatus(Subject subject, int status);
+    List<Question> findAllBySubject(Subject subject);
 }
