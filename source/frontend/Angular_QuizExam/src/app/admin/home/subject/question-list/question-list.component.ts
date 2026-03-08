@@ -94,7 +94,7 @@ export class QuestionListComponent {
           title: 'Action',
           data: null,
           render: function (data: any, type: any, row: any) {
-            return `<span  class="mdi mdi-pencil icon-action edit-icon" data-id="${row.id}"></span>`;
+            return `<span  class="mdi mdi-pencil icon-action edit-icon" title="Edit" data-id="${row.id}"></span>`;
 
           }
         }
@@ -109,12 +109,9 @@ export class QuestionListComponent {
 
         // Thêm placeholder vào input của DataTables
         $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search');
-        
-        // Click vào info icon sẽ hiện ra popup
-        $('.edit-icon').on('click', (event: any) => {
-          const id = $(event.currentTarget).data('id');
-          this.router.navigate([`/admin/home/subject/${this.subjectId}/questionUpdate/${id}`]);
-        });
+
+
+
       }
     });
   }
