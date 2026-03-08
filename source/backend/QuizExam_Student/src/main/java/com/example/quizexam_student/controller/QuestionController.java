@@ -2,7 +2,6 @@ package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.QuestionRequest;
 import com.example.quizexam_student.bean.response.QuestionResponse;
-import com.example.quizexam_student.entity.Answer;
 import com.example.quizexam_student.entity.Question;
 import com.example.quizexam_student.service.QuestionService;
 import jakarta.validation.Valid;
@@ -99,6 +98,7 @@ public class QuestionController {
                     }
                     return true;
                 })
+
                 .peek(questionResponse -> {
                     if (questionResponse.getLevel().getId() == 2) {
                         hardCount.getAndIncrement();
@@ -108,16 +108,6 @@ public class QuestionController {
                     }
                 }).limit(16)
                 .collect(Collectors.toList());
-
-
-        for (QuestionResponse questionResponse : selectedQuestions) {
-            List<Answer> answers;
-            answers = questionResponse.getAnswers();
-            Collections.shuffle(answers);
-            answers.subList(0, Math.min(4, answers.size()));
-            questionResponse.setAnswers(answers);
-        }
         return selectedQuestions;
     }
-
 }
