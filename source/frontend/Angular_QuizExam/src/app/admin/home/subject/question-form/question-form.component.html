@@ -76,23 +76,7 @@
         <div class="btn-action">
             <button type="button" class="mdi mdi-plus-circle-outline icon-action" title="Add Question" (click)="addQuestionForm()"></button>
             <button type="submit" class="mdi mdi-checkbox-marked-circle-outline icon-action" title="Save"></button>
-            <button type="button" class="mdi mdi-close-circle-outline icon-action" title="Cancel" (click)="cancel()"></button>
+            <button type="button" class="mdi mdi-close-circle-outline icon-action" title="Cancel"></button>
         </div>
     </form>
-</div>
-
-<div *ngIf="isCancelPopup" class="modal-backdrop-confirm" (click)="closePopup($event)">
-    <div class="modal-content-confirm" (click)="$event.stopPropagation()">
-        <div class="modal-header-confirm">
-            <span>Are you sure?</span>
-            <span class="close-icon" (click)="closePopup($event)">&times;</span>
-        </div>
-        <div class="modal-body-confirm">
-            <p>Are you sure you want to cancel? Any unsaved changes will be lost.</p>
-        </div>
-        <div class="modal-footer-confirm">
-            <button type="button" class="btn btn-primary button button-yes" (click)="confirmCancel()">Yes</button>
-            <button type="button" class="btn btn-secondary button button-no" (click)="closePopup($event)">No</button>
-        </div>
-    </div>
 </div>

@@ -7,7 +7,6 @@ import { SubjectRoutingModule } from './subject-routing.module';
 import { SubjectComponent } from './subject.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { QuestionFormComponent } from './question-form/question-form.component';
-import { QuestionUpdateComponent } from './question-update/question-update.component';
 
 
 @NgModule({
@@ -16,8 +15,7 @@ import { QuestionUpdateComponent } from './question-update/question-update.compo
     ListComponent,
     ChapterComponent,
     QuestionListComponent,
-    QuestionFormComponent,
-    QuestionUpdateComponent
+    QuestionFormComponent
   ],
   imports: [
     CommonModule,
