@@ -33,7 +33,6 @@ export class ClassComponent implements OnInit, OnDestroy {
     this.authService.entityExporter = 'class';
     this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
-      this.authService.listExporter = data;
       this.initializeDataTable();
     });
   }
@@ -243,13 +242,12 @@ export class ClassComponent implements OnInit, OnDestroy {
   }
 
   exportExcel() {
-    this.authService.listExporter = this.apiData;
     this.authService.exportDataExcel().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' as 'json' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'class_excel.xlsx'; // Thay đổi tên file nếu cần
+        a.download = 'export_excel.xlsx'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -262,13 +260,12 @@ export class ClassComponent implements OnInit, OnDestroy {
   }
 
   exportPDF() {
-    this.authService.listExporter = this.apiData;
     this.authService.exportDataPDF().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'class_pdf.pdf'; // Thay đổi tên file nếu cần
+        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
