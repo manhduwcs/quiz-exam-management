@@ -15,7 +15,7 @@ public class StudentAnswer {
     @Column(name = "student_answer_id")
     private Integer id;
 
-    @Column(name = "select_option", nullable = false)
+    @Column(name = "select_option", nullable = false, columnDefinition = "text")
     private String selectOption;
 
     @ManyToOne(cascade = CascadeType.ALL)

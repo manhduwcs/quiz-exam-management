@@ -80,11 +80,11 @@ public class ExaminationServiceImpl implements ExaminationService {
                     }).collect(Collectors.toList());
             question.setAnswers(selectedAnswers.stream().collect(Collectors.toSet()));
         }
-        Examination exam = ExaminationMapper.convertToRequest(examinationRequest);
+        Examination exam = ExaminationMapper.convertFromRequest(examinationRequest);
         exam.setStatus(1);
         exam.setQuestions(selectedQuestions.stream().collect(Collectors.toSet()));
         exam.setCode("HTML-001");
-        exam.setType(1);
+        exam.setSubject(subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null));
         examinationRepository.save(exam);
         for (Question question : selectedQuestions) {
             QuestionRecord questionRecord = new QuestionRecord();

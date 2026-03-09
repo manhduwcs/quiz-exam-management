@@ -22,7 +22,7 @@ public class Question {
     @Column(name = "question_id")
     private int id;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     private String content;
 
     @Column(name = "status", nullable = false)
@@ -39,7 +39,7 @@ public class Question {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "rel_chapter_question", joinColumns = @JoinColumn( name = "question_id"), inverseJoinColumns = @JoinColumn(name = "chapter_id"))
     private Set<Chapter> chapters;
 
