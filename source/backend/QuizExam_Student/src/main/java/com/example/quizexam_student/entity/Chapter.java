@@ -17,7 +17,6 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"questions", "subject"})
 public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +31,8 @@ public class Chapter {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id")
-    @JsonIgnore
     private Subject subject;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "chapters")
-    @JsonIgnore
     private Set<Question> questions;
 }

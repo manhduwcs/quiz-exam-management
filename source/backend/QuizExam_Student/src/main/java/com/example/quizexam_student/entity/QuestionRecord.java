@@ -17,28 +17,20 @@ public class QuestionRecord {
     @Column(name = "question_record_id")
     private int id;
 
-    @Column(name = "content", nullable = false, columnDefinition = "text")
-    @Lob
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "option_a", nullable = false, columnDefinition = "text")
-    @Lob
+    @Column(name = "option_a", nullable = false)
     private String optionA;
 
-    @Column(name = "option_b", nullable = false, columnDefinition = "text")
-    @Lob
+    @Column(name = "option_b", nullable = false)
     private String optionB;
 
-    @Column(name = "option_c", nullable = false, columnDefinition = "text")
-    @Lob
+    @Column(name = "option_c", nullable = false)
     private String optionC;
 
-    @Column(name = "option_d", nullable = false, columnDefinition = "text")
-    @Lob
+    @Column(name = "option_d", nullable = false)
     private String optionD;
-
-    @Column(name = "type", nullable = false)
-    private Integer type;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examination_id")
