@@ -1,6 +1,5 @@
 package com.example.quizexam_student.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +24,5 @@ public class Level {
     private int point;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "level")
-    @JsonIgnore
     private Set<Question> questions;
 }

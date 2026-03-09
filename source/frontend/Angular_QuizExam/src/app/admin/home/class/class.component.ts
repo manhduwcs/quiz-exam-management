@@ -101,7 +101,7 @@ export class ClassComponent implements OnInit, OnDestroy {
         $('.delete-icon').on('click', (event: any) => {
           const id = $(event.currentTarget).data('id');
           this.classId = id;
-          this.isPopupConfirm = true;
+          this.deleteClass(this.classId);
         });
       }
     });
@@ -118,13 +118,12 @@ export class ClassComponent implements OnInit, OnDestroy {
     }
     this.isPopupEdit = false;
     this.isPopupCreate = false;
-    this.isPopupConfirm = false;
   }
 
 
   name: String = '';
-  classDay: String = '2, 4, 6';
-  classTime: String = '8h00 - 10h00';
+  classDay: String = '';
+  classTime: String = '';
   admissionDate: String = '';
 
   nameError: String = '';
@@ -228,10 +227,10 @@ export class ClassComponent implements OnInit, OnDestroy {
     )
   }
 
-  isPopupConfirm: boolean = false;
-
   deleteClass(id: number): void {
-    this.isPopupConfirm = false;
+    if (!window.confirm('Are you sure you want to delete this class?')) {
+      return;
+    }
     this.http.delete(`${this.authService.apiUrl}/class/${id}`, this.home.httpOptions).subscribe(
       () => {
         console.log(`Class with ID ${id} deleted successfully`);

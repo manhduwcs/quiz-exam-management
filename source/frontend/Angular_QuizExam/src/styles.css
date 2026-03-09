@@ -261,13 +261,12 @@
     border-radius: 8px;
     background: none;
     background-color: rgba(170, 18, 16, 0.93);
-    padding: 2px 12px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: var(--color-text) !important;
     border-radius: 8px;
-    padding: 2px 12px;
+    padding: 0.1em 0.5em;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
