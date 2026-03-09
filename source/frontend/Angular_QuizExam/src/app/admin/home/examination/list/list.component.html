@@ -15,32 +15,31 @@
             <a class="btn btn-outline-light" [ngClass]="{'active': selectedSem === 4}" (click)="selectSem(4)">Sem
                 4</a>
         </div>
-
+       
     </div>
     <div>
-        <a [routerLink]="'../exam/examform'" class="btn btn-primary button create">Create</a>
+        <a  [routerLink]="'../exam/examform'"  class="btn btn-primary button create">Create</a>
     </div>
     <div class="container">
         <div class="row">
             <!-- Card 1 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5" *ngFor="let exam of examList">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
-                        <!-- <img [src]="exam.subject.img" alt="Quiz Thumbnail"> -->
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
                             alt="Quiz Thumbnail">
                     </div>
                     <div class="card-content">
-                        <span class="card-title">{{exam.name}}</span>
-                        <p><strong>Code:</strong> {{exam.code}}</p>
-                        <p style="font-size: x-small;">
-                            <i class="fa-regular fa-clock"></i> {{exam.startTime}} - {{exam.endTime}}
+                        <span class="card-title">HTML, CSS AND JAVASCRIPT</span>
+                        <p><strong>Code:</strong> HTMLCSSJS-102</p>
+                        <p>
+                            <i class="fa-regular fa-clock"></i> 7h 16/07/2024 - 15h 16/07/2024
                         </p>
                     </div>
                 </div>
             </div>
             <!-- Card 2 -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -54,9 +53,9 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <!-- card 3 -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -70,9 +69,9 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <!-- card 4 -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -86,8 +85,8 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -101,8 +100,8 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -116,8 +115,8 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -131,8 +130,8 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-5">
                 <div class="card">
                     <div class="card-image">
                         <img src="https://i.pinimg.com/564x/33/34/66/333466cd07d18eae8c6546e298f2b9c7.jpg"
@@ -146,7 +145,7 @@
                         </p>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
