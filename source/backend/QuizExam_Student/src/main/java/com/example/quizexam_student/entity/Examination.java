@@ -41,9 +41,6 @@ public class Examination {
     @Column(name = "status", nullable = false)
     private Integer status;
 
-    @Column(name = "type", nullable = false)
-    private Integer type;
-
     @OneToMany(mappedBy = "examination")
     private Set<Mark> marks;
 
@@ -55,4 +52,8 @@ public class Examination {
             joinColumns = @JoinColumn(name = "examination_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 }
