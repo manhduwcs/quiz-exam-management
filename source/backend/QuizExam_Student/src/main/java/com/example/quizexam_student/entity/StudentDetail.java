@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"user", "_class"})
+@EqualsAndHashCode(exclude = "user")
 public class StudentDetail {
     @Id
     @Column(name = "user_id")

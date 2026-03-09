@@ -23,6 +23,7 @@ public class Question {
     private int id;
 
     @Column(name = "content", nullable = false, columnDefinition = "text")
+    @Lob
     private String content;
 
     @Column(name = "status", nullable = false)
