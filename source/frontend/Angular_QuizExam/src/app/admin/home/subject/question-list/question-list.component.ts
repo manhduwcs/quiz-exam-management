@@ -84,7 +84,7 @@ export class QuestionListComponent {
             let value: any = '';
             console.log(row);
             data.forEach((val: any) => {
-              value+=val.name;
+              value += '[' + val.name + '] ';
             });
             return value;
           }
@@ -109,9 +109,12 @@ export class QuestionListComponent {
 
         // Thêm placeholder vào input của DataTables
         $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search');
-
-
-
+        
+        // Click vào info icon sẽ hiện ra popup
+        $('.edit-icon').on('click', (event: any) => {
+          const id = $(event.currentTarget).data('id');
+          this.router.navigate([`/admin/home/subject/${this.subjectId}/questionUpdate/${id}`]);
+        });
       }
     });
   }
