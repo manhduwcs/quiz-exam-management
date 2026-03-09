@@ -17,13 +17,11 @@ public class QuestionMapper {
 
     public static QuestionResponse convertToResponse(Question question) {
         QuestionResponse questionResponse = new QuestionResponse();
+        questionResponse.setId(question.getId());
         questionResponse.setContent(question.getContent());
         questionResponse.setImage(question.getImage());
         questionResponse.setSubject(question.getSubject());
-        questionResponse.setChapters(question.getChapters().stream().toList());
-        System.out.println(question.getChapters());
         questionResponse.setLevel(question.getLevel());
-        questionResponse.setAnswers(question.getAnswers().stream().toList());
         return questionResponse;
     }
 }
