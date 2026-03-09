@@ -13,7 +13,6 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
-@EqualsAndHashCode
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

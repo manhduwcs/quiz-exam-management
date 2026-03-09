@@ -2,7 +2,6 @@ package com.example.quizexam_student.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"question"})
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +25,6 @@ public class Answer {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
-    @JsonIgnore
+    @JsonBackReference
     private Question question;
 }

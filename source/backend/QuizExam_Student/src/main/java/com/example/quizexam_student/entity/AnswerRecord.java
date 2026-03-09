@@ -1,8 +1,5 @@
 package com.example.quizexam_student.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +20,5 @@ public class AnswerRecord {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_record_id")
-    @JsonIgnore
     private QuestionRecord questionRecord;
 }
