@@ -15,5 +15,4 @@ public class ExaminationResponse {
     private String code;
     private Subject subject;
     private List<QuestionRecordResponse> questionRecordResponses;
-    private List<StudentResponse> studentResponses;
 }
