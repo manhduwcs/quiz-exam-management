@@ -27,11 +27,6 @@ const routes: Routes = [
         path: 'mark',
         component: MarkComponent
       },
-      {
-        path: 'exam',
-        loadChildren: () => import('./exam/exam.module')
-          .then(m => m.ExamModule),
-      },
     ]
   },
 
