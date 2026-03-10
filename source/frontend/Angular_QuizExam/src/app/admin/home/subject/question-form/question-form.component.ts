@@ -197,7 +197,7 @@ export class QuestionFormComponent implements OnInit {
     imgQuestion.style.display = 'none'; // Ẩn ảnh đi
   }
 
-  contentError: String[] = [];
+  contentError: String = '';
 
   saveQuestions() {
     const formData = new FormData();
@@ -237,18 +237,11 @@ export class QuestionFormComponent implements OnInit {
         console.log('Questions saved successfully:', response);
         this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
       },
-      err => {
-        console.log(err);
-        this.toastr.error(err.error.message, 'Error', {
+      error => {
+        this.toastr.error('Error saving questions.', 'Error', {
           timeOut: 2000,
         });
-        err.error.forEach((err:any) => {
-          for (var i = 0; i < this.questionForms.length; i++) {
-            if (err.key == 'question[' + i + '].content') {
-              this.contentError = err.message;
-            }
-          }
-        });
+        console.log(error);
       }
     );
   }
