@@ -4,6 +4,7 @@ import com.example.quizexam_student.bean.request.ChapterRequest;
 import com.example.quizexam_student.entity.Chapter;
 import com.example.quizexam_student.entity.Subject;
 import com.example.quizexam_student.exception.AlreadyExistException;
+import com.example.quizexam_student.exception.EmptyException;
 import com.example.quizexam_student.exception.NotFoundException;
 import com.example.quizexam_student.repository.ChapterRepository;
 import com.example.quizexam_student.repository.SubjectRepository;
@@ -31,7 +32,8 @@ public class ChapterServiceImpl implements ChapterService {
     }
     @Override
     public List<Chapter> getAllChaptersBySubjectId(int subjectId) {
-        return chapterRepository.findAllByStatusAndSubjectId(1, subjectId);
+        List<Chapter> chapterList = chapterRepository.findAllByStatusAndSubjectId(1, subjectId);
+        return chapterList;
     }
 
     @Override

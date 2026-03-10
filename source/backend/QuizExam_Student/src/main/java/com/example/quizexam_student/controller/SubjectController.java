@@ -2,12 +2,14 @@ package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.SubjectRequest;
 import com.example.quizexam_student.bean.response.*;
+import com.example.quizexam_student.entity.Sem;
 import com.example.quizexam_student.entity.Subject;
-import com.example.quizexam_student.service.*;
+import com.example.quizexam_student.service.ExportService;
+import com.example.quizexam_student.service.SemService;
+import com.example.quizexam_student.service.SubjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping("/api/subject")
@@ -35,9 +30,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 public class SubjectController {
     private final SubjectService subjectService;
     private final ExportService exportService;
-
-    @Value("${uploads.dir}")
-    private String uploadDir;
+    private final SemService semService;
 
     @GetMapping("")
     public List<Subject> getAll(){
@@ -45,17 +38,8 @@ public class SubjectController {
     }
 
     //@PreAuthorize("hasRole('ADMIN') or hasRole('DIRECTOR')")
-    @PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE}, path = "/save")
-    public ResponseEntity<Subject> saveSubject(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("subject") @Valid SubjectRequest subjectRequest) throws IOException {
-        if (file != null) {
-            String fileName = "";
-            if (!file.isEmpty()) {
-                LocalDate date = LocalDate.now();
-                fileName = UUID.randomUUID() + "_" + date + "_" + file.getOriginalFilename();
-                Files.copy(file.getInputStream(), Paths.get(uploadDir).resolve(fileName));
-            }
-            subjectRequest.setImage(fileName);
-        }
+    @PostMapping("/save")
+    public ResponseEntity<Subject> saveSubject(@Valid @RequestBody SubjectRequest subjectRequest) {
         return  ResponseEntity.ok(subjectService.save(subjectRequest));
     }
 
@@ -69,17 +53,8 @@ public class SubjectController {
         return subjectService.getAllSubjectBySem(id);
     }
 
-    @PutMapping (consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE}, path = "/{id}")
-    public Subject updateSubject(@PathVariable int id, @RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("subject") @Valid SubjectRequest subjectRequest) throws IOException {
-        if (file != null) {
-            String fileName = "";
-            if (!file.isEmpty()) {
-                LocalDate date = LocalDate.now();
-                fileName = UUID.randomUUID() + "_" + date + "_" + file.getOriginalFilename();
-                Files.copy(file.getInputStream(), Paths.get(uploadDir).resolve(fileName));
-            }
-            subjectRequest.setImage(fileName);
-        }
+    @PutMapping ("/{id}")
+    public Subject updateSubject(@PathVariable int id, @Valid @RequestBody SubjectRequest subjectRequest) {
         return subjectService.update(id,subjectRequest);
     }
 

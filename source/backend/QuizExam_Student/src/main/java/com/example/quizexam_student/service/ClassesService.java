@@ -7,11 +7,11 @@ import java.util.List;
 
 @Service
 public interface ClassesService {
-    List<Classes> getAllClasses();
+    public List<Classes> getAllClasses();
 
-    Classes addClass(Classes _class);
+    public Classes addClass(Classes _class);
 
-    Classes updateClass(int id, Classes _class);
+    public Classes updateClass(int id, Classes _class);
 
-    void deleteClass(int id);
+    public void deleteClass(int id);
 }
