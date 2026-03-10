@@ -1,34 +1,32 @@
-
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../service/authguard.service';
-
-import { ExaminationComponent } from './examination.component';
+import { ExamComponent } from './exam.component';
 import { ListComponent } from './list/list.component';
-import { FormComponent } from './form/form.component';
 import { DetailComponent } from './detail/detail.component';
+import { ResultComponent } from './result/result.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ExaminationComponent,
+    component: ExamComponent,
     children: [
       {
         path: '',
         component: ListComponent,
       },
       {
-        path: 'examform',
-        component: FormComponent
+        path: 'detail',
+        component: DetailComponent
       },
       {
-        path: ':examId',
-        component: DetailComponent,
+        path: 'result',
+        component: ResultComponent,
       },
-     
+
     ],
-    canActivate: [AuthGuard],
-    data: {roles: ['ADMIN', 'DIRECTOR', 'SRO']},
+    // canActivate: [AuthGuard],
+    // data: {roles: ['ADMIN', 'STUDENT']},
   },
 ];
 
@@ -36,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ExaminationRoutingModule { }
+export class ExamRoutingModule { }
