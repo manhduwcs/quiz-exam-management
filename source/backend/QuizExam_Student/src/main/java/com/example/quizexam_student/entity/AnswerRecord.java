@@ -12,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"questionRecord"})
 public class AnswerRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

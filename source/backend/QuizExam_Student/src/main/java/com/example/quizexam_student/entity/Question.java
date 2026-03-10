@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"subject", "chapters", "examinations"})
+@EqualsAndHashCode(exclude = {"examinations", "subject"})
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
