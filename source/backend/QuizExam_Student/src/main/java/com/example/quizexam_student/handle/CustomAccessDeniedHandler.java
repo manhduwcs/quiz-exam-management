@@ -12,6 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -25,5 +26,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getWriter(), responseEntity);
         response.getWriter().write(mapper.writeValueAsString(errorResponse));
+        //response.sendError(HttpServletResponse.SC_FORBIDDEN, responseEntity.getBody().toString());
     }
 }

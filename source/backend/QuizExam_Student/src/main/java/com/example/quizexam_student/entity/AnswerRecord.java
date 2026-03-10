@@ -1,6 +1,8 @@
 package com.example.quizexam_student.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"questionRecord"})
 public class AnswerRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

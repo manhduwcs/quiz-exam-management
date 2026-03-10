@@ -10,8 +10,6 @@ import java.util.List;
 public interface ClassesRepository extends JpaRepository<Classes, Integer> {
     List<Classes> findByStatusOrderByIdDesc(int status);
 
-    List<Classes> findByStatusNotOrderByIdDesc(int status);
-
     boolean existsByName(String name);
 
     boolean existsByNameAndIdNot(String name, int id);

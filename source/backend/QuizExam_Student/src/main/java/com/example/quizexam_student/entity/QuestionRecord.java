@@ -3,7 +3,6 @@ package com.example.quizexam_student.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"examination"})
 public class QuestionRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +43,7 @@ public class QuestionRecord {
     private Examination examination;
 
     @OneToMany(mappedBy = "questionRecord")
-    private Set<AnswerRecord> answerRecords = new HashSet<>();
+    private Set<AnswerRecord> answerRecords;
 
     @OneToMany(mappedBy = "questionRecord")
     private Set<StudentAnswer> studentAnswers;
