@@ -22,7 +22,7 @@ export class DetailComponent {
   isSidebarCollapsed = false;
 
   exams: Exam[] = [];  // Danh sách bài thi
-  selectedExam: any | undefined;  // Bài thi được chọn
+  selectedExam: Exam | undefined;  // Bài thi được chọn
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
@@ -30,10 +30,17 @@ export class DetailComponent {
   ngOnInit(): void {
     this.isSidebarCollapsed = this.home.isSidebarCollapsed;
     this.authService.entityExporter = 'examination';
-    this.http.get<any>(`${this.authService.apiUrl}/exam/1`, this.home.httpOptions).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/examination`, this.home.httpOptions).subscribe((data: any) => {
       this.authService.listExporter = data;
       this.apiData = data;
-      this.selectedExam = data;
+      if (this.selectedExam) {
+        this.selectedExam.name = this.apiData.name;
+        this.selectedExam.subjectId = this.apiData.subjectId;
+        this.selectedExam.startTime = this.apiData.startTime;
+        this.selectedExam.endTime = this.apiData.endTime;
+        this.selectedExam.duration = this.apiData.duration;
+        this.selectedExam.code = this.apiData.code;
+      }
     });
   }
 
@@ -42,10 +49,8 @@ export class DetailComponent {
   }
 
   // Lấy chi tiết bài thi theo ID
-  getExamDetail(event: any){
-    const id = $(event.currentTarget).data('id');
-    this.examId = id;
-    this.router.navigate([`/admin/home/exam/detail/${id}`])
+  getExamDetails(examId: number): Observable<Exam> {
+    return this.http.get<Exam>(`${this.authService.apiUrl}/${examId}`);
   }
 
   loadExams(): void {

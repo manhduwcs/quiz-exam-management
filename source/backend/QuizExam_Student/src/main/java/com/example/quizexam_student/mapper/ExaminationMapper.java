@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ExaminationMapper {
-    public static Examination convertFromRequest(ExaminationRequest examinationRequest){
+    public static Examination convertToRequest(ExaminationRequest examinationRequest){
         Examination examination = new Examination();
         examination.setName(examinationRequest.getName());
         examination.setStartTime(examinationRequest.getStartTime());
@@ -25,7 +25,6 @@ public class ExaminationMapper {
         examinationResponse.setEndTime(examination.getEndTime());
         examinationResponse.setDuration(examination.getDuration());
         examinationResponse.setCode(examination.getCode());
-        examinationResponse.setSubject(examination.getSubject());
         return examinationResponse;
     }
 }

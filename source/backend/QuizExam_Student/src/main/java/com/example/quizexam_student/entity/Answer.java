@@ -20,6 +20,7 @@ public class Answer {
     private int id;
 
     @Column(name = "content", nullable = false, columnDefinition = "text")
+    @Lob
     private String content;
 
     @Column(name = "is_correct", columnDefinition = "TINYINT", nullable = false)

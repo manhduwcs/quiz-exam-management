@@ -16,6 +16,7 @@ public class StudentAnswer {
     private Integer id;
 
     @Column(name = "select_option", nullable = false, columnDefinition = "text")
+    @Lob
     private String selectOption;
 
     @ManyToOne(cascade = CascadeType.ALL)

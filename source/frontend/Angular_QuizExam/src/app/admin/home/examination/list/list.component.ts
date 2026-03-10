@@ -25,7 +25,6 @@ export class ListComponent implements OnInit {
 
   examList: any;
 
-  examId: any;
   subjectId: any;
   semId: number = 1;
   name: String = '';
@@ -78,12 +77,6 @@ export class ListComponent implements OnInit {
     // Thực hiện các logic nếu cần thiết khi chọn Sem
     //this.reloadTable(this.selectedSem);
     console.log('Selected Sem:', sem);
-  }
-
-  getExamDetail(event: any){
-    const id = $(event.currentTarget).data('id');
-    this.examId = id;
-    this.router.navigate([`/admin/home/exam/detail/${id}`])
   }
 
   ngOnDestroy(): void {
