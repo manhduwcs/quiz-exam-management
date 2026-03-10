@@ -151,8 +151,8 @@ export class QuestionUpdateComponent implements OnInit {
       // Đánh dấu là đã chọn ảnh và thêm lớp ẩn border
       this.question.image = file; // Lưu file vào đối tượng
       imgContainer?.classList.add('hidden-border'); // Thêm lớp để ẩn border
-      this.changeImg = true;
       this.hasImage = true;
+      this.changeImg = true;
     } else {
       imgContainer?.classList.remove('hidden-border'); // Xóa lớp nếu không có ảnh
     }
@@ -162,23 +162,12 @@ export class QuestionUpdateComponent implements OnInit {
     this.question.image = new Blob([]);
     this.changeImg = true;
     this.hasImage = false;
-
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) {
-        fileInput.value = ''; // Đặt lại giá trị input file
-    }
   }
 
   contentError: String = '';
-  answersError: String[] = [];
-
-  errorEmpty(): void {
-    this.contentError = '';
-    this.answersError = [];
-  }
+  answers: String[] = [];
 
   saveQuestions() {
-    this.errorEmpty();
     const formData = new FormData();
   
     // Tạo danh sách câu hỏi
@@ -210,18 +199,17 @@ export class QuestionUpdateComponent implements OnInit {
         console.log('Questions saved successfully:', response);
         this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
       },
-      err => {
-        this.toastr.error(err.error.message, 'Error', {
+      error => {
+        this.toastr.error('Error saving questions.', 'Error', {
           timeOut: 2000,
         });
-        err.error.forEach((err:any) => {
+        console.log(error);
+        error.error.forEach((err:any) => {
           if (err.key == 'content') {
             this.contentError = err.message;
           }
-          for (var i = 0; i < this.question.answers.length; i++) {
-            if (err.key == 'answers[' + i + '].content') {
-              this.answersError[i] = err.message;
-            }
+          if (err.key == 'answers[0].content') {
+            this.contentError = err.message;
           }
         });
       }
