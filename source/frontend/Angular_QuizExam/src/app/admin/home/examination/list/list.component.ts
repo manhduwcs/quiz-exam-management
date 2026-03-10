@@ -54,6 +54,24 @@ export class ListComponent implements OnInit {
     });
   }
 
+  // initializeDataTable(): void {
+  //   // Sửa input search thêm button vào
+  //   if (!$('.dataTables_filter button').length) {
+  //     $('.dataTables_filter').append(`<button type="button"><i class="fa-solid fa-magnifying-glass search-icon"></i></button>`);
+  //   }
+  //   // Thêm placeholder vào input của DataTables
+  //   $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search');
+
+  //   $('.create').on('click', () => {
+  //     this.isPopupCreate = true;
+  //   });
+
+  //   $('.question-icon').on('click', (event: any) => {
+  //     const id = $(event.currentTarget).data('id');
+  //     this.subjectId = id;
+  //     this.router.navigate([`/admin/home/subject/${id}/questionList`])
+  //   });
+  // }
   selectSem(sem: number): void {
     this.selectedSem = sem;
     this.semId = sem;
@@ -62,8 +80,10 @@ export class ListComponent implements OnInit {
     console.log('Selected Sem:', sem);
   }
 
-  getExamDetail(id: any){
-    this.router.navigate([`/admin/home/exam/${id}`])
+  getExamDetail(event: any){
+    const id = $(event.currentTarget).data('id');
+    this.examId = id;
+    this.router.navigate([`/admin/home/exam/detail/${id}`])
   }
 
   ngOnDestroy(): void {
