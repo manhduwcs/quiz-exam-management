@@ -14,26 +14,18 @@
 
 .answer-options {
     margin-left: 20px;
-    margin-top: 8px;
 }
-
 .answer-options label {
     margin-left: 5px;
 }
-
 .answer-options input[type="radio"],
 .answer-options input[type="checkbox"] {
     width: 14px;
     height: 14px;
-    accent-color: black;
-    /* Customize color for radio/checkbox */
+    accent-color: black; /* Customize color for radio/checkbox */
 }
 
-.question-section {
-    margin-bottom: 20px;
-}
-
-.question-section img {
+.question img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -51,8 +43,7 @@
     top: 0;
 }
 
-.sidebar-container h5,
-p {
+.sidebar-container h5, p {
     text-align: center;
     color: var(--color-text);
 }
@@ -100,23 +91,25 @@ p {
     width: 40px;
     height: 40px;
     border: 1px solid #ddd;
-    background-color: var(--color-card);
-    color: var(--color-text);
+    background-color: #e9ecef;
     text-align: center;
-    line-height: 38px;
+    vertical-align: middle;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
     border-radius: 5px;
-    margin: 0 8px 10px 8px;
-}
-
-.btn-success {
-    background-color: #1E90FF;
-    border-color: #0d6efd;
+  }
+  
+  .question-td.completed {
+    background-color: #28a745;
     color: white;
-}
-
+  }
+  
+  .question-td:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
 
 .submit-btn {
     background-color: #d8202a;
