@@ -85,15 +85,14 @@ public class ExaminationServiceImpl implements ExaminationService {
         do {
             int randomNumber = random.nextInt(1000);
             String randomNumberStr = String.format("%03d",randomNumber);
-            String currentDate = new SimpleDateFormat("MM/yyyy").format(new Date());
+            String currentDate = new SimpleDateFormat("yyMM").format(new Date());
             exam.setCode(questions.get(0).getSubject().getName()+ "_" + randomNumberStr + "_" +currentDate);
         }while (examinationRepository.existsByCode(exam.getCode()));
         exam.setSubject(subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null));
-        examinationRepository.save(exam);
         for (Question question : finalQuestions) {
             setAnswerForQuestion(exam, question);
         }
-        return exam;
+        return examinationRepository.save(exam);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public List<ExaminationResponse> getAllExaminations() {
-        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).map(this::setQuestionRecord).collect(Collectors.toList());
+        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -123,6 +122,7 @@ public class ExaminationServiceImpl implements ExaminationService {
     @Override
     public List<StudentDetail> updateStudentForExam(int examinationId, int subjectId, List<Integer> studentIds) {
         List<Mark> markList = markRepository.findAllByExaminationIdAndScore(examinationId, null);
+        markList.stream().peek(mark -> {mark.setStudentDetail(null); mark.setExamination(null);}).toList();
         markRepository.deleteAll(markList);
         return studentRepository.findAllByUserIdIn(
                 studentIds.stream().peek(studentId->{
@@ -159,7 +159,6 @@ public class ExaminationServiceImpl implements ExaminationService {
         examinationResponse.setQuestionRecordResponses(
                 new ArrayList<>(questionRecordRepository.findAllByExamination(examinationRepository.findById(examinationResponse.getId()).orElse(null)))
                         .stream().map(QuestionRecordMapper::convertToResponse)
-                        .peek(questionRecordResponse -> questionRecordResponse.setAnswerRecords(answerRecordRepository.findAllByQuestionRecord(questionRecordRepository.findById(questionRecordResponse.getId()).orElse(null))))
                         .collect(Collectors.toList()));
         return examinationResponse;
     }
@@ -231,23 +230,22 @@ public class ExaminationServiceImpl implements ExaminationService {
     private void setAnswerForQuestion(Examination examination, Question question){
         int countCorrectAnswer = 0;
         QuestionRecord questionRecord = new QuestionRecord();
-        questionRecord.setContent(question.getContent());
-        List<Answer> answers = question.getAnswers().stream().toList();
-        questionRecord.setOptionA(answers.get(0).getContent());
-        questionRecord.setOptionB(answers.get(1).getContent());
-        questionRecord.setOptionC(answers.get(2).getContent());
-        questionRecord.setOptionD(answers.get(3).getContent());
         questionRecord.setExamination(examination);
+        questionRecord.setContent(question.getContent());
+        questionRecord.setImage(question.getImage());
+        questionRecord.setPoint(question.getLevel().getPoint());
+
+        List<Answer> answers = question.getAnswers().stream().toList();
         for (Answer answer : answers) {
             AnswerRecord answerRecord = new AnswerRecord();
+            answerRecord.setContent(answer.getContent());
+            answerRecord.setIsCorrect(answer.getIsCorrect());
+            answerRecord.setQuestionRecord(questionRecord);
             if (answer.getIsCorrect() == 1){
                 countCorrectAnswer++;
-                questionRecord.setType(countCorrectAnswer == 1 ? 1 : 2);
-                answerRecord.setCorrectOption(answer.getContent());
-                answerRecord.setQuestionRecord(questionRecord);
-                answerRecordRepository.save(answerRecord);
-
             }
+            questionRecord.setType(countCorrectAnswer == 1 ? 1 : 2);
+            answerRecordRepository.save(answerRecord);
         }
         questionRecordRepository.save(questionRecord);
     }
