@@ -38,7 +38,4 @@ public class StudentDetail {
 
     @OneToMany(mappedBy = "studentDetail")
     private Set<Mark> marks;
-
-    @OneToMany(mappedBy = "studentDetail")
-    private Set<REL_Student_PracticeExam> rel_Student_PracticeExam;
 }

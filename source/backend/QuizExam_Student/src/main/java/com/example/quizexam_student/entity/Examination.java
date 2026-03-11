@@ -34,9 +34,6 @@ public class Examination {
     @Column(name = "code", length = 30, nullable = false)
     private String code;
 
-    @Column(name = "max_score", nullable = false)
-    private Integer maxScore;
-
     @Column(name = "status", nullable = false)
     private Integer status;
 
