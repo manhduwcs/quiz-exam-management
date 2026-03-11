@@ -23,8 +23,6 @@ export class ExaminationComponent {
 
   httpOptions: any;
 
-  step: boolean = false;
-
   loadToken() {
     if (this.authService.isLoggedIn()) {
       const token = localStorage.getItem('jwtToken');

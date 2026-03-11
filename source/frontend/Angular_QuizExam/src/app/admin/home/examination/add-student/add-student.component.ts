@@ -4,7 +4,6 @@ import { AuthService } from '../../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
-import { ExaminationComponent } from '../examination.component';
 declare var $: any;
 
 @Component({
@@ -13,7 +12,7 @@ declare var $: any;
   styleUrl: './add-student.component.css'
 })
 export class AddStudentComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, public home: HomeComponent, public examComponent: ExaminationComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private authService: AuthService, public home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   dataTable: any;
 
@@ -25,24 +24,10 @@ export class AddStudentComponent implements OnInit, OnDestroy {
   subjectId: number = 0;
   listStudentSelected: any = [];
 
-  dataExam: any;
+  ngOnInit(): void {
+    this.examId = Number(this.activatedRoute.snapshot.params['examId']) ?? 0;
+    this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
 
-  checkExam(): void {
-    //Cần làm thêm get mark (kiểm tra nếu có học sinh rồi thì không thể vào trang add nữa, mà chỉ có thể vào trang update)
-    this.http.get<any>(`${this.authService.apiUrl}/exam/${this.examId}`, this.home.httpOptions).subscribe(
-      response => {
-        this.dataExam = response;
-        if (new Date() > new Date(this.dataExam.endTime)) {
-          this.router.navigate(['/admin/home/exam/']);
-        }
-      },
-      error => {
-        this.router.navigate(['/admin/home/exam/']);
-      }
-    );
-  }
-
-  getList(): void {
     this.http.get<any>(`${this.authService.apiUrl}/class`, this.home.httpOptions).subscribe(response => {
       this.listClass = response;
     });
@@ -54,14 +39,7 @@ export class AddStudentComponent implements OnInit, OnDestroy {
     this.http.get<any>(`${this.authService.apiUrl}/studentManagement/all-student`, this.home.httpOptions).subscribe(response => {
       this.listStudent = response;
     });
-  }
 
-  ngOnInit(): void {
-    this.examId = Number(this.activatedRoute.snapshot.params['examId']) ?? 0;
-    this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
-
-    this.checkExam();
-    this.getList();
     this.initializeDataTable();
   }
 
@@ -83,30 +61,13 @@ export class AddStudentComponent implements OnInit, OnDestroy {
         { title: 'Roll Number', data: 'rollNumber' },
         { title: 'Roll Portal', data: 'rollPortal' },
         { title: 'Full Name', data: 'userResponse.fullName' },
-        { title: 'Phone Number', data: 'userResponse.phoneNumber' },
-        {
-          title: 'Action',
-          render: function (data: any, type: any, row: any) {
-            return `<span class="mdi mdi-delete-forever icon-action delete-icon" data-id="${row.userResponse.id}"></span>`;
-          },
-        },
+        { title: 'Phone Number', data: 'userResponse.phoneNumber' }
       ],
-
-      drawCallback: () => {
-        $('.delete-icon').on('click', (event: any) => {
-          const id = $(event.currentTarget).data('id');
-          const index = this.studentIds.indexOf(id);
-          if (index > -1) {
-            this.studentIds.splice(index, 1); // Xóa ID khỏi studentIds
-          }
-          this.updateSelectAllStatus();
-          this.updateDataTable();
-        });
-      }
     });
   }
 
   isStudentPopup = false;
+  classes: any;
   classId: number = 0;
 
   studentIds: number[] = [];
@@ -144,7 +105,6 @@ export class AddStudentComponent implements OnInit, OnDestroy {
               this.studentIds.splice(index, 1); // Nếu điều kiện trên là đúng, câu lệnh này sẽ xóa phần tử.
           }
       }
-      this.updateSelectAllStatus();
       this.updateDataTable();
     }
     console.log(this.studentIds);
@@ -178,17 +138,10 @@ export class AddStudentComponent implements OnInit, OnDestroy {
         });
     }
 
-    this.updateSelectAllStatus(); // Cập nhật trạng thái select all
+    this.selectAllStatus[this.classId] = isChecked; // Lưu trạng thái cho lớp hiện tại
 
     console.log(this.studentIds);
     this.updateDataTable(); // Cập nhật DataTable
-  }
-
-  updateSelectAllStatus(): void {
-    const allSelected = this.listStudentByClass.every((student: any) => 
-        this.studentIds.includes(student.userResponse.id)
-    );
-    this.selectAllStatus[this.classId] = allSelected; // Cập nhật trạng thái cho lớp hiện tại
   }
 
   updateDataTable(): void {
@@ -216,7 +169,6 @@ export class AddStudentComponent implements OnInit, OnDestroy {
           this.toastr.success('Add Student in Exam Successful!', 'Success', {
             timeOut: 2000,
           });
-          this.examComponent.step = true;
           this.router.navigate(['/admin/home/exam/detail/' + this.examId]);
         },
         error => {

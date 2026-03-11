@@ -72,8 +72,7 @@ export class FormComponent implements OnInit {
           timeOut: 2000,
         });
         this.createdExam = response;
-        this.examComponent.step = true;
-        this.router.navigate(['/admin/home/exam/addStudent/1/1']);
+        this.router.navigate(['/admin/home/exam/addStudent/' + exam.subjectId + '/' + this.createdExam.id]);
       },
       error => {
         if (error.status === 401) {
