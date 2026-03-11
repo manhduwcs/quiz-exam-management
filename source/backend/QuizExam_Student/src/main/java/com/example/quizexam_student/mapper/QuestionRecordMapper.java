@@ -14,7 +14,7 @@ public class QuestionRecordMapper {
         questionRecordResponse.setOptionB(questionRecord.getOptionB());
         questionRecordResponse.setOptionC(questionRecord.getOptionC());
         questionRecordResponse.setOptionD(questionRecord.getOptionD());
-        questionRecordResponse.setType(questionRecord.getType());
+        questionRecordResponse.setType(1);
         return questionRecordResponse;
     }
 }
