@@ -20,7 +20,7 @@ public class Question {
     @Column(name = "question_id")
     private int id;
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     private String content;
 
     @Column(name = "status", nullable = false)

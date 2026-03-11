@@ -20,10 +20,12 @@ export class DetailComponent implements OnInit {
   completedQuestions: boolean[] = []; // Mảng câu hỏi với thông tin về trạng thái hoàn thành
   ngOnInit(): void {
     this.examId = Number(this.activatedRoute.snapshot.paramMap.get('examId'));
-    this.http.get<any>(`${this.authService.apiUrl}/exam/1`).subscribe((data: any) => {
+    this.http.get<any>(`${this.authService.apiUrl}/exam/`+this.examId).subscribe((data: any) => {
       this.apiData = data;
       this.selectedExam = data;
-      this.startCountdown(this.selectedExam.duration * 60);
+      this.startCountdown(this.selectedExam.duration * 60); 
+      console.log(this.selectedExam);
+      console.log(this.selectedExam.questionRecordResponses);
     });
     if (this.selectedExam) {
       this.completedQuestions = new Array(this.selectedExam.questionRecordResponses.length).fill(false);

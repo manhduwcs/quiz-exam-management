@@ -21,7 +21,7 @@ public class Subject {
     @Column(name = "subject_id")
     private int id;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "status", nullable = false)

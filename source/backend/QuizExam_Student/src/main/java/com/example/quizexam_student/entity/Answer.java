@@ -17,10 +17,10 @@ public class Answer {
     @Column(name = "answer_id")
     private int id;
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     private String content;
 
-    @Column(name = "is_correct", nullable = false, columnDefinition = "TINYINT")
+    @Column(name = "is_correct", columnDefinition = "TINYINT", nullable = false)
     private int isCorrect;
 
     @ManyToOne(cascade = CascadeType.ALL)
