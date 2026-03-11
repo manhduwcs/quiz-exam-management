@@ -27,82 +27,66 @@ public class ExaminationServiceImpl implements ExaminationService {
     private final MarkRepository markRepository;
     private final Random random = new Random();
     private final UserRepository userRepository;
-    private final LevelRepository levelRepository;
 
     @Override
     public Examination saveExamination(ExaminationRequest examinationRequest) {
-        Subject subject = subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null);
-        Map<Integer, Integer> levelsRequest = examinationRequest.getLevels();
-        int totalQuestions = 0;
-        for (Map.Entry<Integer, Integer> entry : levelsRequest.entrySet()) {
-            totalQuestions += entry.getValue();
+        List<Question> questions = questionRepository.findAllBySubjectAndStatus(subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null),1);
+        if (examinationRequest.getChapterIds()!=null && !examinationRequest.getChapterIds().isEmpty()){
+                questions = questions.stream().filter(question ->
+                        question.getChapters().stream().anyMatch(chapter ->
+                                examinationRequest.getChapterIds().contains(chapter.getId())
+                        )).toList();
+        } else{
+            questions = questions.stream().filter(question ->
+                    question.getChapters().isEmpty()).toList();
         }
-        Map<Integer, List<Question>> questionsByLevels = new HashMap<>();
-        List<Question> allQuestions = questionRepository.findAllBySubjectAndStatus(subject,1);
+        long easyCountException = questions.stream()
+                        .filter(q -> q.getLevel().getId() == 1).count();
+        long hardCountException = questions.stream()
+                        .filter(q -> q.getLevel().getId() == 2).count();
+        if (easyCountException < 12){
+            throw new InvalidQuantityException("EasyQuestion","Not enough easy questions (at least 12 are required)");
+        }
+        if (hardCountException < 4){
+            throw new InvalidQuantityException("HardQuestion","Not enough hard questions (at least 4 are required)");
+        }
 
-        levelsRequest.forEach((key, value) -> {
-            List<Question> questionsByLevel = allQuestions.stream().filter(question -> question.getLevel().getId() == key).toList();
-            if ((long) questionsByLevel.size() < value){
-                throw new InvalidQuantityException("Question","Not enough questions");
-            }
-            questionsByLevels.put(key,questionsByLevel);
-        });
+        if (questions.size()<16){
+            throw new InvalidQuantityException("Question","Not enough questions");
+        }
 
-        List<Examination> examinations = examinationRepository.findAllBySubjectOrderByIdDesc(subject).stream().limit(3).toList();
-        Map<Integer, List<Question>> questionsByExams = new HashMap<>();
-        examinations.forEach(examination -> {
-            questionsByExams.put(examination.getId(), examination.getQuestions().stream().toList());
-        });
-        List<Question> finalQuestions = new ArrayList<>();
+        List<Examination> examinations = examinationRepository.findAllByOrderByIdDesc().stream().limit(3).toList();
+        questions = new ArrayList<>(questions);
+        List<Question> finalQuestions;
         int generatedCount = 0;
         do {
-            generatedCount++;
-            List<Question> selectedQuestion = generateQuestion(allQuestions, levelsRequest);
-            if (!questionsByExams.isEmpty()){
-                System.out.println(questionsByExams.keySet());
-                for (Map.Entry<Integer, List<Question>> entry : questionsByExams.entrySet()) {
-                    allQuestions.removeAll(selectedQuestion);
-                    selectedQuestion = checkDuplicatedQuestionInExamination(allQuestions, entry.getValue(), selectedQuestion);
-                    System.out.println(67);
-                    System.out.println(selectedQuestion.size());
-                    System.out.println(69);
+            boolean flag = true;
+            finalQuestions = generateQuestion(questions);
+            for (Examination examination: examinations){
+                if (!checkDuplicatedQuestionInExamination(examination, finalQuestions)){
+                    flag = false;
+                    break;
                 }
-                finalQuestions.addAll(selectedQuestion);
-            } else {
-                allQuestions.removeAll(selectedQuestion);
-                finalQuestions.addAll(selectedQuestion);
             }
-            System.out.println(73);
-            System.out.println(finalQuestions.size());
-            levelsRequest.entrySet().forEach(entry -> {
-                int count = (int) finalQuestions.stream()
-                        .filter(question -> question.getLevel().getId() == entry.getKey())
-                        .count();
-                entry.setValue(entry.getValue() - count);
-            });
-            System.out.println(levelsRequest);
-            if (finalQuestions.size()==totalQuestions){
-                System.out.println(finalQuestions.size());
-                System.out.println(83);
+            if (flag){
                 break;
             }
+            generatedCount++;
             if (generatedCount == 3){
-                throw new InvalidQuantityException("Question","Not enough questions");
+                throw new InvalidQuantityException("Question","Not enough questions, please check the questions bank (Recommend: Questions bank has at least 70 questions for all chapters)");
             }
         } while (true);
-
         for (Question question : finalQuestions) {
             generateAnswerForQuestion(question);
         }
         Examination exam = ExaminationMapper.convertFromRequest(examinationRequest);
         exam.setStatus(1);
-        exam.setMaxScore(totalQuestions);
         exam.setQuestions(new HashSet<>(finalQuestions));
         do {
             int randomNumber = random.nextInt(1000);
             String randomNumberStr = String.format("%03d",randomNumber);
             String currentDate = new SimpleDateFormat("yyMM").format(new Date());
-            exam.setCode(allQuestions.get(0).getSubject().getName()+ "_" + randomNumberStr + "_" +currentDate);
+            exam.setCode(questions.get(0).getSubject().getName()+ "_" + randomNumberStr + "_" +currentDate);
         }while (examinationRepository.existsByCode(exam.getCode()));
         exam.setSubject(subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null));
         for (Question question : finalQuestions) {
@@ -121,7 +105,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public List<ExaminationResponse> getAllExaminations() {
-        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
+        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).map(this::setQuestionRecord).collect(Collectors.toList());
     }
 
     @Override
@@ -175,43 +159,33 @@ public class ExaminationServiceImpl implements ExaminationService {
         examinationResponse.setQuestionRecordResponses(
                 new ArrayList<>(questionRecordRepository.findAllByExamination(examinationRepository.findById(examinationResponse.getId()).orElse(null)))
                         .stream().map(QuestionRecordMapper::convertToResponse)
+                        .peek(questionRecordResponse -> questionRecordResponse.setAnswerRecords(answerRecordRepository.findAllByQuestionRecord(questionRecordRepository.findById(questionRecordResponse.getId()).orElse(null))))
                         .collect(Collectors.toList()));
         return examinationResponse;
     }
 
-    private List<Question> generateQuestion(List<Question> questions, Map<Integer, Integer> levelsRequest) {
+    private List<Question> generateQuestion(List<Question> questions) {
         Collections.shuffle(questions);
-        int totalQuestions = 0;
-        for (Map.Entry<Integer, Integer> entry : levelsRequest.entrySet()) {
-            totalQuestions += entry.getValue();
-        }
-        Map<Integer, Integer> questionsCountByLevels = new HashMap<>();
-        for (Map.Entry<Integer, Integer> levelEntry : levelsRequest.entrySet()) {
-            questionsCountByLevels.put(levelEntry.getKey(), 0);
-        }
+        AtomicInteger hardCount = new AtomicInteger(0);
+        AtomicInteger easyCount = new AtomicInteger(0);
         return questions.stream()
                 .filter(question -> {
-                    for (Map.Entry<Integer, Integer> entry : questionsCountByLevels.entrySet()) {
-                        int levelValue = 0;
-                        for (Map.Entry<Integer, Integer> levelEntry : levelsRequest.entrySet()) {
-                            if(entry.getKey() == levelEntry.getKey()){
-                                levelValue = levelEntry.getValue();
-                                break;
-                            }
-                        }
-                        if (question.getLevel().getId() == entry.getKey()){
-                            return entry.getValue() < levelValue;
-                        }
+                    if (question.getLevel().getId() == 2) {
+                        return hardCount.get() < 4;
+                    }
+                    if (question.getLevel().getId() == 1) {
+                        return easyCount.get() < 12;
                     }
                     return true;
                 })
                 .peek(question -> {
-                    for (Map.Entry<Integer, Integer> entry : questionsCountByLevels.entrySet()) {
-                        if (question.getLevel().getId() == entry.getKey()){
-                            entry.setValue(entry.getValue() + 1);
-                        }
+                    if (question.getLevel().getId() == 2) {
+                        hardCount.getAndIncrement();
                     }
-                }).limit(totalQuestions).collect(Collectors.toList());
+                    if (question.getLevel().getId() == 1) {
+                        easyCount.getAndIncrement();
+                    }
+                }).limit(16).collect(Collectors.toList());
     }
 
     public void generateAnswerForQuestion(Question question){
@@ -237,48 +211,43 @@ public class ExaminationServiceImpl implements ExaminationService {
         question.setAnswers(new HashSet<>(selectedAnswers));
     }
 
-    private List<Question> checkDuplicatedQuestionInExamination(List<Question> allQuestions, List<Question> questionsExisted, List<Question> questions){
+    private boolean checkDuplicatedQuestionInExamination(Examination examination, List<Question> questions){
         AtomicInteger duplicatedQuestions = new AtomicInteger(0);
-        List<Integer> questionIds = questionsExisted.stream().map(Question::getId).toList();
-        List<Question> questionsDuplicated = new ArrayList<>();
-        List<Question> selectedQuestions = new ArrayList<>(questions.stream()
+        List<Integer> questionIds = examination.getQuestions().stream().map(Question::getId).toList();
+        List<Question> questionList = questions.stream()
                 .filter(question -> {
                     if (questionIds.contains(question.getId())) {
-                        return duplicatedQuestions.get() < (int) questionsExisted.size()*0.3;
+                        return duplicatedQuestions.get() < 5;
                     }
                     return true;
                 }).peek(question -> {
                     if (questionIds.contains(question.getId())) {
-                        questionsDuplicated.add(question);
                         duplicatedQuestions.getAndIncrement();
                     }
-                }).toList());
-        if(duplicatedQuestions.get() >= (int) (questionsExisted.size()*0.3)){
-            allQuestions.removeAll(questions);
-            questions.removeAll(questionsDuplicated);
-        }
-        return questions;
+                }).toList();
+        return questionList.size() >= 16;
     }
 
     private void setAnswerForQuestion(Examination examination, Question question){
         int countCorrectAnswer = 0;
         QuestionRecord questionRecord = new QuestionRecord();
-        questionRecord.setExamination(examination);
         questionRecord.setContent(question.getContent());
-        questionRecord.setImage(question.getImage());
-        questionRecord.setPoint(question.getLevel().getPoint());
-
         List<Answer> answers = question.getAnswers().stream().toList();
+        questionRecord.setOptionA(answers.get(0).getContent());
+        questionRecord.setOptionB(answers.get(1).getContent());
+        questionRecord.setOptionC(answers.get(2).getContent());
+        questionRecord.setOptionD(answers.get(3).getContent());
+        questionRecord.setExamination(examination);
         for (Answer answer : answers) {
             AnswerRecord answerRecord = new AnswerRecord();
-            answerRecord.setContent(answer.getContent());
-            answerRecord.setIsCorrect(answer.getIsCorrect());
-            answerRecord.setQuestionRecord(questionRecord);
             if (answer.getIsCorrect() == 1){
                 countCorrectAnswer++;
+                questionRecord.setType(countCorrectAnswer == 1 ? 1 : 2);
+                answerRecord.setCorrectOption(answer.getContent());
+                answerRecord.setQuestionRecord(questionRecord);
+                answerRecordRepository.save(answerRecord);
+
             }
-            questionRecord.setType(countCorrectAnswer == 1 ? 1 : 2);
-            answerRecordRepository.save(answerRecord);
         }
         questionRecordRepository.save(questionRecord);
     }
