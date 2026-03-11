@@ -20,6 +20,8 @@ export class ListComponent implements OnInit {
   apiData: any;
   subjectDetail: any = null;
   isPopupDetail = false;
+  isPopupCreate = false;
+  isPopupUpdate = false;
 
   examList: any;
 
@@ -30,7 +32,12 @@ export class ListComponent implements OnInit {
   image: String = '';
   sem: any;
   selectedSem: number = 1; // Default chọn Sem 1
-  
+
+  isSidebarCollapsed = false;
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
   ngOnInit(): void {
     this.authService.entityExporter = 'subject';
     // this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${this.selectedSem}`, this.home.httpOptions).subscribe((data: any) => {
@@ -55,9 +62,8 @@ export class ListComponent implements OnInit {
     console.log('Selected Sem:', sem);
   }
 
-  getExamDetail(id: any) {
-    this.examComponent.step = false;
-    this.router.navigate([`/admin/home/exam/detail/${id}`])
+  getExamDetail(id: any){
+    this.router.navigate([`/admin/home/exam/${id}`])
   }
 
   ngOnDestroy(): void {

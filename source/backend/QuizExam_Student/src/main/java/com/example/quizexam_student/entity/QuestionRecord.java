@@ -22,14 +22,23 @@ public class QuestionRecord {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "option_a", nullable = false, columnDefinition = "TEXT")
+    private String optionA;
 
-    @Column(name = "point", nullable = false)
-    private Integer point;
+    @Column(name = "option_b", nullable = false, columnDefinition = "TEXT")
+    private String optionB;
+
+    @Column(name = "option_c", nullable = false, columnDefinition = "TEXT")
+    private String optionC;
+
+    @Column(name = "option_d", nullable = false, columnDefinition = "TEXT")
+    private String optionD;
 
     @Column(name = "type", nullable = false)
     private Integer type;
+
+    @Column(name = "image")
+    private String image;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examination_id")

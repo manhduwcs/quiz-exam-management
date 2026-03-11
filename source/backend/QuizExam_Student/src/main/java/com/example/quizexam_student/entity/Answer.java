@@ -20,7 +20,7 @@ public class Answer {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "is_correct", nullable = false, columnDefinition = "TINYINT")
+    @Column(name = "is_correct", columnDefinition = "TINYINT", nullable = false)
     private int isCorrect;
 
     @ManyToOne(cascade = CascadeType.ALL)
