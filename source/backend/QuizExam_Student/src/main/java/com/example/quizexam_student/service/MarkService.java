@@ -13,6 +13,4 @@ public interface MarkService {
     MarkResponse getOneScoredByExam(StudentDetail studentDetail, int examId);
 
     Mark updateBeginTime(int id);
-
-    Mark updateWarning(int id, Mark mark);
 }

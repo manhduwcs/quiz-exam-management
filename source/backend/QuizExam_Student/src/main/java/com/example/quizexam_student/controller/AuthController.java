@@ -3,7 +3,6 @@ package com.example.quizexam_student.controller;
 import com.example.quizexam_student.bean.request.*;
 import com.example.quizexam_student.bean.response.*;
 import com.example.quizexam_student.entity.*;
-import com.example.quizexam_student.mapper.StudentMapper;
 import com.example.quizexam_student.mapper.UserMapper;
 import com.example.quizexam_student.service.*;
 import com.example.quizexam_student.util.JwtUtil;
@@ -50,14 +49,13 @@ public class AuthController {
         String email = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         UserResponse userResponse = UserMapper.convertToResponse(userService.findUserByEmail(email));
         if (userResponse.getRole().getName().equals("STUDENT")){
-            return ResponseEntity.ok(StudentMapper.convertToResponse(userResponse, studentService.getStudentDetailByUser(userService.findUserByEmail(email))));
+            return ResponseEntity.ok(studentService.getStudentDetailByUser(userService.findUserByEmail(email)));
         }
         return ResponseEntity.ok(userResponse);
     }
 
-    @PutMapping("/changePassword")
-    public ResponseEntity<UserResponse> updateProfile(@RequestBody @Valid PasswordRequest passwordRequest) {
-        UserResponse userResponse = UserMapper.convertToResponse(userService.changePassword(passwordRequest));
-        return ResponseEntity.ok(userResponse);
+    @PutMapping("/changePassword/{id}")
+    public ResponseEntity<User> updateProfile(@PathVariable int id, @RequestBody @Valid PasswordRequest passwordRequest) {
+        return ResponseEntity.ok(userService.changePassword(id, passwordRequest));
     }
 }

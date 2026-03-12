@@ -2,12 +2,11 @@ package com.example.quizexam_student.controller;
 
 import com.example.quizexam_student.bean.request.ExaminationRequest;
 import com.example.quizexam_student.bean.response.*;
-import com.example.quizexam_student.entity.*;
-import com.example.quizexam_student.repository.MarkRepository;
-import com.example.quizexam_student.repository.UserRepository;
+import com.example.quizexam_student.entity.Classes;
+import com.example.quizexam_student.entity.Examination;
+import com.example.quizexam_student.entity.StudentDetail;
 import com.example.quizexam_student.service.ExaminationService;
 import com.example.quizexam_student.service.ExportService;
-import com.example.quizexam_student.service.SubjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +30,6 @@ import java.util.List;
 public class ExaminationController {
     private final ExaminationService examinationService;
     private final ExportService exportService;
-    private final MarkRepository markRepository;
-    private final UserRepository userRepository;
-    private final SubjectService subjectService;
     @Value("${uploads.question}")
     private String uploadDir;
 
@@ -46,14 +41,6 @@ public class ExaminationController {
     @GetMapping("")
     public List<ExaminationResponse> getAllExamination() {
         return examinationService.getAllExaminations();
-    }
-
-    @GetMapping("/exams")
-    public List<ExaminationResponse> getAllExaminationsForStudent() {
-        String email = ((org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        List<Mark> marks = markRepository.findAllByStudentDetailAndScoreIsNull(userRepository.findByEmail(email).orElse(null).getStudentDetail());
-        return examinationService.getAllExaminationsForStudent(marks);
     }
 
     @PostMapping("")
@@ -81,11 +68,12 @@ public class ExaminationController {
         return examinationService.updateExamination(examinationId, examinationRequest);
     }
 
-    @PutMapping("/student/{examinationId}")
+    @PutMapping("/student/{examinationId}/{subjectId}")
     public ResponseEntity updateStudentForExam(
             @PathVariable int examinationId,
+            @PathVariable int subjectId,
             @RequestBody List<Integer> studentIds){
-        examinationService.updateStudentForExam(examinationId, studentIds);
+        examinationService.updateStudentForExam(examinationId, subjectId, studentIds);
         return ResponseEntity.ok(new RegisterResponse("", "Modify student successfully"));
     }
 

@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
           });
           this.createdExam = response;
           this.examComponent.step = true;
-          this.router.navigate(['/admin/home/exam/addStudent/' + this.createdExam.id]);
+          this.router.navigate(['/admin/home/exam/addStudent/1/1']);
         },
         error => {
           if (error.status === 401) {
@@ -111,7 +111,7 @@ export class FormComponent implements OnInit {
     this.http.get<any>(`${this.authService.apiUrl}/subject`, this.home.httpOptions).subscribe(response => {
       this.subjects = response;
     });
-    this.initializeLevel();
+    this.initializeLevel(this.subjectId);
 
     this.listLevel.forEach((element:any) => {
       this.levelId[element.id as string] = 0;
@@ -119,7 +119,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  initializeLevel(): void {
+  initializeLevel(subject: number): void {
     this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
       this.listLevel = data; 
       console.log(this.listLevel);
@@ -138,7 +138,7 @@ export class FormComponent implements OnInit {
     this.examsForm.chapterIds = [];
     this.allChecked = false;
     console.log('Selected Sem:', this.selectedSubject);
-    this.initializeLevel();
+    this.initializeLevel(this.selectedSubject);
   }
 
   allChecked = false;
@@ -171,7 +171,7 @@ export class FormComponent implements OnInit {
     var totalQuestions = 0;
     this.listLevel.forEach((element:any) => {
       if (this.levelId[element.id as string] < 0) {
-        this.errorMessageLevel[element.id] = "Question number cannot be negative.";
+        this.errorMessageLevel[element.id] = "Thieu cau hoi";
         flag = true;
       }
       else {
@@ -181,7 +181,7 @@ export class FormComponent implements OnInit {
     });
     
     if (totalQuestions < 16 || totalQuestions > 25) {
-      this.toastr.error('Total of number questions must be between 16 and 25 (Level).', 'Error', {
+      this.toastr.error('Tổng số câu hỏi trong level phải ít nhất 16 câu và nhiều nhất 25 câu.', 'Error', {
         timeOut: 2000,
       });
       flag = true;
@@ -189,10 +189,8 @@ export class FormComponent implements OnInit {
     return flag;
   }
 
-  closePopupLevel(event?: MouseEvent, flag?: Boolean): void {
-    if (this.validateLevel() && flag) {
-      return;
-    }
+  closePopupLevel(event?: MouseEvent): void {
+    var flag = false;
 
     if (event) {
       event.stopPropagation();

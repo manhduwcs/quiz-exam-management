@@ -35,7 +35,10 @@ export class QuestionFormComponent implements OnInit {
   subjectName: any;
 
   listChapter: any;
-  listLevel = [ { id: 1, name: 'Easy', point: 1 } ];
+  listLevel = [
+    { id: 1, name: 'Easy', point: 1 },
+    { id: 2, name: 'Hard', point: 2 }
+  ];
   
   questionForms: QuestionForm[] = [];
 
@@ -55,13 +58,6 @@ export class QuestionFormComponent implements OnInit {
 
     this.http.get<any>(`${this.authService.apiUrl}/chapter/${this.subjectId}`, this.home.httpOptions).subscribe((data: any) => {
       this.listChapter = data;
-    });
-
-    this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
-      this.listLevel = data;
-    },
-    error => {
-      console.error('Error fetching levels:', error); 
     });
 
     this.initializeQuestion();
@@ -307,7 +303,7 @@ export class QuestionFormComponent implements OnInit {
             timeOut: 2000,
           });
           console.log('Questions saved successfully:', response);
-          location.reload();
+          this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
         },
         err => {
           console.log(err);
