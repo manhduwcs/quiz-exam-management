@@ -51,15 +51,7 @@ export class ListComponent implements OnInit {
     this.popupExamIndex = 0; // Reset khi đóng popup
   }
 
-  startExam(examId:any): void {
-    const startTime = new Date(this.selectedExam.startTime); // Chuyển đổi startTime sang Date
-    const currentTime = new Date(); // Lấy thời gian hiện tại
-
-    if (startTime > currentTime) {
-      this.toastr.warning('The exam has not started yet. Please come back later.');
-    }
-    else {
-      this.router.navigateByUrl('/student/home/exam/detail/' + examId);
-    }
+  startExam(examid:any): void {
+    this.router.navigateByUrl('/student/home/exam/detail/' + examid);
   };
 }

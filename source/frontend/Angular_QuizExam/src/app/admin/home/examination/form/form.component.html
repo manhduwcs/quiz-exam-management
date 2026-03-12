@@ -76,6 +76,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="group-input">
+                            <label class="group-input-label" for="level">Level</label> <br>
+                            <button type="button" class="form-select button-level" style="text-align: left;"
+                                (click)="openPopupLevel()">Choose Level</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="" class="label-title"></label>
@@ -84,6 +91,27 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isPopupLevel" class="modal-backdrop" (click)="closePopupLevel($event)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <span>Enter the number of questions by level</span>
+            <span class="close-icon" (click)="closePopupLevel()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-level">
+                <div class="form-group" *ngFor="let level of listLevel">
+                    <div class="input-level">
+                        <label for="level{{level.id}}" class="text-popup">{{ level.name }}:</label>
+                        <input type="number" class="form-control" [(ngModel)]="levelId[level.id]" name="{{level.id}}" placeholder="Enter number">
+                    </div>
+                    <span class="text-danger error">{{errorMessageLevel[level.id]}}</span>
+                </div>
+                <button type="submit" class="btn btn-primary button" (click)="closePopupLevel()">OK</button>
+            </div>
         </div>
     </div>
 </div>
