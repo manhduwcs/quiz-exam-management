@@ -5,6 +5,7 @@ import com.example.quizexam_student.bean.response.ExaminationResponse;
 import com.example.quizexam_student.bean.response.ExaminationResponseNotIncludeQuestion;
 import com.example.quizexam_student.bean.response.StudentResponse;
 import com.example.quizexam_student.entity.Examination;
+import com.example.quizexam_student.entity.Mark;
 import com.example.quizexam_student.entity.StudentDetail;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,11 @@ public interface ExaminationService {
     ExaminationResponse getDetailExamination(int examinationId);
     List<ExaminationResponse> getAllExaminations();
     Examination updateExamination(int examinationId, ExaminationRequest examinationRequest);
-    List<StudentDetail> updateStudentForExam(int examinationId, int subjectId, List<Integer> studentIds);
+    List<StudentDetail> updateStudentForExam(int examinationId, List<Integer> studentIds);
     ExaminationResponseNotIncludeQuestion getExaminationNotIncludeQuestion(int examinationId);
     List<StudentResponse> getStudentsForExamination(int examinationId);
     List<StudentDetail> getListStudentsToAddForExamination(int examinationId);
+    List<ExaminationResponse> getAllExaminationsForStudent(List<Mark> mark);
+    //Examination getExamination(int examinationId);
+    List<ExaminationResponse> getAllExamBySemId(int semId);
 }

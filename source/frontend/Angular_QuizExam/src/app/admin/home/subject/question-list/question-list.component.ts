@@ -34,19 +34,19 @@ export class QuestionListComponent {
   name: String = '';
 
   ngOnInit(): void {
-
+    this.authService.entityExporter = 'question';
     this._subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
     if (this._subjectId > 0 && !Number.isNaN(this._subjectId)) {
       this.http.get<any>(`${this.authService.apiUrl}/question/${this._subjectId}`, this.home.httpOptions).subscribe((data: any) => {
         this.apiData = data;
         this.subjectId = this._subjectId;
+        this.authService.apiUrl = data;
         this.initializeDataTable();
       });
     }
 
     this.http.get<any>(`${this.authService.apiUrl}/subject/${this._subjectId}`, this.home.httpOptions).subscribe((data: any) => {
       this.semId = data.sem.id;
-      console.log(this.semId);
       this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${this.semId}`, this.home.httpOptions).subscribe(response => {
         this.subjects = response;
         for (let sub of this.subjects) {
@@ -82,7 +82,6 @@ export class QuestionListComponent {
           data: 'chapters',
           render: function (data: any, type: any, row: any) {
             let value: any = '';
-            console.log(row);
             data.forEach((val: any) => {
               value += '[' + val.name + '] ';
             });
@@ -127,12 +126,13 @@ export class QuestionListComponent {
   }
 
   exportPDF() {
+    this.authService.listExporter = this.apiData;
     this.authService.exportDataPDF().subscribe(
       (response) => {
         const url = window.URL.createObjectURL(new Blob([response], { type: 'blob' }));
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'export_pdf.pdf'; // Thay đổi tên file nếu cần
+        a.download = 'question_pdf.pdf'; // Thay đổi tên file nếu cần
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
