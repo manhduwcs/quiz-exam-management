@@ -13,5 +13,4 @@ public interface MarkRepository extends JpaRepository<Mark, Integer> {
     List<Mark> findAllByExaminationId(int examinationId);
     List<Mark> findAllByStudentDetailAndScoreIsNotNull(StudentDetail studentDetail);
     Mark findByStudentDetailAndExaminationId(StudentDetail studentDetail, int examinationId);
-    List<Mark> findAllByStudentDetailAndScoreIsNull(StudentDetail studentDetail);
 }
