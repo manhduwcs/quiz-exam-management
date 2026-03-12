@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
           });
           this.createdExam = response;
           this.examComponent.step = true;
-          this.router.navigate(['/admin/home/exam/addStudent/' + this.createdExam.id]);
+          this.router.navigate(['/admin/home/exam/addStudent/1/1']);
         },
         error => {
           if (error.status === 401) {
