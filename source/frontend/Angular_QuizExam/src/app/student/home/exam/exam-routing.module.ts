@@ -22,7 +22,7 @@ const routes: Routes = [
         component: DetailComponent
       },
       {
-        path: 'result/:examId',
+        path: 'result',
         component: ResultComponent,
       },
 

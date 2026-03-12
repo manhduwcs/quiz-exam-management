@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../service/auth.service';
 import { StudentComponent } from '../../../student.component';
-import { HomeComponent } from '../../home.component';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +10,7 @@ import { HomeComponent } from '../../home.component';
 export class HeaderComponent {
   darkMode: boolean = false;
 
-  constructor(public student: StudentComponent, public authService: AuthService, public home: HomeComponent) {}
+  constructor(public student: StudentComponent, public authService: AuthService) {}
 
   // Logout process
   onLogout() {

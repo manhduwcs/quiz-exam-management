@@ -1,32 +1,29 @@
 package com.example.quizexam_student.service.impl;
 
-import com.example.quizexam_student.bean.response.MarkResponse;
 import com.example.quizexam_student.entity.Mark;
 import com.example.quizexam_student.entity.StudentDetail;
-import com.example.quizexam_student.exception.NotFoundException;
-import com.example.quizexam_student.mapper.MarkMapper;
 import com.example.quizexam_student.repository.MarkRepository;
 import com.example.quizexam_student.service.MarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class MarkServiceImpl implements MarkService {
     private final MarkRepository markRepository;
-
     @Override
-    public List<MarkResponse> getListScoredPerSubject(StudentDetail studentDetail) {
-        List<MarkResponse> marks = markRepository.findAllByStudentDetailAndScoreIsNotNull(studentDetail)
-                .stream().map(MarkMapper::convertToResponse).collect(Collectors.toList());
-        Map<String, MarkResponse> latestMarks = new HashMap<>();
-        for (MarkResponse mark : marks) {
-            String key = mark.getSubjectName();
-            if (!latestMarks.containsKey(key) || mark.getBeginTime().isAfter(latestMarks.get(key).getBeginTime())) {
+    public List<Mark> getListScoredBySubject(StudentDetail studentDetail) {
+        List<Mark> marks = markRepository.findAllByStudentDetailAndScoreIsNotNull(studentDetail);
+        Map<Integer, Mark> latestMarks = new HashMap<>();
+        for (Mark mark : marks) {
+            Integer key = mark.getSubject().getId();
+            if (!latestMarks.containsKey(key)
+                    || mark.getBeginTime().isAfter(latestMarks.get(key).getBeginTime()) ) {
                 latestMarks.put(key, mark);
             }
         }
@@ -34,17 +31,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public MarkResponse getOneScoredByExam(StudentDetail studentDetail, int examId) {
-        return MarkMapper.convertToResponse(markRepository.findByStudentDetailAndExaminationId(studentDetail, examId));
-    }
-
-    @Override
-    public Mark updateBeginTime(int id) {
-        Mark mark = markRepository.findById(id).orElse(null);
-        if (Objects.isNull(mark) || mark.getBeginTime() != null) {
-            throw new NotFoundException("mark", "Mark not found.");
-        }
-        mark.setBeginTime(LocalDateTime.now());
-        return markRepository.save(mark);
+    public Mark getOneScoredByExam(StudentDetail studentDetail, int examId) {
+        return markRepository.findByStudentDetailAndExaminationId(studentDetail, examId);
     }
 }
