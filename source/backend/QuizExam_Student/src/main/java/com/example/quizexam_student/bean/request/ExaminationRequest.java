@@ -17,7 +17,7 @@ public class ExaminationRequest {
     private LocalDateTime startTime;
     @NotNull(message = "End time is required")
     private LocalDateTime endTime;
-    @NotNull(message = "Duration is required")
+    @NotBlank(message = "Duration is required")
     private Integer duration;
     @NotNull(message = "Subject is required")
     private int subjectId;

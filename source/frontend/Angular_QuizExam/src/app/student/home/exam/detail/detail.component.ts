@@ -14,11 +14,9 @@ import { forkJoin } from 'rxjs';
 })
 export class DetailComponent implements OnInit, OnDestroy {
   examId: number = 0;
-
-  examStartTime: any;
+  endTime: any;
   remainingTime: string = '';
   countdown: any;
-
   examDetail: any;
   questionStatus: boolean[] = [];
   studentAnswers: { questionRecordId: number; selectedAnswerIds: number[] }[] = [];
@@ -26,11 +24,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   showPopupConfirm: boolean = false;
   showPopupWarning: boolean = false;
   warningMessage: string = '';
-  noteMessage: string = '';
-  violationMessage: string = '';
-  inactivityTime: number = 0;
-  countdownTrackInactivity: any;
-  autoSubmitTimer: any;
 
   constructor(
     private authService: AuthService,
@@ -57,26 +50,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.examComponent.mark = markData;
       this.examDetail = examData;
 
-      const startTime = new Date(this.examDetail.startTime);
-      const endTime = new Date(this.examDetail.endTime);
-      const currentTime = new Date(); // Lấy thời gian hiện tại
-
-      if (startTime > currentTime) {
-        this.router.navigateByUrl('/student/home/exam');
-        return;
-      }
-
       if (this.examComponent.mark.score != null) {
         this.router.navigateByUrl('/student/home/exam/result/' + this.examId);
-        return;
       }
-      
       if (this.examComponent.mark.beginTime == null) {
-        if (currentTime > endTime) {
-          this.router.navigateByUrl('/student/home/exam');
-          return;
-        }
-        this.http.put(`${this.authService.apiUrl}/mark/begin-time/${this.examComponent.mark.id}`, this.home.httpOptions).subscribe(
+        this.http.put(`${this.authService.apiUrl}/mark/${this.examComponent.mark.id}`, this.home.httpOptions).subscribe(
           response => {
             console.log('Update Begin Time successful: ', response);
           },
@@ -85,12 +63,6 @@ export class DetailComponent implements OnInit, OnDestroy {
           }
         );
       }
-
-      if (this.examComponent.mark.warning != null) {
-        this.setupWarnings();
-        this.autoSubmit();
-      }
-      this.examStartTime = new Date();
       this.questionStatus = Array(this.examDetail.questionRecordResponses.length).fill(false);
       this.calculateNewDuration();
       this.loadFromSession();
@@ -98,7 +70,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   calculateNewDuration(): void {
-    const beginTime = this.examComponent.mark.beginTime ? new Date(this.examComponent.mark.beginTime) : this.examStartTime; // Chuyển đổi string thành Date
+    const beginTime = this.examComponent.mark.beginTime ? new Date(this.examComponent.mark.beginTime) : new Date(); // Chuyển đổi string thành Date
     const durationMinutes = this.examDetail.duration;
 
     // Tính toán endTime.
@@ -120,6 +92,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   
     this.countdown = setInterval(() => {
       if (remainingSeconds <= 0) {
+        clearInterval(this.countdown);
         this.submitExam(); // Optionally submit answers when time is up
         return;
       }
@@ -145,84 +118,66 @@ export class DetailComponent implements OnInit, OnDestroy {
     return num < 10 ? '0' + num : num.toString();
   }
 
-  setupWarnings(): void {
-    this.showPopupWarning = true;
-    this.warningMessage = `Please do not click outside the exam.`;
-    this.violationMessage = `(Current violations: ${this.examComponent.mark.warning})`;
-    this.noteMessage = `Note: The system will automatically submit the exam after 5 violations.`;
-  }
+  setupAntiCopyAndDevTools() {
+    document.addEventListener('keydown', (event) => {
+      // Ngăn mở Developer Tools
+      if (event.key === 'F12' || (event.ctrlKey && event.key === 'u')) {
+        event.preventDefault();
+        this.toastr.warning("This action is disabled.");
+      }
+    });
 
-  updateWarning(): void {
-    const mark = { warning: this.examComponent.mark.warning }
-    this.http.put(`${this.authService.apiUrl}/mark/warning/${this.examComponent.mark.id}`, mark, this.home.httpOptions).subscribe({
-      next: () => { this.autoSubmit(); },
-      error: () => {}
+    // Kiểm tra khi sao chép nội dung
+    document.addEventListener('copy', (event) => {
+      event.preventDefault();
+      this.toastr.warning("Copying content is not allowed.");
+    });
+
+    // Ngăn chặn menu chuột phải hiển thị
+    document.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      this.toastr.warning("Right-click is disabled.");
     });
   }
 
-  preventDeveloperTools = (event: KeyboardEvent) => {
-    if (event.key === 'F12' || (event.ctrlKey && event.key === 'u')) {
-      event.preventDefault();
-      this.toastr.warning("This action is disabled.");
+  trackInactivity() {
+    let inactivityTime = 0;
+    const warningTime = 2; // Thời gian không hoạt động trước khi cảnh báo (phút)
+
+    // Theo dõi thời gian không hoạt động
+    function resetTimer() {
+      inactivityTime = 0; // Đặt lại thời gian không hoạt động
     }
-  };
 
-  preventCopy = (event: ClipboardEvent) => {
-    event.preventDefault();
-    this.toastr.warning("Copying content is not allowed.");
-  };
+    // Gán các sự kiện để theo dõi hoạt động của người dùng
+    document.addEventListener('mousemove', resetTimer); // Được kích hoạt khi di chuyển chuột.
+    document.addEventListener('keydown', resetTimer); // Được kích hoạt khi nhấn phím.
+    document.addEventListener('click', resetTimer); // Được kích hoạt khi nhấp chuột vào bất kỳ vị trí nào trên trang.
+    document.addEventListener('touchstart', resetTimer); // Được kích hoạt khi chạm vào màn hình (trong trường hợp các thiết bị cảm ứng).
 
-  preventRightClick = (event: MouseEvent) => {
-    event.preventDefault();
-    this.toastr.warning("Right-click is disabled.");
-  };
-
-  handleVisibilityChange = () => {
-    if (document.visibilityState === 'hidden') {
-      this.examComponent.mark.warning++;
-      this.setupWarnings();
-      this.updateWarning();
-    }
-  };
-
-  handleBeforeUnload(event: BeforeUnloadEvent): void {
-    event.preventDefault();
-  }
-
-  handleFocus = () => {
-    clearInterval(this.countdown);
-    this.calculateNewDuration();
-  };
-
-  // Hàm đặt lại timer không hoạt động
-  resetInactivityTimer = () => {
-    this.inactivityTime = 0;
-  }
-
-  trackInactivity() {// Gán các sự kiện để theo dõi hoạt động của người dùng
-    document.addEventListener('mousemove', this.resetInactivityTimer); // Được kích hoạt khi di chuyển chuột.
-    document.addEventListener('keydown', this.resetInactivityTimer); // Được kích hoạt khi nhấn phím.
-    document.addEventListener('click', this.resetInactivityTimer); // Được kích hoạt khi nhấp chuột vào bất kỳ vị trí nào trên trang.
-    document.addEventListener('touchstart', this.resetInactivityTimer); // Được kích hoạt khi chạm vào màn hình (trong trường hợp các thiết bị cảm ứng).
-
-    this.countdownTrackInactivity = setInterval(() => {
-      this.inactivityTime++;
-      if (this.inactivityTime >= 120) { // Không hoạt động trong 2 phút (120 giây)
-        this.showPopupWarning = true;
-        this.noteMessage = '';
-        this.violationMessage = '';
-        this.warningMessage = `You have been inactive for a long time. Please return to the exam!`;
+    setInterval(() => {
+      inactivityTime++;
+      if (inactivityTime >= warningTime * 60) { // Không hoạt động trong 2 phút (120 giây)
+        this.toastr.warning("You have been inactive for too long. Please return to the exam!");
       }
-    }, 1000); // Kiểm tra mỗi giây
+    }, 2000); // Kiểm tra mỗi 2 giây
   }
 
   setupAntiCheatMonitoring() {
-    document.addEventListener('keydown', this.preventDeveloperTools); // Ngăn chặn mở Developer Tools
-    document.addEventListener('copy', this.preventCopy); // Ngăn chặn sao chép nội dung
-    document.addEventListener('contextmenu', this.preventRightClick); // Ngăn chặn menu chuột phải
-    document.addEventListener('visibilitychange', this.handleVisibilityChange); // Xử lý sự kiện visibility change (Check chuyển đổi tab - khi tab đó bị ẩn đi)
-    window.addEventListener('beforeunload', this.handleBeforeUnload); // Xử lý sự kiện load lại trang
-    window.addEventListener('focus', this.handleFocus); // Xử lý sự kiện focus
+    // Kiểm tra sự kiện khi tab chuyển đổi
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        this.toastr.warning("You have switched to another window.");
+      }
+    });
+
+    // Kiểm tra khi click chuột ra ngoài bài thi
+    window.addEventListener('blur', () => {
+      this.showPopupWarning = true;
+      this.warningMessage = "Please do not click outside the test.";
+    });
+
+    this.setupAntiCopyAndDevTools();
     this.trackInactivity();
   }
 
@@ -252,6 +207,29 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  isSelectedAnswer(questionId: number, answerId: number): boolean {
+    const questionIndex = this.examDetail.questionRecordResponses.findIndex((q: any) => q.id === questionId);
+    
+    if (questionIndex !== -1) {
+      const studentAnswer = this.studentAnswers[questionIndex];
+      if (studentAnswer) {
+        return studentAnswer.selectedAnswerIds.includes(answerId);
+      }
+    }
+    return false;
+  }
+
+  markQuestionAsCompleted(index: number): void {
+    const question = this.examDetail.questionRecordResponses[index];
+    const selectedAnswerIds = question.type === 1 
+      ? [this.getSelectedAnswerId(index)].filter((id): id is number => id !== null) 
+      : this.getSelectedAnswerIds(index);
+
+    this.questionStatus[index] = true;
+    this.studentAnswers[index] = { questionRecordId: question.id, selectedAnswerIds };
+    this.saveToSession();
+  }
+
   getSelectedAnswerId(index: number): number | null {
     const selectedAnswer = this.examDetail.questionRecordResponses[index].answerRecords.find((answer: any) => 
       (document.getElementById(answer.id) as HTMLInputElement)?.checked
@@ -265,59 +243,18 @@ export class DetailComponent implements OnInit, OnDestroy {
     ).map((answer: any) => answer.id);
   }
 
-  markQuestionAsCompleted(index: number): void {
-    const question = this.examDetail.questionRecordResponses[index];
-    const selectedAnswerIds = question.type === 1 
-      ? [this.getSelectedAnswerId(index)].filter((id): id is number => id !== null) 
-      : this.getSelectedAnswerIds(index);
-    
-    // Kiểm tra xem questionRecordId đã tồn tại chưa
-    const existingAnswer = this.studentAnswers.find(answer => answer.questionRecordId === question.id);
-
-    if (existingAnswer) {
-      if (question.type === 1) {
-        // Xử lý cho câu hỏi dạng radio
-        existingAnswer.selectedAnswerIds = selectedAnswerIds; // Cập nhật với ID đã chọn
-      }
-      else {
-        // Xử lý câu hỏi dạng checkbox
-        existingAnswer.selectedAnswerIds = existingAnswer.selectedAnswerIds.filter(id => selectedAnswerIds.includes(id));
-        for (const id of selectedAnswerIds) {
-          if (!existingAnswer.selectedAnswerIds.includes(id)) {
-              existingAnswer.selectedAnswerIds.push(id);
-          }
-        }
-      }
-      if (selectedAnswerIds.length === 0) {
-        // Nếu không có lựa chọn nào, xóa hẳn entry trong studentAnswers
-        this.studentAnswers = this.studentAnswers.filter(answer => answer.questionRecordId !== question.id);
-      }
-    }
-    else {
-      // Nếu chưa tồn tại, thêm mới
-      this.studentAnswers.push({ questionRecordId: question.id, selectedAnswerIds });
-    }
-
-    this.updateQuestionStatus();
-    this.saveToSession();
+  saveToSession(): void {
+    localStorage.setItem('examSessionData', JSON.stringify({ questionStatus: this.questionStatus, studentAnswers: this.studentAnswers, remainingTime: this.remainingTime }));
   }
 
-  updateQuestionStatus() {
-    // Cập nhật questionStatus dựa trên questionRecordId
-    this.questionStatus = this.examDetail.questionRecordResponses.map((q: any) => 
-      this.studentAnswers.some(answer => answer.questionRecordId === q.id)
-    );
-  }
-
-  isSelectedAnswer(questionId: number, answerId: number): boolean {
-    const questionIndex = this.examDetail.questionRecordResponses.findIndex((q: any) => q.id === questionId);
-    if (questionIndex !== -1) {
-      const studentAnswer = this.studentAnswers.find(answer => answer.questionRecordId === questionId);
-      if (studentAnswer) {
-        return studentAnswer.selectedAnswerIds.includes(answerId);
-      }
+  loadFromSession(): void {
+    const sessionData = localStorage.getItem('examSessionData');
+    if (sessionData) {
+      const { questionStatus, studentAnswers, remainingTime } = JSON.parse(sessionData);
+      this.questionStatus = questionStatus;
+      this.studentAnswers = studentAnswers;
+      this.remainingTime = remainingTime;
     }
-    return false;
   }
 
   getOptionLabel(index: number): string {
@@ -328,67 +265,25 @@ export class DetailComponent implements OnInit, OnDestroy {
     return this.questionStatus.filter(Boolean).length;
   }
 
-  saveToSession(): void {
-    localStorage.setItem('studentAnswers', JSON.stringify({ studentAnswers: this.studentAnswers }));
-  }
-
-  loadFromSession(): void {
-    const sessionData = localStorage.getItem('studentAnswers');
-    if (sessionData) {
-      const { studentAnswers } = JSON.parse(sessionData);
-      this.studentAnswers = studentAnswers;
-      this.updateQuestionStatus();
-    }
-  }
-
   openPopupConfirm(): void {
     this.showPopupConfirm = true;
   }
 
   closePopup(): void {
-    this.noteMessage = '';
-    this.violationMessage = '';
-    this.showPopupWarning = false;
     this.showPopupConfirm = false;
-  }
-
-  autoSubmit(): void {
-    if (this.examComponent.mark.warning >= 5) {
-      this.violationMessage = `(Current violations: ${this.examComponent.mark.warning} - The exam will be automatically submitted in 5 seconds)`;
-      this.autoSubmitTimer = setTimeout(() => {
-        this.submitExam();
-      }, 5000);
-    }
+    this.showPopupWarning = false;
   }
 
   submitExam(): void {
     const body = { markId: this.examComponent.mark.id, studentQuestionAnswers: this.studentAnswers };
     this.http.post(`${this.authService.apiUrl}/student-answers`, body, this.home.httpOptions).subscribe(
-      () => {
-        localStorage.removeItem('studentAnswers');
-        this.router.navigateByUrl('/student/home/exam/result/' + this.examId);
-      },
+      () => this.toastr.success('Submission successful'),
       () => this.toastr.error('Submission failed')
     );
   }
 
   ngOnDestroy(): void {
-    document.removeEventListener('keydown', this.preventDeveloperTools);
-    document.removeEventListener('copy', this.preventCopy);
-    document.removeEventListener('contextmenu', this.preventRightClick);
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
-    window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    window.removeEventListener('focus', this.handleFocus);
-
-    document.removeEventListener('mousemove', this.resetInactivityTimer);
-    document.removeEventListener('keydown', this.resetInactivityTimer);
-    document.removeEventListener('click', this.resetInactivityTimer);
-    document.removeEventListener('touchstart', this.resetInactivityTimer);
-
     window.removeEventListener('scroll', this.handleScroll);
-    
     clearInterval(this.countdown);
-    clearInterval(this.autoSubmitTimer);
-    clearInterval(this.countdownTrackInactivity);
   }
 }

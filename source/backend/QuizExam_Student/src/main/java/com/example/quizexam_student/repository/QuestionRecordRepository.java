@@ -10,6 +10,4 @@ import java.util.List;
 @Repository
 public interface QuestionRecordRepository extends JpaRepository<QuestionRecord, Integer> {
     List<QuestionRecord> findAllByExamination(Examination examination);
-
-    List<QuestionRecord> findQuestionRecordsByExaminationId(Integer examinationId);
 }

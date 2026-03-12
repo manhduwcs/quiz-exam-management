@@ -25,9 +25,6 @@ public class QuestionRecord {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "level", nullable = false, length = 20)
-    private String level;
-
     @Column(name = "point", nullable = false)
     private Integer point;
 

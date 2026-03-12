@@ -17,7 +17,7 @@ public interface UserService {
     Boolean existUserByPhone(String phone);
     User saveUser(UserRequest userRequest);
     List<UserResponse> getUserByRolePermission(Role role);
-    User changePassword(PasswordRequest passwordRequest);
+    User changePassword(int id, PasswordRequest passwordRequest);
     void deleteUserById(int id);
     User updateUser(int id, UserRequest userRequest);
 }
