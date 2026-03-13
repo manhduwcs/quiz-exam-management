@@ -1,68 +1,35 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HomeComponent } from '../../home.component';
-import { SubjectComponent } from '../subject.component';
+import { AuthService } from '../../service/auth.service';
+import { HomeComponent } from '../home.component';
 declare var $: any;
 
 @Component({
-  selector: 'app-chapter',
-  templateUrl: './chapter.component.html',
-  styleUrl: './chapter.component.css'
+  selector: 'app-level',
+  templateUrl: './level.component.html',
+  styleUrl: './level.component.css'
 })
-export class ChapterComponent implements OnInit, OnDestroy {
-  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute, public subjectComponent: SubjectComponent) { }
+export class LevelComponent implements OnInit, OnDestroy {
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   dataTable: any;
   apiData: any;
-  subjects: any;
-  sems: any;
-  _subjectId: any;
-  _subjectName: any;
-  _chapter: any = {
+  _level: any = {
     id: 0,
-    subject: {
-      id: 1,
-    },
     name: '',
-    status: 0
   };
-  chapterId: any;
-  semId: number = 1;
-  subjectId: number = 1;
+  levelId: any;
   name: String = '';
 
+  isPopupConfirm: boolean = false;
+
   ngOnInit(): void {
-    // trả về trang subject
-    const returnSubject = document.getElementById('returnSubject');
-    if (returnSubject) {
-      returnSubject.addEventListener("click", () => {
-        this.router.navigate(['admin/home/subject']);
-      });
-    }
 
-    this._subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
-    if (this._subjectId > 0 && !Number.isNaN(this._subjectId)) {
-      this.http.get<any>(`${this.authService.apiUrl}/chapter/${this._subjectId}`, this.home.httpOptions).subscribe((data: any) => {
-        this.apiData = data;
-        this.subjectId = this._subjectId;
-        this.initializeDataTable();
-      });
-    }
-
-    this.http.get<any>(`${this.authService.apiUrl}/subject/${this._subjectId}`, this.home.httpOptions).subscribe((data: any) => {
-      this.semId = data.sem.id;
-      console.log(this.semId);
-      this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${this.semId}`, this.home.httpOptions).subscribe(response => {
-        this.subjects = response;
-        for (let sub of this.subjects) {
-          if (sub.id == this._subjectId) {
-            this._subjectName = sub.name;
-          }
-        }
-      });
+    this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
+      this.apiData = data;
+      this.initializeDataTable();
     });
   }
 
@@ -84,7 +51,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
             return meta.row + 1; // Trả về số thứ tự, `meta.row` là chỉ số của hàng bắt đầu từ 0
           }
         },
-        { title: 'Chapter', data: 'name' },
+        { title: 'Level', data: 'name' },
         {
           title: 'Action',
           data: null,
@@ -106,32 +73,41 @@ export class ChapterComponent implements OnInit, OnDestroy {
         // Thêm placeholder vào input của DataTables
         $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search');
         $('.edit-icon').on('click', (event: any) => {
-          this.chapterId = $(event.currentTarget).data('id');
-          this._chapter = this.apiData.find((item: any) => item.id === this.chapterId);
-          console.log(this._chapter);
-          $('#addChapter').removeClass('show');
-          $('#updateChapter').addClass('show');
+          this.levelId = $(event.currentTarget).data('id');
+          this._level = this.apiData.find((item: any) => item.id === this.levelId);
+          $('#addLevel').removeClass('show');
+          $('#updateLevel').addClass('show');
           setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('updateChapter');
+            const newLevelForm = document.getElementById('updateLevel');
             if (newLevelForm) {
               newLevelForm.scrollIntoView({ behavior: 'smooth' });
             }
           }, 0);
-
         });
         $('.btn-add').on('click', (event: any) => {
-          this.subjectId = this._subjectId;
           this.name = '';
-          $('#updateChapter').removeClass('show');
+          $('#updateLevel').removeClass('show');
           setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('addChapter');
+            const newLevelForm = document.getElementById('addLevel');
             if (newLevelForm) {
               newLevelForm.scrollIntoView({ behavior: 'smooth' });
             }
           }, 0);
+        });
+        $('.delete-icon').on('click', (event: any) => {
+          const id = $(event.currentTarget).data('id');
+          this.levelId = id;
+          this.isPopupConfirm = true;
         });
       }
     });
+  }
+
+  closePopup(event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation(); // Ngăn việc sự kiện click ra ngoài ảnh hưởng đến việc đóng modal
+    }
+    this.isPopupConfirm = false;
   }
 
   updateDataTable(newData: any[]): void {
@@ -142,27 +118,27 @@ export class ChapterComponent implements OnInit, OnDestroy {
     }
   }
 
-  reloadTable(id: number): void {
-    this.http.get<any>(`${this.authService.apiUrl}/chapter/${id}`, this.home.httpOptions).subscribe((data: any) => {
+  reloadTable(): void {
+    this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.updateDataTable(this.apiData); // Cập nhật bảng với dữ liệu mới
     });
     this.closeform();
   }
 
-  createChapter(): void {
-    const chapter =
+  createLevel(): void {
+    const level =
     {
       name: this.name,
-      subjectId: this.subjectId
     }
 
-    this.http.post(`${this.authService.apiUrl}/chapter`, chapter, this.home.httpOptions).subscribe(
+    this.http.post(`${this.authService.apiUrl}/level`, level, this.home.httpOptions).subscribe(
       response => {
-        this.toastr.success('Create new chapter Successful!', 'Success', {
+        this.toastr.success('Create new level Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.reloadTable(this._subjectId);
+        this.reloadTable();
+        this.closeform();
       },
       error => {
         if (error.status === 401) {
@@ -187,20 +163,20 @@ export class ChapterComponent implements OnInit, OnDestroy {
     )
   }
 
-  updateChapter(): void {
-    const chapter =
+  updateLevel(): void {
+    const level =
     {
-      name: this._chapter.name,
-      subjectId: this._chapter.subject.id,
-      id: this.chapterId
+      id: this.levelId,
+      name: this._level.name,
     }
 
-    this.http.put(`${this.authService.apiUrl}/chapter/${this.chapterId}`, chapter, this.home.httpOptions).subscribe(
+    this.http.put(`${this.authService.apiUrl}/level/${this.levelId}`, level, this.home.httpOptions).subscribe(
       response => {
-        this.toastr.success('Create new chapter Successful!', 'Success', {
+        this.toastr.success('Update level Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.reloadTable(this._subjectId);
+        this.reloadTable();
+        this.closeform();
       },
       error => {
         if (error.status === 401) {
@@ -223,11 +199,31 @@ export class ChapterComponent implements OnInit, OnDestroy {
         console.log('Error', error);
       }
     )
+  }
+
+  deletingLevel: any;
+
+  deleteLevel(id: number): void {
+    this.isPopupConfirm = false;
+    this.http.put(`${this.authService.apiUrl}/level/delete/${id}`, this.home.httpOptions).subscribe(
+      response => {
+        this.deletingLevel = response;
+        this.toastr.success(`Level with name ${this.deletingLevel.name} deleted successfully`, 'Success', {
+          timeOut: 2000,
+        });
+        this.reloadTable();
+      },
+      error => {
+        this.toastr.error('Error deleting item!', 'Error', {
+          timeOut: 2000,
+        });
+      }
+    );
   }
 
   closeform() {
-    document.getElementById('addChapter')?.classList.remove('show');
-    document.getElementById('updateChapter')?.classList.remove('show');
+    document.getElementById('addLevel')?.classList.remove('show');
+    document.getElementById('updateLevel')?.classList.remove('show');
   }
 
   ngOnDestroy(): void {
