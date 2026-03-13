@@ -20,6 +20,6 @@ public class ExaminationRequest {
     @NotNull(message = "Duration is required")
     private Integer duration;
     @NotNull(message = "Subject is required")
-    private Integer subjectId;
+    private int subjectId;
     private Map<Integer, Integer> levels;
 }

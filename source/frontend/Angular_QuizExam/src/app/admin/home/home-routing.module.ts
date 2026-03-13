@@ -7,7 +7,6 @@ import { ClassComponent } from './class/class.component';
 import { StudentComponent } from './student/student.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from '../service/authguard.service';
-import { LevelComponent } from './level/level.component';
 
 const routes: Routes = [
   {
@@ -47,14 +46,8 @@ const routes: Routes = [
         data: { roles: ['ADMIN', 'DIRECTOR', 'SRO'] },
       },
       {
-        path: 'level',
-        component: LevelComponent,
-      },
-      {
         path: 'profile',
-        component: ProfileComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ['ADMIN'] },
+        component: ProfileComponent
       },
       {
         path: 'subject',
@@ -70,6 +63,11 @@ const routes: Routes = [
         path: 'practice',
         loadChildren: () => import('./practice/practice.module')
           .then(m => m.PracticeModule),
+      },
+      {
+        path: 'authorize',
+        loadChildren: () => import('./authorize/authorize.module')
+          .then(m => m.AuthorizeModule),
       },
     ]
   },

@@ -22,12 +22,12 @@ public class MarkController {
     private final MarkService markService;
     private final UserService userService;
 
-    @GetMapping("/{semId}")
-    public List<MarkResponse> getAllMarksByStudentDetailAndScoreNotNull(@PathVariable int semId){
+    @GetMapping
+    public List<MarkResponse> getAllMarksByStudentDetailAndScoreNotNull(){
         String email = ((org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userService.findUserByEmail(email);
-        return markService.getListScoredPerSubject(user.getStudentDetail(), semId);
+        return markService.getListScoredPerSubject(user.getStudentDetail());
     }
 
     @GetMapping("/{examId}")
