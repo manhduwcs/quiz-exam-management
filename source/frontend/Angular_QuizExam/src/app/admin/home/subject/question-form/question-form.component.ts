@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
 import { SubjectComponent } from '../subject.component';
 import { forkJoin } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 interface Answer {
   content: string;
@@ -27,20 +28,23 @@ interface QuestionForm {
   styleUrls: ['./question-form.component.css']
 })
 export class QuestionFormComponent implements OnInit {
-  subjects: any;
-  listChapter: any = [];
-  listLevel: any = [];
   questionForms: QuestionForm[] = [];
-  contentError: string[] = [];
-  answersError: string[][] = [[]];
-  isPopupChapter: boolean[] = [];
-  popupChapterIndex: number = 0;
-  showPopupConfirm = false;
+  subjects: any;
   subjectId: number = 0;
   subjectName: string = '';
+  listChapter: any = [];
+  listLevel: any = [];
+  
+  isPopupChapter: boolean[] = [];
+  popupChapterIndex: number = 0;
+
+  searchChapter: string = '';
+  filterChapters: any = [];
+  tempSelectedChapters: number[] = [];
 
   constructor(
     private authService: AuthService,
+    private titleService: Title,
     private home: HomeComponent,
     private http: HttpClient,
     private toastr: ToastrService,
@@ -50,6 +54,7 @@ export class QuestionFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Add New Question');
     this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) || 0;
     this.loadData();
     this.initializeQuestion();
@@ -85,23 +90,58 @@ export class QuestionFormComponent implements OnInit {
     return selectedChapters.map((ch: any) => `[${ch.name}]`).join(' ') || 'Choose Chapter';
   }
 
-  toggleChapterSelection(questionIndex: number, chapterId: number, event: Event) {
-    const checkbox = (event.target as HTMLInputElement);
-    const chapters = this.questionForms[questionIndex].chapters || [];
-    if (checkbox.checked) chapters.push(chapterId);
-    else chapters.splice(chapters.indexOf(chapterId), 1);
-    this.questionForms[questionIndex].chapters = chapters;
-  }
-
   openPopup(questionIndex: number) {
     this.popupChapterIndex = questionIndex;
     this.isPopupChapter[questionIndex] = true;
+    this.tempSelectedChapters = this.questionForms[questionIndex].chapters.slice();
+    this.searchChapter = '';
+    this.onSearchChange();
   }
 
-  closePopup() {
+  onSearchChange() {
+    this.filterChapters = this.listChapter
+      .filter((chapter: any) => chapter.name.toLowerCase().includes(this.searchChapter.toLowerCase()));
+  }
+
+  toggleChapterSelection(chapterId: number, event: Event) {
+    const checkbox = (event.target as HTMLInputElement);
+
+    if (checkbox.checked) {
+      // Thêm chapter vào mảng tạm thời nếu checkbox được tick
+      this.tempSelectedChapters.push(chapterId);
+    }
+    else {
+      // Xóa chapter khỏi mảng tạm thời nếu checkbox bị bỏ tick
+      const index = this.tempSelectedChapters.indexOf(chapterId);
+      if (index > -1) {
+        this.tempSelectedChapters.splice(index, 1);
+      }
+    }
+  }
+
+  confirmChapterSelection() {
+    // Cập nhật chapters cho câu hỏi
+    this.questionForms[this.popupChapterIndex].chapters = this.tempSelectedChapters;
+    console.log(this.questionForms);
+    
+    // Đóng popup
+    this.closePopupChapter();
+  }
+
+  closePopupChapter() {
     this.isPopupChapter[this.popupChapterIndex] = false;
     this.popupChapterIndex = 0;
-    this.showPopupConfirm = false;
+    this.tempSelectedChapters = [];
+  }
+
+  isPopupNotice: boolean = false;
+
+  showPopupNotice() {
+    this.isPopupNotice = true;
+  }
+
+  closePopupNotice() {
+    this.isPopupNotice = false;
   }
 
   addQuestionForm() {
@@ -116,9 +156,33 @@ export class QuestionFormComponent implements OnInit {
     setTimeout(() => document.getElementById(`question-form-${this.questionForms.length - 1}`)?.scrollIntoView({ behavior: 'smooth' }), 0);
   }
 
+  isPopupDeleteQuestion: boolean = false;
+  questionIndexToDelete: number | null = null;
+
+  showPopupDeleteQuestion() {
+    this.isPopupDeleteQuestion = true;
+  }
+
+  closePopupDeleteQuestion() {
+    this.questionIndexToDelete = null;
+    this.isPopupDeleteQuestion = false;
+  }
+
+  confirmDeleteQuestion() {
+    if (this.questionIndexToDelete !== null) {
+      this.questionForms.splice(this.questionIndexToDelete, 1);
+      this.closePopupDeleteQuestion();
+    }
+  }
+
   removeQuestionForm(index: number) {
-    if (this.questionForms.length > 1) this.questionForms.splice(index, 1);
-    else alert("At least one question must remain.");
+    if (this.questionForms.length > 1) {
+      this.questionIndexToDelete = index;
+      this.showPopupDeleteQuestion();
+    }
+    else {
+      this.showPopupNotice();
+    }
   }
 
   addAnswer(index: number) {
@@ -127,6 +191,37 @@ export class QuestionFormComponent implements OnInit {
 
   toggleIsCorrect(answer: Answer) {
     answer.isCorrect = answer.isCorrect === 1 ? 0 : 1;
+  }
+
+  isPopupDeleteAnswer: boolean = false;
+  questionIndexToDeleteAnswer: number | null = null; // Lưu chỉ mục câu hỏi
+  answerIndexToDelete: number | null = null; // Lưu chỉ mục câu trả lời
+  cannotDeleteMessage: string = ''; // Lưu thông báo khi không thể xóa
+
+  showPopupDeleteAnswer(questionIndex: number, answerIndex: number) {
+    const question = this.questionForms[questionIndex];
+    this.questionIndexToDeleteAnswer = questionIndex;
+    this.answerIndexToDelete = answerIndex;
+    this.isPopupDeleteAnswer = true;
+
+    // Kiểm tra nếu câu hỏi có ít hơn hoặc bằng 4 câu trả lời
+    if (question.answers.length <= 4) {
+      this.cannotDeleteMessage = 'You cannot delete any answer because at least 4 answers are required for each question.';
+    }
+  }
+
+  closePopupDeleteAnswer() {
+    this.questionIndexToDeleteAnswer = null;
+    this.answerIndexToDelete = null;
+    this.cannotDeleteMessage = '';
+    this.isPopupDeleteAnswer = false;
+  }
+
+  confirmDeleteAnswer() {
+    if (this.questionIndexToDeleteAnswer !== null && this.answerIndexToDelete !== null) {
+      this.questionForms[this.questionIndexToDeleteAnswer].answers.splice(this.answerIndexToDelete, 1);
+      this.closePopupDeleteAnswer();
+    }
   }
 
   removeAnswer(questionIndex: number, answerIndex: number) {
@@ -148,11 +243,22 @@ export class QuestionFormComponent implements OnInit {
   }
 
   removeImage(questionIndex: number) {
-    this.questionForms[questionIndex].imageFile = null;
     const imgQuestion = document.getElementById(`imageQuestion${questionIndex}`) as HTMLImageElement;
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+
+    // Xóa ảnh
+    this.questionForms[questionIndex].imageFile = null;
     imgQuestion.src = '';
     imgQuestion.style.display = 'none';
+    
+    // Đặt lại giá trị input file
+    if (fileInput) {
+        fileInput.value = '';
+    }
   }
+
+  contentError: string[] = [];
+  answersError: string[][] = [[]];
 
   validateAnswers(answers: Answer[]): boolean {
     return answers.some(a => a.isCorrect === 1) && answers.some(a => a.isCorrect === 0);
@@ -252,12 +358,18 @@ export class QuestionFormComponent implements OnInit {
     );
   }
 
-  cancel() {
-    this.showPopupConfirm = true;
+  isPopupConfirmCancel: boolean = false;
+
+  showPopupConfirmCancel() {
+    this.isPopupConfirmCancel = true;
+  }
+
+  closePopupConfirmCancel() {
+    this.isPopupConfirmCancel = false;
   }
 
   confirmCancel() {
-    this.showPopupConfirm = false;
+    this.isPopupConfirmCancel = false;
     this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
   }
 }
