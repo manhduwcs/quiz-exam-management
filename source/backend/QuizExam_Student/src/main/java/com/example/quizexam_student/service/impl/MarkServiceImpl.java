@@ -6,7 +6,6 @@ import com.example.quizexam_student.entity.StudentDetail;
 import com.example.quizexam_student.exception.NotFoundException;
 import com.example.quizexam_student.mapper.MarkMapper;
 import com.example.quizexam_student.repository.MarkRepository;
-import com.example.quizexam_student.repository.SubjectRepository;
 import com.example.quizexam_student.service.MarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MarkServiceImpl implements MarkService {
     private final MarkRepository markRepository;
-    private final SubjectRepository subjectRepository;
 
     @Override
-    public List<MarkResponse> getListScoredPerSubject(StudentDetail studentDetail, int semId) {
+    public List<MarkResponse> getListScoredPerSubject(StudentDetail studentDetail) {
         List<MarkResponse> marks = markRepository.findAllByStudentDetailAndScoreIsNotNull(studentDetail)
                 .stream().map(MarkMapper::convertToResponse).collect(Collectors.toList());
         Map<String, MarkResponse> latestMarks = new HashMap<>();
@@ -32,10 +30,7 @@ public class MarkServiceImpl implements MarkService {
                 latestMarks.put(key, mark);
             }
         }
-        return new ArrayList<>(latestMarks.values())
-                .stream()
-                .filter(m -> subjectRepository.findByName(m.getSubjectName()).getSem().getId() == semId)
-                .collect(Collectors.toList());
+        return new ArrayList<>(latestMarks.values());
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface MarkService {
-    List<MarkResponse> getListScoredPerSubject(StudentDetail studentDetail, int semId);
+    List<MarkResponse> getListScoredPerSubject(StudentDetail studentDetail);
     MarkResponse getOneScoredByExam(StudentDetail studentDetail, int examId);
 
     Mark updateBeginTime(int id);
