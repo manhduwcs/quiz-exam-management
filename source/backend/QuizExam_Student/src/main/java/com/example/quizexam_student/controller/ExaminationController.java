@@ -95,9 +95,8 @@ public class ExaminationController {
     }
 
     @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<String> exportToPDF(
-            HttpServletResponse response,
-            @RequestBody ExaminationResponse examinationResponse)
+    public ResponseEntity<String> exportToPDF(HttpServletResponse response,
+                                              @RequestBody ExaminationResponse examinationResponse)
             throws IOException {
         exportService.export(response, examinationResponse.getName() + "_exam", "pdf");
         ExamPDFExporter pdfExporter = new ExamPDFExporter(examinationResponse, uploadDir);
