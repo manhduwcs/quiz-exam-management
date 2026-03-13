@@ -2,6 +2,7 @@ package com.example.quizexam_student.bean.response;
 
 import com.example.quizexam_student.entity.Classes;
 import com.example.quizexam_student.entity.Mark;
+import com.example.quizexam_student.entity.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,8 @@ public class StudentResponse {
     private UserResponse userResponse;
     private String rollPortal;
     private String rollNumber;
+    @JsonIgnore
+    private Status status;
     private Classes _class;
     private List<Mark> marks;
 }

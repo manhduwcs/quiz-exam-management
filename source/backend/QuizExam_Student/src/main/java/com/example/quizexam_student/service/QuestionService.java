@@ -14,5 +14,4 @@ public interface QuestionService {
     QuestionResponse getQuestionById(int questionId);
     List<Question> saveQuestions(List<QuestionRequest> questionRequests) throws IOException;
     Question updateQuestion(int id, QuestionRequest questionRequest) throws IOException;
-    Question deleteQuestion(int questionId);
 }
