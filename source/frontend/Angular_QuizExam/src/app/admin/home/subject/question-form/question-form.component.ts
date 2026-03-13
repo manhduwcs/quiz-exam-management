@@ -27,16 +27,17 @@ interface QuestionForm {
   styleUrls: ['./question-form.component.css']
 })
 export class QuestionFormComponent implements OnInit {
-  questionForms: QuestionForm[] = [];
   subjects: any;
-  subjectId: number = 0;
-  subjectName: string = '';
   listChapter: any = [];
   listLevel: any = [];
+  questionForms: QuestionForm[] = [];
+  contentError: string[] = [];
+  answersError: string[][] = [[]];
   isPopupChapter: boolean[] = [];
   popupChapterIndex: number = 0;
-
-  tempSelectedChapters: number[] = [];
+  showPopupConfirm = false;
+  subjectId: number = 0;
+  subjectName: string = '';
 
   constructor(
     private authService: AuthService,
@@ -84,50 +85,23 @@ export class QuestionFormComponent implements OnInit {
     return selectedChapters.map((ch: any) => `[${ch.name}]`).join(' ') || 'Choose Chapter';
   }
 
+  toggleChapterSelection(questionIndex: number, chapterId: number, event: Event) {
+    const checkbox = (event.target as HTMLInputElement);
+    const chapters = this.questionForms[questionIndex].chapters || [];
+    if (checkbox.checked) chapters.push(chapterId);
+    else chapters.splice(chapters.indexOf(chapterId), 1);
+    this.questionForms[questionIndex].chapters = chapters;
+  }
+
   openPopup(questionIndex: number) {
     this.popupChapterIndex = questionIndex;
     this.isPopupChapter[questionIndex] = true;
-    this.tempSelectedChapters = this.questionForms[questionIndex].chapters.slice();
   }
 
-  toggleChapterSelection(chapterId: number, event: Event) {
-    const checkbox = (event.target as HTMLInputElement);
-
-    if (checkbox.checked) {
-      // Thêm chapter vào mảng tạm thời nếu checkbox được tick
-      this.tempSelectedChapters.push(chapterId);
-    }
-    else {
-      // Xóa chapter khỏi mảng tạm thời nếu checkbox bị bỏ tick
-      const index = this.tempSelectedChapters.indexOf(chapterId);
-      if (index > -1) {
-        this.tempSelectedChapters.splice(index, 1);
-      }
-    }
-  }
-
-  confirmChapterSelection() {
-    // Cập nhật chapters cho câu hỏi
-    this.questionForms[this.popupChapterIndex].chapters = this.tempSelectedChapters;
-    
-    // Đóng popup
-    this.closePopupChapter();
-  }
-
-  closePopupChapter() {
+  closePopup() {
     this.isPopupChapter[this.popupChapterIndex] = false;
     this.popupChapterIndex = 0;
-    this.tempSelectedChapters = [];
-  }
-
-  isPopupNotice: boolean = false;
-
-  showPopupNotice() {
-    this.isPopupNotice = true;
-  }
-
-  closePopupNotice() {
-    this.isPopupNotice = false;
+    this.showPopupConfirm = false;
   }
 
   addQuestionForm() {
@@ -142,33 +116,9 @@ export class QuestionFormComponent implements OnInit {
     setTimeout(() => document.getElementById(`question-form-${this.questionForms.length - 1}`)?.scrollIntoView({ behavior: 'smooth' }), 0);
   }
 
-  isPopupDeleteQuestion: boolean = false;
-  questionIndexToDelete: number | null = null;
-
-  showPopupDeleteQuestion() {
-    this.isPopupDeleteQuestion = true;
-  }
-
-  closePopupDeleteQuestion() {
-    this.questionIndexToDelete = null;
-    this.isPopupDeleteQuestion = false;
-  }
-
-  confirmDeleteQuestion() {
-    if (this.questionIndexToDelete !== null) {
-      this.questionForms.splice(this.questionIndexToDelete, 1);
-      this.closePopupDeleteQuestion();
-    }
-  }
-
   removeQuestionForm(index: number) {
-    if (this.questionForms.length > 1) {
-      this.questionIndexToDelete = index;
-      this.showPopupDeleteQuestion();
-    }
-    else {
-      this.showPopupNotice();
-    }
+    if (this.questionForms.length > 1) this.questionForms.splice(index, 1);
+    else alert("At least one question must remain.");
   }
 
   addAnswer(index: number) {
@@ -177,37 +127,6 @@ export class QuestionFormComponent implements OnInit {
 
   toggleIsCorrect(answer: Answer) {
     answer.isCorrect = answer.isCorrect === 1 ? 0 : 1;
-  }
-
-  isPopupDeleteAnswer: boolean = false;
-  questionIndexToDeleteAnswer: number | null = null; // Lưu chỉ mục câu hỏi
-  answerIndexToDelete: number | null = null; // Lưu chỉ mục câu trả lời
-  cannotDeleteMessage: string = ''; // Lưu thông báo khi không thể xóa
-
-  showPopupDeleteAnswer(questionIndex: number, answerIndex: number) {
-    const question = this.questionForms[questionIndex];
-    this.questionIndexToDeleteAnswer = questionIndex;
-    this.answerIndexToDelete = answerIndex;
-    this.isPopupDeleteAnswer = true;
-
-    // Kiểm tra nếu câu hỏi có ít hơn hoặc bằng 4 câu trả lời
-    if (question.answers.length <= 4) {
-      this.cannotDeleteMessage = 'You cannot delete any answer because at least 4 answers are required for each question.';
-    }
-  }
-
-  closePopupDeleteAnswer() {
-    this.questionIndexToDeleteAnswer = null;
-    this.answerIndexToDelete = null;
-    this.cannotDeleteMessage = '';
-    this.isPopupDeleteAnswer = false;
-  }
-
-  confirmDeleteAnswer() {
-    if (this.questionIndexToDeleteAnswer !== null && this.answerIndexToDelete !== null) {
-      this.questionForms[this.questionIndexToDeleteAnswer].answers.splice(this.answerIndexToDelete, 1);
-      this.closePopupDeleteAnswer();
-    }
   }
 
   removeAnswer(questionIndex: number, answerIndex: number) {
@@ -229,22 +148,11 @@ export class QuestionFormComponent implements OnInit {
   }
 
   removeImage(questionIndex: number) {
-    const imgQuestion = document.getElementById(`imageQuestion${questionIndex}`) as HTMLImageElement;
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-
-    // Xóa ảnh
     this.questionForms[questionIndex].imageFile = null;
+    const imgQuestion = document.getElementById(`imageQuestion${questionIndex}`) as HTMLImageElement;
     imgQuestion.src = '';
     imgQuestion.style.display = 'none';
-    
-    // Đặt lại giá trị input file
-    if (fileInput) {
-        fileInput.value = '';
-    }
   }
-
-  contentError: string[] = [];
-  answersError: string[][] = [[]];
 
   validateAnswers(answers: Answer[]): boolean {
     return answers.some(a => a.isCorrect === 1) && answers.some(a => a.isCorrect === 0);
@@ -344,18 +252,12 @@ export class QuestionFormComponent implements OnInit {
     );
   }
 
-  isPopupConfirmCancel: boolean = false;
-
-  showPopupConfirmCancel() {
-    this.isPopupConfirmCancel = true;
-  }
-
-  closePopupConfirmCancel() {
-    this.isPopupConfirmCancel = false;
+  cancel() {
+    this.showPopupConfirm = true;
   }
 
   confirmCancel() {
-    this.isPopupConfirmCancel = false;
+    this.showPopupConfirm = false;
     this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
   }
 }
