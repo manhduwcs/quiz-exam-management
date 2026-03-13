@@ -23,7 +23,7 @@ const routes: Routes = [
         component: FormComponent
       },
       {
-        path: 'addStudent/:subjectId/:examId',
+        path: 'addStudent/:examId',
         component: AddStudentComponent
       },
       {
@@ -32,7 +32,7 @@ const routes: Routes = [
       },
     ],
     canActivate: [AuthGuard],
-    data: {roles: ['ADMIN', 'DIRECTOR', 'SRO']},
+    data: { roles: ['ADMIN', 'DIRECTOR', 'SRO'] },
   },
 ];
 

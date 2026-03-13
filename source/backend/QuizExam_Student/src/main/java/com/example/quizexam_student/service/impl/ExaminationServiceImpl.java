@@ -38,7 +38,7 @@ public class ExaminationServiceImpl implements ExaminationService {
             totalQuestions += entry.getValue();
         }
         Map<Integer, List<Question>> questionsByLevels = new HashMap<>();
-        List<Question> allQuestions = questionRepository.findAllBySubjectAndStatus(subject,1);
+        List<Question> allQuestions = questionRepository.findAllBySubjectAndStatusOrderByIdDesc(subject,1);
 
         levelsRequest.forEach((key, value) -> {
             List<Question> questionsByLevel = allQuestions.stream().filter(question -> question.getLevel().getId() == key).toList();
@@ -117,8 +117,27 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public List<ExaminationResponse> getAllExaminations() {
-        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
+        return examinationRepository.findAllByStatus(1).stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ExaminationResponse> getAllExaminationsForStudent(List<Mark> marks) {
+        List<Examination> examinations = new ArrayList<>();
+        marks.forEach(mark -> {
+            examinations.add(examinationRepository.findByMarksContainingAndStatus(mark, 1));
+        });
+        return examinations.stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
+    }
+
+//    @Override
+//    public Examination getExamination(int examinationId) {
+//        return examinationRepository.findById(examinationId).orElse(null);
+//    }
+
+//    @Override
+//    public List<ExaminationResponse> getAllExaminations() {
+//        return examinationRepository.findAll().stream().map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
+//    }
 
     @Override
     public Examination updateExamination(int examinationId, ExaminationRequest examinationRequest) {
@@ -132,19 +151,30 @@ public class ExaminationServiceImpl implements ExaminationService {
     }
 
     @Override
-    public List<StudentDetail> updateStudentForExam(int examinationId, int subjectId, List<Integer> studentIds) {
+    public List<StudentDetail> updateStudentForExam(int examinationId, List<Integer> studentIds) {
         List<Mark> markList = markRepository.findAllByExaminationIdAndScore(examinationId, null);
         markList.stream().peek(mark -> {mark.setStudentDetail(null); mark.setExamination(null);}).toList();
+        Examination examination = examinationRepository.findById(examinationId).orElse(null);
         markRepository.deleteAll(markList);
         return studentRepository.findAllByUserIdIn(
                 studentIds.stream().peek(studentId->{
                     Mark mark = new Mark();
-                    mark.setExamination(examinationRepository.findById(examinationId).orElse(null));
+                    mark.setExamination(examination);
                     mark.setStudentDetail(studentRepository.findById(studentId).orElse(null));
-                    mark.setSubject(subjectRepository.findById(subjectId).orElse(null));
+                    assert examination != null;
+                    mark.setSubject(examination.getSubject());
                     markRepository.save(mark);
                 }).toList()
         );
+    }
+
+    @Override
+    public List<ExaminationResponse> getAllExamBySemId(int semId) {
+        List<ExaminationResponse> exam = examinationRepository.findAll().stream()
+                .map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
+        List<ExaminationResponse> examBySemId = exam.stream().filter(
+                ex -> ex.getSubject().getSem().getId() == semId).collect(Collectors.toList());
+        return examBySemId;
     }
 
     @Override
@@ -168,10 +198,12 @@ public class ExaminationServiceImpl implements ExaminationService {
     }
 
     private ExaminationResponse setQuestionRecord(ExaminationResponse examinationResponse){
-        examinationResponse.setQuestionRecordResponses(
-                new ArrayList<>(questionRecordRepository.findAllByExamination(examinationRepository.findById(examinationResponse.getId()).orElse(null)))
-                        .stream().map(QuestionRecordMapper::convertToResponse)
-                        .collect(Collectors.toList()));
+        List<QuestionRecord> questionRecords = questionRecordRepository.findAllByExamination(examinationRepository.findById(examinationResponse.getId()).orElse(null));
+        List<QuestionRecordResponse> questionRecordResponses = questionRecords.stream()
+                .map(QuestionRecordMapper::convertToResponse)
+                .collect(Collectors.toList());
+        Collections.shuffle(questionRecordResponses);
+        examinationResponse.setQuestionRecordResponses(questionRecordResponses);
         return examinationResponse;
     }
 
@@ -262,6 +294,7 @@ public class ExaminationServiceImpl implements ExaminationService {
         questionRecord.setExamination(examination);
         questionRecord.setContent(question.getContent());
         questionRecord.setImage(question.getImage());
+        questionRecord.setLevel(question.getLevel().getName());
         questionRecord.setPoint(question.getLevel().getPoint());
 
         List<Answer> answers = question.getAnswers().stream().toList();

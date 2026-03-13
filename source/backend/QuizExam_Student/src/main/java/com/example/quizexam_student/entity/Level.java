@@ -20,8 +20,8 @@ public class Level {
     @Column(name = "level_id")
     private int id;
 
+    @Column(name = "name", length = 20, nullable = false)
     @NotBlank(message = "Level name is required.")
-    @Column(name = "name", length = 10, nullable = false)
     private String name;
 
     @NotNull(message = "Point is required.")

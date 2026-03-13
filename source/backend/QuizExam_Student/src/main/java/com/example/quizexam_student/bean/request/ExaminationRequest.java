@@ -17,9 +17,9 @@ public class ExaminationRequest {
     private LocalDateTime startTime;
     @NotNull(message = "End time is required")
     private LocalDateTime endTime;
-    @NotBlank(message = "Duration is required")
+    @NotNull(message = "Duration is required")
     private Integer duration;
     @NotNull(message = "Subject is required")
-    private int subjectId;
+    private Integer subjectId;
     private Map<Integer, Integer> levels;
 }
