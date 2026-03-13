@@ -169,15 +169,6 @@ public class ExaminationServiceImpl implements ExaminationService {
     }
 
     @Override
-    public List<ExaminationResponse> getAllExamBySemId(int semId) {
-        List<ExaminationResponse> exam = examinationRepository.findAll().stream()
-                .map(ExaminationMapper::convertToResponse).collect(Collectors.toList());
-        List<ExaminationResponse> examBySemId = exam.stream().filter(
-                ex -> ex.getSubject().getSem().getId() == semId).collect(Collectors.toList());
-        return examBySemId;
-    }
-
-    @Override
     public ExaminationResponseNotIncludeQuestion getExaminationNotIncludeQuestion(int examinationId) {
         return ExaminationMapper.convertToResponseNotIncludeQuestion(ExaminationMapper.convertToResponse(Objects.requireNonNull(examinationRepository.findById(examinationId).orElse(null))));
     }
