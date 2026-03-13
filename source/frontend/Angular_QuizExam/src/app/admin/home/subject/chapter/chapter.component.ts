@@ -26,8 +26,7 @@ export class ChapterComponent implements OnInit, OnDestroy {
     subject: {
       id: 1,
     },
-    name: '',
-    status: 0
+    name: ''
   };
   chapterId: any;
   semId: number = 1;
@@ -108,27 +107,14 @@ export class ChapterComponent implements OnInit, OnDestroy {
         $('.edit-icon').on('click', (event: any) => {
           this.chapterId = $(event.currentTarget).data('id');
           this._chapter = this.apiData.find((item: any) => item.id === this.chapterId);
-          console.log(this._chapter);
           $('#addChapter').removeClass('show');
           $('#updateChapter').addClass('show');
-          setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('updateChapter');
-            if (newLevelForm) {
-              newLevelForm.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 0);
 
         });
         $('.btn-add').on('click', (event: any) => {
           this.subjectId = this._subjectId;
           this.name = '';
           $('#updateChapter').removeClass('show');
-          setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('addChapter');
-            if (newLevelForm) {
-              newLevelForm.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 0);
         });
       }
     });

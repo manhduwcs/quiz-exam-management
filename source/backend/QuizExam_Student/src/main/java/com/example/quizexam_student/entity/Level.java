@@ -2,8 +2,6 @@ package com.example.quizexam_student.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
@@ -21,11 +19,10 @@ public class Level {
     private int id;
 
     @Column(name = "name", length = 20, nullable = false)
-    @NotBlank(message = "Level name is required.")
     private String name;
 
     @Column(name = "point", nullable = false)
-    private Integer point;
+    private int point;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "level")
     @JsonIgnore
