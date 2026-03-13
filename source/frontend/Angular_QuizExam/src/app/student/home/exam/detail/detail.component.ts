@@ -28,6 +28,8 @@ export class DetailComponent implements OnInit, OnDestroy {
   warningMessage: string = '';
   noteMessage: string = '';
   violationMessage: string = '';
+  inactivityTime: number = 0;
+  countdownTrackInactivity: any;
   autoSubmitTimer: any;
 
   constructor(
@@ -175,29 +177,53 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.toastr.warning("Right-click is disabled.");
   };
 
-  handleBeforeUnload(event: BeforeUnloadEvent): void {
-    event.preventDefault();
-    this.toastr.warning("Reloading the page may be considered a violation. Please be cautious!");
+  handleVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') {
+      this.examComponent.mark.warning++;
+      this.setupWarnings();
+      this.updateWarning();
+    }
   };
 
-  handleBlur = () => {
-    this.examComponent.mark.warning++;
-    this.setupWarnings();
-    this.updateWarning();
-  };
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    event.preventDefault();
+  }
 
   handleFocus = () => {
     clearInterval(this.countdown);
     this.calculateNewDuration();
   };
 
+  // Hàm đặt lại timer không hoạt động
+  resetInactivityTimer = () => {
+    this.inactivityTime = 0;
+  }
+
+  trackInactivity() {// Gán các sự kiện để theo dõi hoạt động của người dùng
+    document.addEventListener('mousemove', this.resetInactivityTimer); // Được kích hoạt khi di chuyển chuột.
+    document.addEventListener('keydown', this.resetInactivityTimer); // Được kích hoạt khi nhấn phím.
+    document.addEventListener('click', this.resetInactivityTimer); // Được kích hoạt khi nhấp chuột vào bất kỳ vị trí nào trên trang.
+    document.addEventListener('touchstart', this.resetInactivityTimer); // Được kích hoạt khi chạm vào màn hình (trong trường hợp các thiết bị cảm ứng).
+
+    this.countdownTrackInactivity = setInterval(() => {
+      this.inactivityTime++;
+      if (this.inactivityTime >= 120) { // Không hoạt động trong 2 phút (120 giây)
+        this.showPopupWarning = true;
+        this.noteMessage = '';
+        this.violationMessage = '';
+        this.warningMessage = `You have been inactive for a long time. Please return to the exam!`;
+      }
+    }, 1000); // Kiểm tra mỗi giây
+  }
+
   setupAntiCheatMonitoring() {
     document.addEventListener('keydown', this.preventDeveloperTools); // Ngăn chặn mở Developer Tools
     document.addEventListener('copy', this.preventCopy); // Ngăn chặn sao chép nội dung
     document.addEventListener('contextmenu', this.preventRightClick); // Ngăn chặn menu chuột phải
+    document.addEventListener('visibilitychange', this.handleVisibilityChange); // Xử lý sự kiện visibility change (Check chuyển đổi tab - khi tab đó bị ẩn đi)
     window.addEventListener('beforeunload', this.handleBeforeUnload); // Xử lý sự kiện load lại trang
-    window.addEventListener('blur', this.handleBlur); // Xử lý sự kiện blur (Check cửa sổ đó bị mất tiêu điểm)
     window.addEventListener('focus', this.handleFocus); // Xử lý sự kiện focus
+    this.trackInactivity();
   }
 
   setupScrollListener(): void {
@@ -327,7 +353,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   autoSubmit(): void {
-    if (this.examComponent.mark.warning >= 3) {
+    if (this.examComponent.mark.warning >= 5) {
       this.violationMessage = `(Current violations: ${this.examComponent.mark.warning} - The exam will be automatically submitted in 5 seconds)`;
       this.autoSubmitTimer = setTimeout(() => {
         this.submitExam();
@@ -350,13 +376,19 @@ export class DetailComponent implements OnInit, OnDestroy {
     document.removeEventListener('keydown', this.preventDeveloperTools);
     document.removeEventListener('copy', this.preventCopy);
     document.removeEventListener('contextmenu', this.preventRightClick);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    window.removeEventListener('blur', this.handleBlur);
     window.removeEventListener('focus', this.handleFocus);
+
+    document.removeEventListener('mousemove', this.resetInactivityTimer);
+    document.removeEventListener('keydown', this.resetInactivityTimer);
+    document.removeEventListener('click', this.resetInactivityTimer);
+    document.removeEventListener('touchstart', this.resetInactivityTimer);
 
     window.removeEventListener('scroll', this.handleScroll);
     
     clearInterval(this.countdown);
     clearInterval(this.autoSubmitTimer);
+    clearInterval(this.countdownTrackInactivity);
   }
 }
