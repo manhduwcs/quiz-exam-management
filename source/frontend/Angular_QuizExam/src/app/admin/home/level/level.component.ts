@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,15 +22,16 @@ export class LevelComponent implements OnInit, OnDestroy {
   };
   levelId: any;
   name: String = '';
+  point: number = 1;
 
   isPopupConfirm: boolean = false;
 
   ngOnInit(): void {
 
-    this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
-      this.apiData = data;
-      this.initializeDataTable();
-    });
+      this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
+        this.apiData = data;
+        this.initializeDataTable();
+      });
   }
 
   initializeDataTable(): void {
@@ -75,24 +76,13 @@ export class LevelComponent implements OnInit, OnDestroy {
         $('.edit-icon').on('click', (event: any) => {
           this.levelId = $(event.currentTarget).data('id');
           this._level = this.apiData.find((item: any) => item.id === this.levelId);
-          $('#addLevel').removeClass('show');
-          $('#updateLevel').addClass('show');
-          setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('updateLevel');
-            if (newLevelForm) {
-              newLevelForm.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 0);
+          $('#addlevel').removeClass('show');
+          $('#updatelevel').addClass('show');
+
         });
         $('.btn-add').on('click', (event: any) => {
           this.name = '';
           $('#updateLevel').removeClass('show');
-          setTimeout(() => {  // Cuộn xuống form mới thêm
-            const newLevelForm = document.getElementById('addLevel');
-            if (newLevelForm) {
-              newLevelForm.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 0);
         });
         $('.delete-icon').on('click', (event: any) => {
           const id = $(event.currentTarget).data('id');
@@ -130,6 +120,7 @@ export class LevelComponent implements OnInit, OnDestroy {
     const level =
     {
       name: this.name,
+      point: this.point
     }
 
     this.http.post(`${this.authService.apiUrl}/level`, level, this.home.httpOptions).subscribe(
@@ -137,8 +128,7 @@ export class LevelComponent implements OnInit, OnDestroy {
         this.toastr.success('Create new level Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.reloadTable();
-        this.closeform();
+       this.reloadTable();
       },
       error => {
         if (error.status === 401) {
@@ -168,6 +158,7 @@ export class LevelComponent implements OnInit, OnDestroy {
     {
       id: this.levelId,
       name: this._level.name,
+      point: this.point
     }
 
     this.http.put(`${this.authService.apiUrl}/level/${this.levelId}`, level, this.home.httpOptions).subscribe(
@@ -175,8 +166,7 @@ export class LevelComponent implements OnInit, OnDestroy {
         this.toastr.success('Update level Successful!', 'Success', {
           timeOut: 2000,
         });
-        this.reloadTable();
-        this.closeform();
+       this.reloadTable();
       },
       error => {
         if (error.status === 401) {
@@ -201,29 +191,22 @@ export class LevelComponent implements OnInit, OnDestroy {
     )
   }
 
-  deletingLevel: any;
-
   deleteLevel(id: number): void {
     this.isPopupConfirm = false;
     this.http.put(`${this.authService.apiUrl}/level/delete/${id}`, this.home.httpOptions).subscribe(
-      response => {
-        this.deletingLevel = response;
-        this.toastr.success(`Level with name ${this.deletingLevel.name} deleted successfully`, 'Success', {
-          timeOut: 2000,
-        });
+      () => {
+        console.log(`Level with ID ${id} deleted successfully`);
         this.reloadTable();
       },
       error => {
-        this.toastr.error('Error deleting item!', 'Error', {
-          timeOut: 2000,
-        });
+        console.error('Error deleting item:', error);
       }
     );
   }
 
   closeform() {
-    document.getElementById('addLevel')?.classList.remove('show');
-    document.getElementById('updateLevel')?.classList.remove('show');
+    document.getElementById('addlevel')?.classList.remove('show');
+    document.getElementById('updatelevel')?.classList.remove('show');
   }
 
   ngOnDestroy(): void {

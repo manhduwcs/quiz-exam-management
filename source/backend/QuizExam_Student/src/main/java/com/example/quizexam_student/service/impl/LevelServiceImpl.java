@@ -19,7 +19,7 @@ public class LevelServiceImpl implements LevelService {
     }
 
     private Boolean levelNameExisted(String levelName) {
-        return levelRepository.findByNameAndStatus(levelName, 1) != null;
+        return levelRepository.findByName(levelName) != null;
     }
 
     @Override
@@ -33,7 +33,6 @@ public class LevelServiceImpl implements LevelService {
             throw new AlreadyExistException("Name", "Level Name already exist");
         }
         level.setStatus(1);
-        level.setPoint(1);
         return levelRepository.save(level);
     }
 
@@ -49,9 +48,9 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public Level deleteLevelById(Integer id) {
+    public void deleteLevelById(Integer id) {
         Level level = levelRepository.findByIdAndStatus(id,1);
         level.setStatus(0);
-        return levelRepository.save(level);
+        levelRepository.save(level);
     }
 }

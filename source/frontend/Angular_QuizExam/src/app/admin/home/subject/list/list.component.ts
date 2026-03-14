@@ -24,7 +24,7 @@ export class ListComponent implements OnInit, OnDestroy {
   isPopupUpdate = false;
 
   subjectId: any;
-  semester: any = [];
+  sem: any;
   selectedSem: number = 1; // Default chọn Sem 1
 
   isSidebarCollapsed = false;
@@ -41,8 +41,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
 
     this.http.get<any>(`${this.authService.apiUrl}/sem`, this.home.httpOptions).subscribe(response => {
-      this.semester = response;
-      console.log(this.semester);
+      this.sem = response;
     })
   }
 
