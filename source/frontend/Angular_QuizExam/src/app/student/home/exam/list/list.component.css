@@ -1,3 +1,8 @@
+.main-body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
 .exam-container {
     padding: 50px 100px 50px 100px;
     width: 100%;
@@ -12,16 +17,6 @@
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
     font-weight: bold;
-}
-
-.nav-pills .nav-link.active {
-    background-color: #E6E6E6;
-    color: black;
-    font-weight: bold;
-}
-
-.nav-link {
-    color: var(--color-text);
 }
 
 .card-content {
