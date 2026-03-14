@@ -1,6 +1,6 @@
 import { Component, ViewChild  } from '@angular/core';
 import { HomeComponent } from '../home.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ApexTheme, NgApexchartsModule } from 'ng-apexcharts';
@@ -20,12 +20,15 @@ import {
   ApexTooltip,
   ApexMarkers
 } from 'ng-apexcharts';
+import { Title } from '@angular/platform-browser';
+import { AdminComponent } from '../../admin.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./../../../shared/styles/admin/style.css', './dashboard.component.css']
 })
 
 export  class DashboardComponent {
@@ -38,11 +41,21 @@ export  class DashboardComponent {
   chartOptions_3!: Partial<ChartOptions>;
 
   // constructor
-  constructor(public home : HomeComponent, private router: Router,  public authService: AuthService, private http: HttpClient) {
+  constructor(
+    private authService: AuthService,
+    private titleService: Title,
+    public admin : AdminComponent,
+    private home: HomeComponent,
+    private http: HttpClient,
+    private toastr: ToastrService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.titleService.setTitle('Dashboard');
     this.chartOptions = {
       chart: {
         height: 300,
-        width: 650,
+        width: '100%',
         type: 'bar',
         toolbar: {
           show: false
@@ -73,12 +86,22 @@ export  class DashboardComponent {
         categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000'],
         axisBorder: {
           show: false
+        },
+        labels: {
+          style: {
+            colors: 'var(--color-text)', // Màu chữ của nhãn trục x
+          }
         }
       },
       yaxis: {
         show: true,
         min: 10,
-        max: 70
+        max: 70,
+        labels: {
+          style: {
+            colors: 'var(--color-text)', // Màu chữ của nhãn trục y
+          }
+        }
       },
       colors: ['#73b4ff', '#59e0c5'],
       fill: {
@@ -158,7 +181,7 @@ export  class DashboardComponent {
           left: 0
         }
       },
-      colors: ['#fff', '#2ed8b6'],
+      colors: ['#d9d9d9', '#2ed8b6'],
       fill: {
         opacity: [1, 1]
       },

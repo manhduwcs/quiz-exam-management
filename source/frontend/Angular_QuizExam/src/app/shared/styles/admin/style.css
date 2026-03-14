@@ -1,4 +1,3 @@
-/* Body */
 .content-wrapper {
     padding: 80px 20px 60px 170px;
     min-height: 100vh;
@@ -24,7 +23,7 @@
 
 .button {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     border-radius: 6px;
     text-decoration: none;
     padding: 8px;
@@ -38,18 +37,18 @@
 }
 
 .button-pdf {
-    background-color: #ff8082;
-    color: #a33d31;
+    background-color: #efcaca;
+    color: #bf0000;
 }
 
 .button-excel {
-    background-color: #33c481;
-    color: #0e723a;
+    background-color: #a2ecb5;
+    color: #008c04 ;
     margin-right: 5px;
 }
 
 .button-create:hover {
-    background-color: #ffd5d5;
+    background-color: #ffa1a1;
 }
 
 .button-pdf:hover {
