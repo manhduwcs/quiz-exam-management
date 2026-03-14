@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
 
@@ -10,15 +10,10 @@ export class AdminComponent implements OnInit {
 
   darkMode: boolean = false;
 
-  isSidebarCollapsed: boolean = false;
-  contentSidebar: boolean = true;
-
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.loadTheme();
-    this.loadSidebarState();
-    this.cdr.detectChanges();
   }
 
   // Kiểm tra xem localStorage có sẵn không trước khi sử dụng
@@ -44,7 +39,7 @@ export class AdminComponent implements OnInit {
 
   // Cập nhật lớp CSS
   updateBodyClass(isDarkMode: boolean): void {
-    const body = document.getElementById('app');
+    const body = document.getElementById('body');
     if (body) {
       if (isDarkMode) {
         body.setAttribute('QuizTech-theme', 'dark-admin');
@@ -62,30 +57,5 @@ export class AdminComponent implements OnInit {
   menuToggle(): void {
     const toggleMenu = document.querySelector(".menu");
     toggleMenu?.classList.toggle("active");
-  }
-
-  loadSidebarState(): void {
-    if (this.isLocalStorageAvailable()) {
-      const sidebarState = localStorage.getItem('sidebar-collapsed');
-      if (sidebarState !== null) {
-        this.isSidebarCollapsed = JSON.parse(sidebarState);
-        this.contentSidebar = !this.isSidebarCollapsed;
-      }
-    }
-  }
-
-  toggleSidebar(): void {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
-    if (this.isSidebarCollapsed) {
-      this.contentSidebar = false;
-    }
-    else {
-      setTimeout(() => {
-        this.contentSidebar = true;
-      }, 300);
-    }
-    if (this.isLocalStorageAvailable()) {
-      localStorage.setItem('sidebar-collapsed', JSON.stringify(this.isSidebarCollapsed));
-    }
   }
 }

@@ -29,7 +29,7 @@ public class SubjectPDFExporter {
         com.lowagie.text.Font font = FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.WHITE);
 
-        cell.setPhrase(new Phrase("No.", font));
+        cell.setPhrase(new Phrase("Subject ID", font));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase("Subject Name", font));
@@ -42,14 +42,12 @@ public class SubjectPDFExporter {
         table.addCell(cell);
 
     }
-    private void writeTableData(PdfPTable table){
-        int count = 1;
+    private void writeTableData(PdfPTable table) throws IOException {
         for (Subject subject : subjects) {
-            table.addCell(String.valueOf(count));
+            table.addCell(String.valueOf(subject.getId()));
             table.addCell(String.valueOf(subject.getName()));
             table.addCell(String.valueOf(subject.getImage()));
             table.addCell(String.valueOf(subject.getSem().getName()));
-            count++;
         }
     }
     public void export(HttpServletResponse response) throws IOException {

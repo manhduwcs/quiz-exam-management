@@ -38,7 +38,7 @@ public class SubjectExcelExporter {
         style.setFont(font);
 
         Cell cell = row.createCell(0);
-        cell.setCellValue("No.");
+        cell.setCellValue("Subject ID");
         cell.setCellStyle(style);
 
         cell = row.createCell(1);
@@ -57,10 +57,10 @@ public class SubjectExcelExporter {
     private void writeDataRow() throws IOException {
         int rowCount = 1;
         for (Subject subject : subjects) {
-            Row row = sheet.createRow(rowCount);
+            Row row = sheet.createRow(rowCount++);
 
             Cell cell = row.createCell(0);
-            cell.setCellValue(rowCount);
+            cell.setCellValue(subject.getId());
             sheet.autoSizeColumn(0);
 
             cell = row.createCell(1);
@@ -74,9 +74,28 @@ public class SubjectExcelExporter {
             cell = row.createCell(3);
             cell.setCellValue(subject.getImage());
             sheet.autoSizeColumn(3);
-            rowCount++;
+
+//            if (subject.getImage() != null) {
+//                int pictureIndex = addImageToWorkBook(subject.getImage());
+//                Drawing<?> drawing = sheet.createDrawingPatriarch();
+//
+//                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
+//                anchor.setCol1(3);
+//                anchor.setRow1(rowCount -1);
+//
+//                Picture picture = drawing.createPicture(anchor, pictureIndex);
+//                picture.resize();
+//            }
         }
     }
+
+//    private int addImageToWorkBook(byte[] imageBytes) throws IOException {
+//        ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+//        byte[] imageInputBytes = IOUtils.toByteArray(bis);
+//        int pictureIndex = workbook.addPicture(imageInputBytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+//        bis.close();
+//        return pictureIndex;
+//    }
 
     public void export(HttpServletResponse response) throws IOException {
         writeHeaderRow();
