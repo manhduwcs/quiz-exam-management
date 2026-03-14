@@ -41,7 +41,7 @@ public class ClassesController {
         return classesService.updateClass(id, _class);
     }
 
-    @PutMapping("/remove/{id}")
+    @DeleteMapping("/{id}")
     public void deleteClass(@PathVariable Integer id) {
         classesService.deleteClass(id);
     }

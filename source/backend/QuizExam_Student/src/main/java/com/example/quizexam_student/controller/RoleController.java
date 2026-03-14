@@ -1,6 +1,5 @@
 package com.example.quizexam_student.controller;
 
-import com.example.quizexam_student.entity.Permission;
 import com.example.quizexam_student.entity.Role;
 import com.example.quizexam_student.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +26,8 @@ public class RoleController {
         return roleService.findById(id);
     }
 
-    @GetMapping("/permission/{id}")
-    public List<Permission> getPermissionByRoleId(@PathVariable int id) {
-        return roleService.findPermissionsByRole(id);
+    @GetMapping("/ /{id}")
+    public List<Role> getRolesByPermissionId(@PathVariable int id) {
+        return roleService.findAllByPermissionToEmployee(id);
     }
 }

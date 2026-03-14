@@ -29,6 +29,7 @@ public class Chapter {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id")
+    @JsonIgnore
     private Subject subject;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "chapters")

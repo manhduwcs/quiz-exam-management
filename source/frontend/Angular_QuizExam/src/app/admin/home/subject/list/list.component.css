@@ -24,19 +24,13 @@
 .sem-container .btn {
     border-radius: 8px;
     border: none;
-    color: var(--color-text);
+    color: black;
     font-size: 12px;
-    padding: 5px 10px;
-}
-
-.sem-container .btn:hover {
-    background-color: #e6e6e680;
-    color: #000000;
 }
 
 .sem-container .btn.active {
-    background-color: #e6e6e6;
-    color: #000000;
+    background-color: #e0e0e0;
+    /* Màu nền khi được chọn */
     font-weight: bold;
 }
 

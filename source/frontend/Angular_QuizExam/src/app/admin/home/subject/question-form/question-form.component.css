@@ -55,15 +55,11 @@
     /* Đảm bảo chiều cao của input và select giống như label */
 }
 
-.form-select-chapter, .form-select-level {
-    width: 50%;
-}
-
 .button-chapter {
-    width: 100%;
     white-space: nowrap; /* Ngăn không cho nội dung xuống dòng */
     overflow: hidden; /* Ẩn nội dung vượt quá chiều rộng của nút */
     text-overflow: ellipsis; /* Hiển thị "..." khi nội dung bị cắt */
+    display: inline-block; /* Để áp dụng các thuộc tính overflow */
 }
 
 .contentError {
@@ -154,11 +150,11 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 16px;
-    color: #aa1210;
+    font-size: 12px;
     cursor: pointer;
     font-weight: bold;
     margin-left: 10px;
+    /* Tăng kích thước của dấu X */
 }
 
 input[type="radio"],
@@ -176,12 +172,8 @@ input[type="checkbox"] {
     text-align: center;
 }
 
-.add-answer:hover {
-    color: green;
-}
-
 .remove-question:hover {
-    color: rgb(225, 10, 10);
+    color: red;
 }
 
 .icon-button {
@@ -206,147 +198,111 @@ input[type="checkbox"] {
 }
 
 
-/* Popup Container */
-.popup-container {
+/* Popup */
+.modal-backdrop, .modal-backdrop-confirm {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
 }
 
-.popup-container .popup-content {
-    display: flex;
-    flex-direction: column;
+.modal-content {
+    background-color: #fff;
+    border-radius: 8px;
     width: 500px;
-    max-height: 80vh;
-    background-color: var(--color-background);
+    /* Tăng chiều rộng của modal */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     border: 1px solid #ddd;
-    border-radius: 8px;
+    font-size: 18px;
+    /* Tăng kích thước font chữ */
 }
 
-.popup-container .popup-content .popup-header {
+.modal-header {
+    background-color: #aa1210;
+    border-radius: 10px 10px 0 0;
+    color: white;
+    padding: 15px;
+    /* Tăng kích thước padding cho header */
+    font-size: 20px;
+    /* Tăng kích thước font chữ của header */
+    font-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #aa1210;
-    border-radius: 8px 8px 0 0;
-    padding: 15px;
+    border-bottom: 1px solid #ddd;
 }
 
-.popup-container .popup-content .popup-body {
-    background-color: var(--color-background);
-    padding: 0 20px;
-    overflow-y: auto;
-}
-
-.popup-container .popup-content .popup-footer {
-    padding: 10px;
-    background-color: var(--color-background);
-    border-radius: 0px 0px 8px 8px;
-}
-
-.popup-container .popup-content .search-container {
-    position: relative;
-    margin: 10px;
-}
-
-.popup-container .popup-content .popup-header
 .close-icon {
     font-size: 24px;
     cursor: pointer;
 }
 
-.popup-container .popup-content .search-container
-.search-input {
-    width: 100%;
-    padding: 8px 33px 8px 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.popup-container .popup-content .search-container
-.search-input:focus {
-    outline: none;
-    border-color: #aa1210;
-}
-
-.popup-container .popup-content .search-container
-.search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: black;
-    pointer-events: none;
-}
-
-.popup-container
-.popup-content
-.popup-body
-.form-chapter input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.popup-container
-.popup-content
-.popup-body
-.form-chapter .checkbox-input {
-    margin-bottom: 10px;
-}
-
-.popup-container .popup-content .popup-footer
-.button {
-    width: 100px;
-}
-
-
-/* Dialog Popup */
-.dialog-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.dialog-popup .dialog-content {
-    background-color: var(--color-background);
-    color: var(--color-text);
+.modal-body {
     padding: 20px;
+    /* Tăng kích thước padding cho body */
+    font-size: 18px;
     border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    width: 450px; /* Đặt chiều rộng để có kích thước hợp lý */
+    /* Tăng kích thước font chữ cho nội dung */
+    background-color: var(--color-background);
 }
 
-.dialog-popup .dialog-content button {
-    margin: 10px;
-    width: 100px; /* Đặt chiều rộng cho button */
+.form-chapter input[type="checkbox"] {
+    margin-right: 10px; /* Khoảng cách giữa checkbox và nhãn */
 }
 
-.dialog-popup .dialog-content .yes-button {
-    color: white;
-    background-color: green;
+.form-chapter .checkbox-group {
+    margin-bottom: 20px; /* Khoảng cách dưới cùng */
+    width: 100%;
 }
 
-.dialog-popup .dialog-content .no-button {
-    color: white;
+.form-chapter .checkbox-input {
+    margin-bottom: 10px; /* Khoảng cách giữa các dòng */
+}
+
+
+
+/* Popup confirm */
+.modal-content-confirm {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header-confirm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.modal-body-confirm {
+    padding: 20px 0;
+    font-size: 16px;
+}
+
+.modal-footer-confirm {
+    padding-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+.modal-footer-confirm .button {
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    margin-right: 5px;
+}
+
+.modal-footer-confirm .button-yes {
     background-color: #aa1210;
 }
