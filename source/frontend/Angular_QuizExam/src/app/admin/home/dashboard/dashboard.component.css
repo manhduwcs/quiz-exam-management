@@ -1,53 +1,91 @@
+.content-wrapper {
+    padding: 80px 20px 60px 170px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: all 0.5s ease;
+}
+
+.content-wrapper-collapsed {
+    padding-left: 50px;
+}
+
+.statistical {
+    width: 100%;
+}
+
 .order-card {
+    background-color: #536dfe; /* Màu chính */
     padding: 20px;
-    margin-bottom: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .order-card h6,
-.order-card h2 {
+.order-card h2,
+.order-card p {
     margin: 0;
+    color: #ffffff;
 }
 
-.card {
-    border: none;
+.cardTitle {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.chart-container {
-    margin-bottom: 30px;
-    min-height: 350px;
+.cardClass {
+    background-color: #3949ab;
+    padding: 20px;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+.table {
+    margin: 0;
+}
+
+.table-hover thead th {
+    background-color: #536dfe;
+    color: #ffffff;
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e3f2fd;
+}
+
+.text-c-green {
+    color: #4caf50; /* Màu xanh lá */
+}
+
+.text-primary {
+    color: #2196f3; /* Màu xanh da trời */
 }
 
 .fas, .feather {
     font-size: 16px;
 }
 
-.card .card-header .title {
-    margin: 0;
+.ng-scrollbar {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
 }
 
-.card .card-body .form-group-row {
-    display: flex;
-    align-items: center;
+.row {
+    margin-bottom: 20px;
 }
 
-.card .card-body .form-group-row .select-field {
-    width: 280px;
-    cursor: pointer;
+.line-chart {
+    margin-bottom: 30px;
 }
 
-.card .card-body .search-container {
-    position: relative;
-    margin-left: auto;
-    width: 280px;
-}
-
-.card .card-body .search-container .search-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #888;
+.chart-container {
+    background-color: var(--color-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 15px 0 15px;
+    height: 100%;
 }

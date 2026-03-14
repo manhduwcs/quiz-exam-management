@@ -4,57 +4,22 @@ import { AuthService } from '../../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
+import { SubjectComponent } from '../subject.component';
 import { Title } from '@angular/platform-browser';
 import { AdminComponent } from '../../../admin.component';
-import { forkJoin } from 'rxjs';
 
 interface Answer {
-  content: string;
-  isCorrect: number;
-}
-
-interface QuestionForm {
-  content: string;
-  chapters: number[];
-  levelId: number;
-  imageFile?: File | null;
-  answers: Answer[];
+  content: string; // Đổi từ text thành content
+  isCorrect: number; // Thêm thuộc tính isCorrect
 }
 
 @Component({
   selector: 'app-question-update',
   templateUrl: './question-update.component.html',
-  styleUrls: ['./../../../../shared/styles/admin/question-common.css']
+  styleUrl: './question-update.component.css'
 })
 
 export class QuestionUpdateComponent implements OnInit {
-  question: any;
-  questionId: number = 0;
-  questionForm: QuestionForm = {
-    content: '',
-    chapters: [],
-    levelId: 0,
-    imageFile: null,
-    answers: []
-  };
-  changeImg: boolean = false;
-  
-  subjects: any;
-  subjectId: number = 0;
-  subjectName: string = '';
-  listChapter: any = [];
-  listLevel: any = [];
-  
-  isPopupChapter: boolean = false;
-
-  searchChapter: string = '';
-  filterChapters: any = [];
-  tempSelectedChapters: number[] = [];
-
-  dialogTitle: string = '';
-  dialogMessage: string = '';
-  isConfirmationPopup: boolean = false;
-
   constructor(
     private authService: AuthService,
     private titleService: Title,
@@ -66,269 +31,222 @@ export class QuestionUpdateComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
+  subjects: any;
+  subjectId: number = 0;
+  subjectName: any;
+
+  questionId: number = 0;
+  listChapter: any;
+  listLevel = [
+    { id: 1, name: 'Easy', point: 1 },
+    { id: 2, name: 'Hard', point: 2 }
+  ];
+
+  dataQuestion: any;
+  
+  question: any = {
+    content: '',
+    subjectId: 0,
+    chapters: [],
+    levelId: 0,
+    image: null,
+    answers: []
+  };
+
+  hasImage: boolean = false;
+
   ngOnInit(): void {
-    this.titleService.setTitle('Edit Question');
-    this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) || 0;
+    this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) ?? 0;
+
+    this.http.get<any>(`${this.authService.apiUrl}/subject/${this.subjectId}`, this.home.httpOptions).subscribe((data: any) => {
+      this.http.get<any>(`${this.authService.apiUrl}/subject/sem/${data.sem.id}`, this.home.httpOptions).subscribe(semSubjects => {
+        this.subjects = semSubjects;
+        for (let sub of this.subjects) {
+          if (sub.id == this.subjectId) {
+            this.subjectName = sub.name;
+          }
+        }
+      });
+    });
+
     this.questionId = Number(this.activatedRoute.snapshot.params['id']) ?? 0;
-    this.initializeQuestion();
-    this.loadData();
-  }
 
-  loadData() {
-    const subjectRequest = this.http.get<any>(`${this.authService.apiUrl}/subject/${this.subjectId}`, this.home.httpOptions);
-    const chapterRequest = this.http.get<any>(`${this.authService.apiUrl}/chapter/${this.subjectId}`, this.home.httpOptions);
-    const levelRequest = this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions);
-    const questionRequest = this.http.get<any>(`${this.authService.apiUrl}/question/detail/${this.questionId}`, this.home.httpOptions);
-
-    forkJoin([subjectRequest, chapterRequest, levelRequest, questionRequest]).subscribe(([subjectData, chapterData, levelData, questionData]) => {
-      // Giải mã dữ liệu từ các request
-      this.subjects = subjectData; // Lưu dữ liệu subjects
-      this.subjectName = this.subjects.name;
-      this.listChapter = chapterData; // Lưu dữ liệu chapters
-      this.listLevel = levelData; // Lưu dữ liệu levels
-      this.question = questionData;
-
-      this.questionForm.content = this.question.content;
-      this.questionForm.imageFile = this.question.image;
-      this.questionForm.levelId = this.question.level.id;
-      this.questionForm.answers = this.question.answers;
-
-      for (let chapter of this.question.chapters) {
-        this.questionForm.chapters.push(chapter.id);
+    this.http.get<any>(`${this.authService.apiUrl}/question/detail/${this.questionId}`, this.home.httpOptions).subscribe(data => {
+      this.dataQuestion = data;
+      this.question.content = this.dataQuestion.content;
+      this.question.image = this.dataQuestion.image;
+      this.question.subjectId = this.dataQuestion.subject.id;
+      this.question.levelId = this.dataQuestion.level.id;
+      this.question.answers = this.dataQuestion.answers;
+      
+      for (let chapter of this.dataQuestion.chapters) {
+        this.question.chapters.push(chapter.id);
       }
+
+      if (this.question.image) {
+        this.hasImage = true;
+      }
+    });
+
+    this.http.get<any>(`${this.authService.apiUrl}/chapter/${this.subjectId}`, this.home.httpOptions).subscribe((data: any) => {
+      this.listChapter = data;
     });
   }
 
-  initializeQuestion() {
-    this.questionForm = {
-      content: '',
-      chapters: [],
-      levelId: 0,
-      imageFile: null,
-      answers: []
-    };
+  getSelectedChaptersNames(): string {
+    const selectedChapters = this.listChapter.filter((chapter: any) => this.question.chapters.includes(chapter.id));
+    return selectedChapters.map((chapter: any) => `[${chapter.name}]`).join(' ');
   }
 
-  getSelectedChaptersNames(): string {
-    const selectedChapters = this.listChapter.filter((ch: any) => this.questionForm.chapters.includes(ch.id));
-    return selectedChapters.map((ch: any) => `[${ch.name}]`).join(' ') || 'Choose Chapter';
-  }
+  isPopupChapter = false;
 
   openPopup() {
     this.isPopupChapter = true;
-    this.tempSelectedChapters = this.questionForm.chapters.slice();
-    this.searchChapter = '';
-    this.onSearchChange();
   }
 
-  onSearchChange() {
-    this.filterChapters = this.listChapter
-      .filter((chapter: any) => chapter.name.toLowerCase().includes(this.searchChapter.toLowerCase()));
-  }
-
+  // Hàm này được gọi khi người dùng nhấn checkbox
   toggleChapterSelection(chapterId: number, event: Event) {
     const checkbox = (event.target as HTMLInputElement);
 
+    if (!this.question.chapters) {
+      this.question.chapters = [];
+    }
+
     if (checkbox.checked) {
-      // Thêm chapter vào mảng tạm thời nếu checkbox được tick
-      this.tempSelectedChapters.push(chapterId);
+      this.question.chapters.push(chapterId);
+    } else {
+      this.question.chapters = this.question.chapters.filter((id: any) => id !== chapterId);
     }
-    else {
-      // Xóa chapter khỏi mảng tạm thời nếu checkbox bị bỏ tick
-      const index = this.tempSelectedChapters.indexOf(chapterId);
-      if (index > -1) {
-        this.tempSelectedChapters.splice(index, 1);
-      }
-    }
+
+    console.log(this.question.chapters);
   }
 
-  confirmChapterSelection() {
-    // Cập nhật chapters cho câu hỏi
-    this.questionForm.chapters = this.tempSelectedChapters;
-    
-    // Đóng popup
-    this.closePopupChapter();
-  }
-
-  closePopupChapter() {
+  closePopup(event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation(); // Ngăn việc sự kiện click ra ngoài ảnh hưởng đến việc đóng modal
+    }
     this.isPopupChapter = false;
-    this.tempSelectedChapters = [];
+    this.isCancelPopup = false;
   }
 
   addAnswer() {
-    this.questionForm.answers.push({ content: '', isCorrect: 0 });
+    this.question.answers.push({ content: '', isCorrect: 0 }); // Thêm câu trả lời mới
   }
 
   toggleIsCorrect(answer: Answer) {
-    answer.isCorrect = answer.isCorrect === 1 ? 0 : 1;
-  }
-
-  isPopupDeleteAnswer: boolean = false;
-  answerIndexToDelete: number | null = null; // Lưu chỉ mục câu trả lời
-
-  showPopupDeleteAnswer(answerIndex: number) {
-    const question = this.questionForm;
-
-    // Kiểm tra nếu câu hỏi có nhiều hơn 4 câu trả lời
-    if (question.answers.length > 4) {
-      this.answerIndexToDelete = answerIndex;
-      this.dialogTitle = 'Are you sure?'
-      this.dialogMessage = 'Do you really want to delete this answer? This action cannot be undone.';
-      this.isConfirmationPopup = true;
-    }
-    else {
-      this.dialogTitle = 'Notice'
-      this.dialogMessage = 'You cannot delete any answer because at least 4 answers are required for each question.';
-      this.isConfirmationPopup = false;
-    }
-    this.isPopupDeleteAnswer = true;
-  }
-
-  confirmDeleteAnswer() {
-    if (this.answerIndexToDelete !== null) {
-      this.questionForm.answers.splice(this.answerIndexToDelete, 1);
-      this.closePopupDialog();
-      this.toastr.success('The answer has been deleted.', '', { timeOut: 2000 });
-    }
+    answer.isCorrect = answer.isCorrect === 1 ? 0 : 1; // Chuyển đổi giữa 0 và 1
+    console.log('Current isCorrect value:', answer.isCorrect); // In ra giá trị
   }
 
   removeAnswer(answerIndex: number) {
-    this.questionForm.answers.splice(answerIndex, 1);
+    this.question.answers.splice(answerIndex, 1);
   }
 
+  changeImg: boolean = false;
+
   chooseImage(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const fileInput = event.target as HTMLInputElement;
+    const file = fileInput.files ? fileInput.files[0] : null;
+
     const imgQuestion = document.getElementById(`imageQuestion`) as HTMLImageElement;
+    const imgContainer = imgQuestion.parentElement; // Lấy phần tử cha của img
+
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        imgQuestion.src = e.target?.result as string;
+      reader.onload = (loadEvent) => {
+        imgQuestion.src = loadEvent.target?.result as string;
         imgQuestion.style.display = 'block';
       };
       reader.readAsDataURL(file);
-      this.questionForm.imageFile = file;
+
+      // Đánh dấu là đã chọn ảnh và thêm lớp ẩn border
+      this.question.image = file; // Lưu file vào đối tượng
+      imgContainer?.classList.add('hidden-border'); // Thêm lớp để ẩn border
       this.changeImg = true;
+      this.hasImage = true;
+    } else {
+      imgContainer?.classList.remove('hidden-border'); // Xóa lớp nếu không có ảnh
     }
   }
 
   removeImage() {
-    const imgQuestion = document.getElementById(`imageQuestion`) as HTMLImageElement;
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-
-    // Xóa ảnh
-    this.questionForm.imageFile = null;
+    this.question.image = new Blob([]);
     this.changeImg = true;
-    imgQuestion.src = '';
-    imgQuestion.style.display = 'none';
-    
-    // Đặt lại giá trị input file
+    this.hasImage = false;
+
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
-        fileInput.value = '';
+        fileInput.value = ''; // Đặt lại giá trị input file
     }
   }
 
-  contentError: string = '';
-  answersError: string[] = [];
+  contentError: String = '';
+  answersError: String[] = [];
 
-  validateAnswers(answers: Answer[]): boolean {
-    return answers.some(a => a.isCorrect === 1) && answers.some(a => a.isCorrect === 0);
-  }
-
-  saveQuestion() {
+  errorEmpty(): void {
     this.contentError = '';
     this.answersError = [];
-    let formData = new FormData();
-    let errors = false;
-    let errorMessage = '';
+  }
+
+  saveQuestions() {
+    this.errorEmpty();
+    const formData = new FormData();
   
-    // Kiểm tra nếu câu hỏi chưa có nội dung
-    if (!this.questionForm.content.trim()) {
-      this.contentError = 'Content Question is required';
-      errors = true;
-    }
-
-    // Kiểm tra nếu câu trả lời không có nội dung
-    this.questionForm.answers.forEach((answer, i) => {
-      if (!answer.content.trim()) {
-        this.answersError[i] = 'Content Answer is required';
-        errors = true;
-      }
-    });
-
-    // Kiểm tra nếu số lượng câu trả lời < 4
-    if (this.questionForm.answers.length < 4) {
-      errorMessage = `Must have at least 4 answers.`;
-      errors = true;
-    }
-
-    // Kiểm tra nếu không có câu trả lời đúng và sai
-    if (!this.validateAnswers(this.questionForm.answers)) {
-      errorMessage = `Must have at least one correct and one incorrect answer.`;
-      errors = true;
-    }
-
-    // Kiểm tra câu trả lời giống nhau trong từng câu hỏi
-    const answerContents = this.questionForm.answers.map(a => a.content.trim());
-    const uniqueAnswers = new Set(answerContents);
-    if (answerContents.length !== uniqueAnswers.size) {
-      errorMessage = `Answers must be unique.`;
-      errors = true;
-    }
-  
-    if (errors) {
-      if (this.contentError.trim() !== '' || this.answersError.some(error => error.trim() !== '')) {
-        errorMessage = `Please fill out all fields correctly.`;
-      }
-      this.toastr.error(errorMessage, 'Error', { timeOut: 3000 });
-      return;
-    }
-  
-    // Nếu không có lỗi, tiếp tục với việc lưu câu hỏi
+    // Tạo danh sách câu hỏi
     const questionsList = {
-      content: this.questionForm.content,
-      subjectId: this.subjectId,
-      chapters: this.questionForm.chapters,
-      levelId: this.questionForm.levelId,
-      answers: this.questionForm.answers
+      content: this.question.content,
+      subjectId: this.question.subjectId,
+      chapters: this.question.chapters,
+      levelId: this.question.levelId,
+      answers: this.question.answers.map((answer: any) => ({
+        content: answer.content,
+        isCorrect: answer.isCorrect
+      }))
     };
+  
+    // Thêm danh sách câu hỏi vào FormData
     formData.append('question', new Blob([JSON.stringify(questionsList)], { type: 'application/json' }));
+  
+    // Thêm các file vào FormData
     if (this.changeImg) {
-      formData.append('file', this.questionForm.imageFile || new Blob([])); // Sử dụng file đã lưu
+      formData.append('file', this.question.image); // Sử dụng file đã lưu
     }
   
+    // Gửi yêu cầu POST
     this.http.put(`${this.authService.apiUrl}/question/${this.questionId}`, formData, this.home.httpOptions).subscribe(
-      () => {
-        this.toastr.success('Questions saved successfully!');
-        this.router.navigate([`/admin/home/subject/${this.subjectId}/question-list`]);
+      response => {
+        this.toastr.success('Questions saved successfully!', 'Success', {
+          timeOut: 2000,
+        });
+        console.log('Questions saved successfully:', response);
+        this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
       },
       err => {
-        this.toastr.error(err.error.message, 'Error');
+        this.toastr.error(err.error.message, 'Error', {
+          timeOut: 2000,
+        });
+        err.error.forEach((err:any) => {
+          if (err.key == 'content') {
+            this.contentError = err.message;
+          }
+          for (var i = 0; i < this.question.answers.length; i++) {
+            if (err.key == 'answers[' + i + '].content') {
+              this.answersError[i] = err.message;
+            }
+          }
+        });
       }
     );
   }
 
-  isPopupConfirmCancel: boolean = false;
-
-  showPopupConfirmCancel() {
-    this.dialogTitle = 'Are you sure?';
-    this.dialogMessage = 'Do you really want to cancel? Any unsaved changes will be lost.';
-    this.isConfirmationPopup = true;
-    this.isPopupConfirmCancel = true;
+  isCancelPopup: boolean = false;
+  
+  cancel() {
+    this.isCancelPopup = true;
   }
 
   confirmCancel() {
-    this.closePopupDialog();
-    this.router.navigate([`/admin/home/subject/${this.subjectId}/question-list`]);
-  }
-
-  closePopupDialog() {
-    this.dialogTitle = '';
-    this.dialogMessage = '';
-    this.isConfirmationPopup = false;
-    
-    this.answerIndexToDelete = null;
-    this.isPopupDeleteAnswer = false;
-
-    this.isPopupConfirmCancel = false;
+    this.isCancelPopup = false;
+    this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
   }
 }
