@@ -4,9 +4,9 @@ import { AuthService } from '../../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
-import { SubjectComponent } from '../subject.component';
 import { forkJoin } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import { AdminComponent } from '../../../admin.component';
 
 interface Answer {
   content: string;
@@ -15,7 +15,6 @@ interface Answer {
 
 interface QuestionForm {
   content: string;
-  subjectId: number;
   chapters: number[];
   levelId: number;
   imageFile?: File | null;
@@ -25,7 +24,7 @@ interface QuestionForm {
 @Component({
   selector: 'app-question-form',
   templateUrl: './question-form.component.html',
-  styleUrls: ['./question-form.component.css']
+  styleUrls: ['./../../../../shared/styles/admin/question-common.css']
 })
 export class QuestionFormComponent implements OnInit {
   questionForms: QuestionForm[] = [];
@@ -42,19 +41,23 @@ export class QuestionFormComponent implements OnInit {
   filterChapters: any = [];
   tempSelectedChapters: number[] = [];
 
+  dialogTitle: string = '';
+  dialogMessage: string = '';
+  isConfirmationPopup: boolean = false;
+
   constructor(
     private authService: AuthService,
     private titleService: Title,
+    public admin : AdminComponent,
     private home: HomeComponent,
     private http: HttpClient,
     private toastr: ToastrService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    public subjectComponent: SubjectComponent
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Add New Question');
+    this.titleService.setTitle('Add new Question');
     this.subjectId = Number(this.activatedRoute.snapshot.params['subjectId']) || 0;
     this.loadData();
     this.initializeQuestion();
@@ -77,7 +80,6 @@ export class QuestionFormComponent implements OnInit {
   initializeQuestion() {
     this.questionForms = [{
       content: '',
-      subjectId: this.subjectId,
       chapters: [],
       levelId: this.listLevel[0]?.id || 1,
       answers: [{ content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }]
@@ -122,7 +124,6 @@ export class QuestionFormComponent implements OnInit {
   confirmChapterSelection() {
     // Cập nhật chapters cho câu hỏi
     this.questionForms[this.popupChapterIndex].chapters = this.tempSelectedChapters;
-    console.log(this.questionForms);
     
     // Đóng popup
     this.closePopupChapter();
@@ -134,20 +135,9 @@ export class QuestionFormComponent implements OnInit {
     this.tempSelectedChapters = [];
   }
 
-  isPopupNotice: boolean = false;
-
-  showPopupNotice() {
-    this.isPopupNotice = true;
-  }
-
-  closePopupNotice() {
-    this.isPopupNotice = false;
-  }
-
   addQuestionForm() {
     this.questionForms.push({
       content: '',
-      subjectId: this.subjectId,
       chapters: [],
       levelId: this.listLevel[0]?.id || 1,
       answers: [{ content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }, { content: '', isCorrect: 0 }]
@@ -159,29 +149,26 @@ export class QuestionFormComponent implements OnInit {
   isPopupDeleteQuestion: boolean = false;
   questionIndexToDelete: number | null = null;
 
-  showPopupDeleteQuestion() {
+  showPopupDeleteQuestion(index: number) {
+    if (this.questionForms.length > 1) {
+      this.questionIndexToDelete = index;
+      this.dialogTitle = 'Are you sure?';
+      this.dialogMessage = `Do you really want to delete this <b>Question ${index + 1}</b>? This action cannot be undone.`;
+      this.isConfirmationPopup = true;
+    }
+    else {
+      this.dialogTitle = 'Notice';
+      this.dialogMessage = 'At least one question must remain.';
+      this.isConfirmationPopup = false;
+    }
     this.isPopupDeleteQuestion = true;
-  }
-
-  closePopupDeleteQuestion() {
-    this.questionIndexToDelete = null;
-    this.isPopupDeleteQuestion = false;
   }
 
   confirmDeleteQuestion() {
     if (this.questionIndexToDelete !== null) {
       this.questionForms.splice(this.questionIndexToDelete, 1);
-      this.closePopupDeleteQuestion();
-    }
-  }
-
-  removeQuestionForm(index: number) {
-    if (this.questionForms.length > 1) {
-      this.questionIndexToDelete = index;
-      this.showPopupDeleteQuestion();
-    }
-    else {
-      this.showPopupNotice();
+      this.closePopupDialog();
+      this.toastr.success('The question has been deleted.', '', { timeOut: 2000 });
     }
   }
 
@@ -196,31 +183,31 @@ export class QuestionFormComponent implements OnInit {
   isPopupDeleteAnswer: boolean = false;
   questionIndexToDeleteAnswer: number | null = null; // Lưu chỉ mục câu hỏi
   answerIndexToDelete: number | null = null; // Lưu chỉ mục câu trả lời
-  cannotDeleteMessage: string = ''; // Lưu thông báo khi không thể xóa
 
   showPopupDeleteAnswer(questionIndex: number, answerIndex: number) {
     const question = this.questionForms[questionIndex];
-    this.questionIndexToDeleteAnswer = questionIndex;
-    this.answerIndexToDelete = answerIndex;
-    this.isPopupDeleteAnswer = true;
 
-    // Kiểm tra nếu câu hỏi có ít hơn hoặc bằng 4 câu trả lời
-    if (question.answers.length <= 4) {
-      this.cannotDeleteMessage = 'You cannot delete any answer because at least 4 answers are required for each question.';
+    // Kiểm tra nếu câu hỏi có nhiều hơn 4 câu trả lời
+    if (question.answers.length > 4) {
+      this.questionIndexToDeleteAnswer = questionIndex;
+      this.answerIndexToDelete = answerIndex;
+      this.dialogTitle = 'Are you sure?'
+      this.dialogMessage = 'Do you really want to delete this answer? This action cannot be undone.';
+      this.isConfirmationPopup = true;
     }
-  }
-
-  closePopupDeleteAnswer() {
-    this.questionIndexToDeleteAnswer = null;
-    this.answerIndexToDelete = null;
-    this.cannotDeleteMessage = '';
-    this.isPopupDeleteAnswer = false;
+    else {
+      this.dialogTitle = 'Notice'
+      this.dialogMessage = 'You cannot delete any answer because at least 4 answers are required for each question.';
+      this.isConfirmationPopup = false;
+    }
+    this.isPopupDeleteAnswer = true;
   }
 
   confirmDeleteAnswer() {
     if (this.questionIndexToDeleteAnswer !== null && this.answerIndexToDelete !== null) {
       this.questionForms[this.questionIndexToDeleteAnswer].answers.splice(this.answerIndexToDelete, 1);
-      this.closePopupDeleteAnswer();
+      this.closePopupDialog();
+      this.toastr.success('The answer has been deleted.', '', { timeOut: 2000 });
     }
   }
 
@@ -268,7 +255,7 @@ export class QuestionFormComponent implements OnInit {
     this.contentError = [];
     this.answersError = this.questionForms.map(() => []);
     let formData = new FormData();
-    let valid = false;
+    let errors = false;
     let errorMessage = '';
     let questionNumber = -1;
   
@@ -276,18 +263,18 @@ export class QuestionFormComponent implements OnInit {
       // Kiểm tra nếu câu hỏi chưa có nội dung
       if (!this.questionForms[i].content.trim()) {
         this.contentError[i] = 'Content Question is required';
-        valid = true;
+        errors = true;
       }
   
       // Kiểm tra nếu câu trả lời không có nội dung
       this.questionForms[i].answers.forEach((answer, j) => {
         if (!answer.content.trim()) {
           this.answersError[i][j] = 'Content Answer is required';
-          valid = true;
+          errors = true;
         }
       });
 
-      if (valid) {
+      if (errors) {
         questionNumber = i;
         errorMessage = `Please fill out all fields correctly. (Question ${i + 1})`;
         break;
@@ -297,7 +284,7 @@ export class QuestionFormComponent implements OnInit {
       if (this.questionForms[i].answers.length < 4) {
         errorMessage = `Must have at least 4 answers. (Question ${i + 1})`;
         questionNumber = i;
-        valid = true;
+        errors = true;
         break;
       }
   
@@ -305,7 +292,7 @@ export class QuestionFormComponent implements OnInit {
       if (!this.validateAnswers(this.questionForms[i].answers)) {
         errorMessage = `Must have at least one correct and one incorrect answer. (Question ${i + 1})`;
         questionNumber = i;
-        valid = true;
+        errors = true;
         break;
       }
 
@@ -315,12 +302,12 @@ export class QuestionFormComponent implements OnInit {
       if (answerContents.length !== uniqueAnswers.size) {
         errorMessage = `Answers must be unique. (Question ${i + 1})`;
         questionNumber = i;
-        valid = true;
+        errors = true;
         break;
       }
     }
   
-    if (valid) {
+    if (errors) {
       this.toastr.error(errorMessage, 'Error', { timeOut: 3000 });
   
       // Di chuyển đến form có lỗi
@@ -337,7 +324,7 @@ export class QuestionFormComponent implements OnInit {
     // Nếu không có lỗi, tiếp tục với việc lưu câu hỏi
     const questionsList = this.questionForms.map(question => ({
       content: question.content,
-      subjectId: question.subjectId,
+      subjectId: this.subjectId,
       chapters: question.chapters,
       levelId: question.levelId,
       answers: question.answers
@@ -350,7 +337,7 @@ export class QuestionFormComponent implements OnInit {
     this.http.post(`${this.authService.apiUrl}/question`, formData, this.home.httpOptions).subscribe(
       () => {
         this.toastr.success('Questions saved successfully!');
-        this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
+        this.router.navigate([`/admin/home/subject/${this.subjectId}/question-list`]);
       },
       err => {
         this.toastr.error(err.error.message, 'Error');
@@ -361,15 +348,29 @@ export class QuestionFormComponent implements OnInit {
   isPopupConfirmCancel: boolean = false;
 
   showPopupConfirmCancel() {
+    this.dialogTitle = 'Are you sure?';
+    this.dialogMessage = 'Do you really want to cancel? Any unsaved changes will be lost.';
+    this.isConfirmationPopup = true;
     this.isPopupConfirmCancel = true;
   }
 
-  closePopupConfirmCancel() {
-    this.isPopupConfirmCancel = false;
+  confirmCancel() {
+    this.closePopupDialog();
+    this.router.navigate([`/admin/home/subject/${this.subjectId}/question-list`]);
   }
 
-  confirmCancel() {
+  closePopupDialog() {
+    this.dialogTitle = '';
+    this.dialogMessage = '';
+    this.isConfirmationPopup = false;
+
+    this.questionIndexToDelete = null;
+    this.isPopupDeleteQuestion = false;
+
+    this.questionIndexToDeleteAnswer = null;
+    this.answerIndexToDelete = null;
+    this.isPopupDeleteAnswer = false;
+
     this.isPopupConfirmCancel = false;
-    this.router.navigate([`/admin/home/subject/${this.subjectId}/questionList`]);
   }
 }
