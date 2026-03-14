@@ -37,7 +37,7 @@ public class ClassesExcelExporter {
         style.setFont(font);
 
         Cell cell = row.createCell(0);
-        cell.setCellValue("No.");
+        cell.setCellValue("Class ID");
         cell.setCellStyle(style);
 
         cell = row.createCell(1);
@@ -60,10 +60,10 @@ public class ClassesExcelExporter {
     private void writeDataRow(){
         int rowCount = 1;
         for (Classes cls : classes) {
-            Row row = sheet.createRow(rowCount);
+            Row row = sheet.createRow(rowCount++);
 
             Cell cell = row.createCell(0);
-            cell.setCellValue(rowCount);
+            cell.setCellValue(cls.getId());
             sheet.autoSizeColumn(0);
 
             cell = row.createCell(1);
@@ -82,7 +82,6 @@ public class ClassesExcelExporter {
             cell.setCellValue(cls.getAdmissionDate());
             sheet.autoSizeColumn(4);
 
-            rowCount++;
         }
     }
     public void export(HttpServletResponse response) throws IOException {

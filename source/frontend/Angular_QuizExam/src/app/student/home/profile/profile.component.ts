@@ -21,9 +21,6 @@ export class ProfileComponent implements OnInit {
   newPassword: any;
   confirmPassword: any;
 
-  isPasswordChangeOpen: boolean = false;
-  isChangePasswordButtonVisible: boolean = true;
-
   changePassword() {
     const passwordRequest = {
       currentPassword: this.currentPassword,
@@ -53,28 +50,17 @@ export class ProfileComponent implements OnInit {
             })
           }
           this.toastr.error(msg, 'Failed', {
-            timeOut: 5000,
+            timeOut: 2000,
           });
         }
         console.log('Error', error);
       }
-    );
+    )
+
   }
 
-  // Hiển thị form đổi mật khẩu
-  showChangePasswordForm(): void {
-    this.isPasswordChangeOpen = true;
-    this.isChangePasswordButtonVisible = false;
-  }
 
-  // Ẩn form đổi mật khẩu
-  hideChangePasswordForm(): void {
-    this.isPasswordChangeOpen = false;
-    setTimeout(() => {
-      this.isChangePasswordButtonVisible = true;
-    }, 500);
-  }
-  
+
   visiblePassword(inputId: string, iconId: string): void {
     // Tìm phần tử đầu vào mật khẩu và icon bằng ID
     const passwordInput = document.getElementById(inputId) as HTMLInputElement | null;

@@ -1,15 +1,14 @@
 /* Body */
 .content-wrapper {
-    padding: 80px 20px 60px 170px;
-    min-height: 100vh;
+    padding: 0 20px;
+    margin: 20px 0 60px 150px;
+    min-height: 80vh;
     overflow-x: hidden;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    transition: all 0.5s ease;
+    transition: margin-left 0.3s ease;
 }
 
 .content-wrapper-collapsed {
-    padding-left: 50px;
+    margin-left: 30px;
 }
 
 .line {
@@ -22,45 +21,26 @@
     margin-bottom: 15px;
 }
 
-.button {
+.button-create {
     font-size: 12px;
-    font-weight: 600;
+    background-color: #aa1210;
+    border: none;
     border-radius: 6px;
-    text-decoration: none;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.5s ease;
 }
 
-.button-create {
-    background-color: #ffbbbb;
-    color: #df6f6f;
+.button:active {
+    background-color: #8f0a0a;
 }
 
 .button-pdf {
-    background-color: #ff8082;
-    color: #a33d31;
+    font-size: 12px;
+    background: #efcaca;
+    color: #bf0000;
+    border: none;
+    border-radius: 6px;
 }
 
-.button-excel {
-    background-color: #33c481;
-    color: #0e723a;
-    margin-right: 5px;
-}
-
-.button-create:hover {
-    background-color: #ffd5d5;
-}
-
-.button-pdf:hover {
-    background-color: #ffaaac;
-}
-
-.button-excel:hover {
-    background-color: #5cdca0;
-}
-
-.button .icon {
+.icon {
     line-height: normal;
     margin-right: 4px;
 }

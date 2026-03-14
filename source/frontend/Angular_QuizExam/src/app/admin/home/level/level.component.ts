@@ -4,8 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { HomeComponent } from '../home.component';
-import { Title } from '@angular/platform-browser';
-import { AdminComponent } from '../../admin.component';
 declare var $: any;
 
 @Component({
@@ -14,16 +12,7 @@ declare var $: any;
   styleUrl: './level.component.css'
 })
 export class LevelComponent implements OnInit, OnDestroy {
-  constructor(
-    private authService: AuthService,
-    private titleService: Title,
-    public admin : AdminComponent,
-    private home: HomeComponent,
-    private http: HttpClient,
-    private toastr: ToastrService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   dataTable: any;
   apiData: any;
@@ -37,7 +26,7 @@ export class LevelComponent implements OnInit, OnDestroy {
   isPopupConfirm: boolean = false;
 
   ngOnInit(): void {
-    this.titleService.setTitle('List of Levels');
+
     this.http.get<any>(`${this.authService.apiUrl}/level`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;
       this.initializeDataTable();

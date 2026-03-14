@@ -2,11 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { response } from 'express';
 import { HomeComponent } from '../home.component';
-import { Title } from '@angular/platform-browser';
-import { AdminComponent } from '../../admin.component';
 declare var $: any;
 
 @Component({
@@ -16,16 +14,7 @@ declare var $: any;
 })
 
 export class EmployeeComponent implements OnInit, OnDestroy {
-  constructor(
-    private authService: AuthService,
-    private titleService: Title,
-    public admin : AdminComponent,
-    private home: HomeComponent,
-    private http: HttpClient,
-    private toastr: ToastrService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+  constructor(private authService: AuthService, public home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router) { }
 
   dataTable: any;
   apiData: any;
@@ -35,8 +24,13 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   role: any;
 
+  isSidebarCollapsed = false;
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
   ngOnInit(): void {
-    this.titleService.setTitle('List of Employees');
     this.authService.entityExporter = 'user';
     this.http.get<any>(`${this.authService.apiUrl}/user`, this.home.httpOptions).subscribe((data: any) => {
       this.apiData = data;

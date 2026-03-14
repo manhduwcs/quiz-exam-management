@@ -5,8 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeComponent } from '../../home.component';
 import { SubjectComponent } from '../subject.component';
-import { Title } from '@angular/platform-browser';
-import { AdminComponent } from '../../../admin.component';
 declare var $: any;
 
 @Component({
@@ -15,16 +13,7 @@ declare var $: any;
   styleUrl: './chapter.component.css'
 })
 export class ChapterComponent implements OnInit, OnDestroy {
-  constructor(
-    private authService: AuthService,
-    private titleService: Title,
-    public admin : AdminComponent,
-    private home: HomeComponent,
-    private http: HttpClient,
-    private toastr: ToastrService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+  constructor(private authService: AuthService, private home: HomeComponent, private http: HttpClient, public toastr: ToastrService, private router: Router, private activatedRoute: ActivatedRoute, public subjectComponent: SubjectComponent) { }
 
   dataTable: any;
   apiData: any;
@@ -46,8 +35,6 @@ export class ChapterComponent implements OnInit, OnDestroy {
   name: String = '';
 
   ngOnInit(): void {
-    this.titleService.setTitle('Chapters');
-
     // trả về trang subject
     const returnSubject = document.getElementById('returnSubject');
     if (returnSubject) {
