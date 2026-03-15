@@ -54,12 +54,6 @@ public class ExaminationController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
-    @GetMapping("/finish/sem/{semId}")
-    public List<ExaminationResponse> getAllExamimationFinishedBySemId(@PathVariable int semId){
-        return examinationService.getAllExaminationFinishedBySemId(semId);
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
     @GetMapping("/sem/{semId}")
     public List<ExaminationResponse> getExaminationBySemId(@PathVariable int semId) {
         return examinationService.getAllExamBySemId(semId);

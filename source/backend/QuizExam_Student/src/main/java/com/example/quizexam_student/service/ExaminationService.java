@@ -22,5 +22,4 @@ public interface ExaminationService {
     List<ExaminationResponse> getAllExamBySemId(int semId);
     List<ExaminationResponse> getAllExaminations();
     List<ExaminationResponse> getAllExaminationBySubjectId(int subjectId);
-    List<ExaminationResponse> getAllExaminationFinishedBySemId(int subjectId);
 }
