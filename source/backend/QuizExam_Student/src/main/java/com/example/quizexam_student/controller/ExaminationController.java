@@ -54,6 +54,12 @@ public class ExaminationController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @GetMapping("/finish/sem/{semId}")
+    public List<ExaminationResponse> getAllExamimationFinishedBySemId(@PathVariable int semId){
+        return examinationService.getAllExaminationFinishedBySemId(semId);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
     @GetMapping("/sem/{semId}")
     public List<ExaminationResponse> getExaminationBySemId(@PathVariable int semId) {
         return examinationService.getAllExamBySemId(semId);
@@ -64,7 +70,9 @@ public class ExaminationController {
     public List<ExaminationResponse> getAllExaminationsForStudent() {
         String email = ((org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        List<Mark> marks = markRepository.findAllByStudentDetailAndScoreIsNull(userRepository.findByEmail(email).orElse(null).getStudentDetail());
+        User user = userRepository.findByEmail(email).orElse(null);
+        StudentDetail studentDetail = user.getStudentDetail();
+        List<Mark> marks = markRepository.findAllByStudentDetailAndScoreIsNull(studentDetail);
         return examinationService.getAllExaminationsForStudent(marks);
     }
 
