@@ -46,4 +46,7 @@ public class Classes {
     @OneToMany(mappedBy = "_class")
     @JsonIgnore
     private Set<StudentDetail> studentDetails;
+
+    @OneToOne(mappedBy = "_class")
+    private ClassGroup classGroup;
 }

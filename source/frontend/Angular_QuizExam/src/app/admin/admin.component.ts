@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AuthService } from '../shared/service/auth.service';
 
 @Component({
 
@@ -12,13 +11,11 @@ export class AdminComponent implements OnInit {
   darkMode: boolean = false;
 
   isSidebarCollapsed: boolean = false;
-  
   contentSidebar: boolean = true;
 
-  constructor(private authService: AuthService, private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.authService.loadToken('ADMIN');
     this.loadTheme();
     this.loadSidebarState();
     this.cdr.detectChanges();

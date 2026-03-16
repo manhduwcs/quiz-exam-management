@@ -98,7 +98,7 @@ public class ClassesControllerTest {
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
     void getAll_success() throws Exception {
         // GIVEN
-        Mockito.when(classesService.findAllClasses()).thenReturn(classesList);
+        Mockito.when(classesService.getAllClasses()).thenReturn(classesList);
         // WHEN
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/class"))
