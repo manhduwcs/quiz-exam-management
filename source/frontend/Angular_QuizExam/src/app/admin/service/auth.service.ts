@@ -20,36 +20,10 @@ export class AuthService {
 
   public roleKey = 'role';
 
-  public userLogged: any;
-  
+  public userLogged: any = localStorage.getItem('userLogged');
   public myUser: any;
 
-  httpOptions: { headers: HttpHeaders; responseType: 'json'; withCredentials: true } = {
-    headers: new HttpHeaders({'Accept': 'application/json'}),
-    responseType: 'json',
-    withCredentials: true
-  };
-
-  constructor(private http: HttpClient, private router: Router) {
-    this.loadToken();
-  }
-
-  private loadToken() {
-    if (this.isLoggedIn()) {
-      const token = localStorage.getItem('jwtToken');
-      this.httpOptions = {
-        headers: new HttpHeaders({ 
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }),
-        responseType: 'json',
-        withCredentials: true
-      };
-    }
-    else {
-      this.router.navigate(['admin/login']);
-    }
-  }
+  constructor(private http: HttpClient, private router: Router) { }
 
   // Kiểm tra xem localStorage có sẵn không trước khi sử dụng
   private isLocalStorageAvailable(): boolean {

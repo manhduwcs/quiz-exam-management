@@ -37,53 +37,40 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private void handleUserExist(User user, String key, String message) {
-        if (user.getStatus() == 0) {
-            throw new AlreadyExistException("restore", message + " already exists, but the user is hidden. Would you like to view this user to restore?");
-        }
-        throw new AlreadyExistException(key, message + " already exists.");
+    @Override
+    public Boolean existUserByEmail(String email) {
+        User user = userRepository.findByEmailAndStatus(email, 1).orElse(null);
+        return user != null;
+    }
+
+    @Override
+    public Boolean existUserByPhone(String phone) {
+        User user = userRepository.findByPhoneNumber(phone).orElse(null);
+        return user != null;
     }
 
     @Override
     public User saveUser(UserRequest userRequest) {
-        User findByEmail = userRepository.findByEmail(userRequest.getEmail()).orElse(null);
-        if (!Objects.isNull(findByEmail)) {
-            handleUserExist(findByEmail, "email", "Email");
+        if(existUserByEmail(userRequest.getEmail())){
+            User user = findUserByEmail(userRequest.getEmail());
+            if (user.getStatus() == 0){
+                throw new AlreadyExistException("userRestore","User already hide. Do you want restore user?");
+            }
+            throw new AlreadyExistException("email", "Email existed already");
         }
-        User findByPhoneNumber = userRepository.findByPhoneNumber(userRequest.getPhoneNumber()).orElse(null);
-        if (!Objects.isNull(findByPhoneNumber)) {
-            handleUserExist(findByPhoneNumber, "phoneNumber", "Phone Number");
+        if (existUserByPhone(userRequest.getPhoneNumber())) {
+            User user = userRepository.findByPhoneNumber(userRequest.getPhoneNumber()).orElseThrow(() -> new NotFoundException("user", "User Not Found"));
+            if (user.getStatus() == 0){
+                throw new AlreadyExistException("userRestore","User already hide. Do you want restore user?");
+            }
+            throw new AlreadyExistException("phoneNumber", "Phone number existed already");
         }
-
-        Role role = roleRepository.findById(userRequest.getRoleId()).orElse(null);
         User user = UserMapper.convertFromRequest(userRequest);
         user.setPassword(passwordEncoder.encode("@1234567"));
+        Role role = roleRepository.findById(userRequest.getRoleId()).orElse(null);
         user.setRole(role);
         user.setStatus(1);
         return userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public User updateUser(int id, UserRequest userRequest) {
-        User user = findById(id);
-
-        User findByEmail = userRepository.findByEmailAndIdNot(userRequest.getEmail(), id).orElse(null);
-        if (!Objects.isNull(findByEmail)) {
-            handleUserExist(findByEmail, "email", "Email");
-        }
-        User findByPhoneNumber = userRepository.findByPhoneNumberAndIdNot(userRequest.getPhoneNumber(), id).orElse(null);
-        if (!Objects.isNull(findByPhoneNumber)) {
-            handleUserExist(findByPhoneNumber, "phoneNumber", "Phone Number");
-        }
-
-        Role role = roleRepository.findById(userRequest.getRoleId()).orElse(null);
-        String currentPassword = user.getPassword();
-        user = UserMapper.convertFromRequest(userRequest);
-        user.setPassword(currentPassword);
-        user.setRole(role);
-        user.setStatus(1);
-        user.setId(id);
-        return userRepository.save(user);
     }
 
     @Override
@@ -119,6 +106,19 @@ public class UserServiceImpl implements UserService {
         else {
             throw new EmptyException("employee", "Employee Detail is null");
         }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(int id, UserRequest userRequest) {
+        User user = findById(id);
+        if (existUserByPhone(userRequest.getPhoneNumber()) && !userRequest.getPhoneNumber().equals(user.getPhoneNumber())) {
+            throw new AlreadyExistException("phoneNumber", "Phone number existed already");
+        }
+        user = UserMapper.convertFromRequest(userRequest);
+        user.setId(id);
+        Role role = roleRepository.findById(userRequest.getRoleId()).orElse(null);
+        user.setRole(role);
         return userRepository.save(user);
     }
 

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 
 
@@ -39,7 +39,6 @@ import { SharedModule } from '../../shared/shared.module';
     NgApexchartsModule,
     NgScrollbarModule,
     NgxPaginationModule
-  ],
-  providers: [DatePipe]
+  ]
 })
 export class HomeModule { }
