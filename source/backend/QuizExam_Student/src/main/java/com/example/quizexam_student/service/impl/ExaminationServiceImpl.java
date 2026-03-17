@@ -148,7 +148,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public List<StudentDetail> updateStudentForExam(int examinationId, List<Integer> studentIds) {
-        List<Mark> markList = markRepository.findAllByExaminationIdAndScoreAndBeginTime(examinationId, null, null);
+        List<Mark> markList = markRepository.findAllByExamination_IdAndScoreIsNullAndBeginTimeIsNull(examinationId);
         markList.stream().peek(mark -> {mark.setStudentDetail(null); mark.setExamination(null);}).toList();
         Examination examination = examinationRepository.findById(examinationId).orElse(null);
         markRepository.deleteAll(markList);
@@ -218,12 +218,13 @@ public class ExaminationServiceImpl implements ExaminationService {
     }
 
     @Override
-    public Examination createExamination(ExaminationRequest examinationRequest, List<Question> questions) {
+    public Examination createExamination(ExaminationRequest examinationRequest, List<Integer> questionIds) {
         if (examinationRequest.getEndTime().isBefore(examinationRequest.getStartTime())) {
             throw new InvalidTimeException("DateTime", "End time must be after start time");
         }
         Subject subject = subjectRepository.findById(examinationRequest.getSubjectId()).orElse(null);
         double maxScore = 0;
+        List<Question> questions = questionRepository.findAllByIdInAndStatus(questionIds, 1);
         for (Question question : questions) {
             generateAnswerForQuestion(question);
             maxScore += question.getLevel().getPoint();
@@ -251,14 +252,14 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public List<StudentResponse> getStudentsForExamination(int examinationId) {
-        List<Mark> marks = markRepository.findAllByExaminationIdAndScoreAndBeginTime(examinationId, null, null);
-        return marks.stream().map(mark -> StudentMapper.convertToResponse(UserMapper.convertToResponse(Objects.requireNonNull(userRepository.findById(mark.getStudentDetail().getUserId()).orElse(null))), mark.getStudentDetail())).collect(Collectors.toList());
+        List<Mark> marks = markRepository.findAllByExamination_IdAndScoreIsNullAndBeginTimeIsNull(examinationId);
+        return marks.stream().map(mark -> StudentMapper.convertToResponse(mark.getStudentDetail())).collect(Collectors.toList());
     }
 
     @Override
     public List<StudentDetail> getListStudentsToAddForExamination(int examinationId) {
         List<Mark> marks = markRepository.findAllByExaminationId(examinationId);
-        List<Integer> studentDetailIds = marks.stream().map(mark -> StudentMapper.convertToResponse(UserMapper.convertToResponse(Objects.requireNonNull(userRepository.findById(mark.getStudentDetail().getUserId()).orElse(null))), mark.getStudentDetail())).map(StudentResponse::getUserResponse).map(UserResponse::getId).toList();
+        List<Integer> studentDetailIds = marks.stream().map(mark -> StudentMapper.convertToResponse(mark.getStudentDetail())).map(StudentResponse::getUserResponse).map(UserResponse::getId).toList();
         List<StudentDetail> studentDetailList = studentRepository.findAll();
         studentDetailList.removeIf(std -> std.getUser().getStatus() != 1);
         studentDetailList.removeAll(studentRepository.findAllByUserIdIn(studentDetailIds));
