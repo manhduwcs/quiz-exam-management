@@ -1,25 +1,19 @@
-export interface Role {
-    id?: number;
-    name?: string;
-    description?: string;
-}
-
-export interface Permission {
-    id?: number;
-    name?: string;
-    description?: string;
-}
-
-export interface User {
-    id?: number;
-    fullName?: string;
-    dob?: Date;
-    gender?: number;
-    address?: string;
-    phoneNumber?: string;
+export interface LoginRequest {
     email?: string;
-    role: Role;
+    password?: string;
 }
+
+export interface LoginResponse {
+    token: string;
+    message: string;
+}
+
+export interface ValidationError {
+    [key: string]: string | undefined;
+}
+
+
+
 
 export interface Sem {
     id: number;

@@ -17,27 +17,33 @@ public class ClassesServiceImpl implements ClassesService {
     private final ClassesRepository classesRepository;
 
     @Override
-    public List<Classes> getAllClasses() {
-        return classesRepository.findByStatusNotOrderByIdDesc(2);
+    public List<Classes> findAllClasses() {
+        return classesRepository.findAllByStatusOrderByIdDesc(1);
+    }
+
+    @Override
+    public Classes findOneById(int id) {
+        Classes _class = classesRepository.findByIdAndStatus(id,1).orElse(null);
+        if (Objects.isNull(_class)) {
+            throw new NotFoundException("class", "Class not found.");
+        }
+        return _class;
     }
 
     @Override
     public Classes addClass(Classes _class) {
         if (classesRepository.existsByNameAndStatus(_class.getName(),1)) {
-            throw new AlreadyExistException("className", "Class Name already exists.");
+            throw new AlreadyExistException("name", "Class Name already exists.");
         }
-        _class.setStatus(0);
+        _class.setStatus(1);
         return classesRepository.save(_class);
     }
 
     @Override
     public Classes updateClass(int id, Classes classInput) {
-        Classes classUpdate = classesRepository.findById(id).orElse(null);
-        if (Objects.isNull(classUpdate) || classUpdate.getStatus() == 0) {
-            throw new NotFoundException("class", "Class not found.");
-        }
+        Classes classUpdate = findOneById(id);
         if (classesRepository.existsByNameAndStatusAndIdNot(classInput.getName(),1, id)) {
-            throw new AlreadyExistException("className", "Class Name already exists.");
+            throw new AlreadyExistException("name", "Class Name already exists.");
         }
         setClass(classUpdate, classInput);
         return classesRepository.save(classUpdate);
@@ -45,10 +51,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public Classes deleteClass(int id) {
-        Classes classDelete = classesRepository.findById(id).orElse(null);
-        if (Objects.isNull(classDelete) || classDelete.getStatus() == 0) {
-            throw new NotFoundException("class", "Class not found.");
-        }
+        Classes classDelete = findOneById(id);
         classDelete.setStatus(0);
         classDelete.getStudentDetails().forEach(studentDetail -> {
             studentDetail.getUser().setStatus(0);

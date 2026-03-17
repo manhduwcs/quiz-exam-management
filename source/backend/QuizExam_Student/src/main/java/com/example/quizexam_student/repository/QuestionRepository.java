@@ -11,7 +11,5 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     List<Question> findAllBySubjectAndStatusOrderByIdDesc(Subject subject, int status);
 
-    List<Question> findAllByIdInAndStatus(List<Integer> id, int status);
-
     Question findByIdAndStatus(int id, int status);
 }
