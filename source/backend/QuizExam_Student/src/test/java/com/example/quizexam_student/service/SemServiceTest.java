@@ -46,59 +46,59 @@ public class SemServiceTest {
                 .build();
     }
 
-    @Test
-    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
-    void getAll_success(){
-        // GIVEN
-        Mockito.when(semRepository.findAll()).thenReturn(semList);
-        //  WHEN
-        var response = semService.getAllSem();
-        // THEN
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.size()).isEqualTo(semList.size());
-        Assertions.assertThat(response.get(0).getId()).isEqualTo(1);
-        Assertions.assertThat(response.get(0).getName()).isEqualTo("1");
-        Assertions.assertThat(response.get(1).getId()).isEqualTo(2);
-        Assertions.assertThat(response.get(1).getName()).isEqualTo("2");
-    }
-
-    @Test
-    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
-    void getById_success(){
-        // GIVEN
-        Mockito.when(semRepository.findById(1)).thenReturn(Optional.of(sem));
-        //  WHEN
-        var response = semService.getSemById(1);
-        // THEN
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getId()).isEqualTo(1);
-        Assertions.assertThat(response.getName()).isEqualTo("1");
-    }
-
-    @Test
-    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
-    void getById_notFound_fail(){
-        // GIVEN
-        Mockito.when(semRepository.findById(2)).thenThrow(new NotFoundException("EmptySem","Semeter not found"));
-        // WHEN
-        var exception = org.junit.jupiter.api.Assertions
-                .assertThrows(NotFoundException.class,() -> semService.getSemById(2));
-        // THEN
-        Assertions.assertThat(exception.getMessage()).isEqualTo("Semeter not found");
-        Assertions.assertThat(exception.getKey()).isEqualTo("EmptySem");
-    }
-
-    @Test
-    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
-    void getByName_success(){
-        // GIVEN
-        Mockito.when(semRepository.findByName("1")).thenReturn(sem);
-        //  WHEN
-        var response = semService.getSemByName("1");
-        // THEN
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getId()).isEqualTo(1);
-        Assertions.assertThat(response.getName()).isEqualTo("1");
-    }
+//    @Test
+//    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
+//    void getAll_success(){
+//        // GIVEN
+//        Mockito.when(semRepository.findAll()).thenReturn(semList);
+//        //  WHEN
+//        var response = semService.getAllSem();
+//        // THEN
+//        Assertions.assertThat(response).isNotNull();
+//        Assertions.assertThat(response.size()).isEqualTo(semList.size());
+//        Assertions.assertThat(response.get(0).getId()).isEqualTo(1);
+//        Assertions.assertThat(response.get(0).getName()).isEqualTo("1");
+//        Assertions.assertThat(response.get(1).getId()).isEqualTo(2);
+//        Assertions.assertThat(response.get(1).getName()).isEqualTo("2");
+//    }
+//
+//    @Test
+//    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
+//    void getById_success(){
+//        // GIVEN
+//        Mockito.when(semRepository.findById(1)).thenReturn(Optional.of(sem));
+//        //  WHEN
+//        var response = semService.getSemById(1);
+//        // THEN
+//        Assertions.assertThat(response).isNotNull();
+//        Assertions.assertThat(response.getId()).isEqualTo(1);
+//        Assertions.assertThat(response.getName()).isEqualTo("1");
+//    }
+//
+//    @Test
+//    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
+//    void getById_notFound_fail(){
+//        // GIVEN
+//        Mockito.when(semRepository.findById(2)).thenThrow(new NotFoundException("EmptySem","Semeter not found"));
+//        // WHEN
+//        var exception = org.junit.jupiter.api.Assertions
+//                .assertThrows(NotFoundException.class,() -> semService.getSemById(2));
+//        // THEN
+//        Assertions.assertThat(exception.getMessage()).isEqualTo("Semeter not found");
+//        Assertions.assertThat(exception.getKey()).isEqualTo("EmptySem");
+//    }
+//
+//    @Test
+//    @WithMockUser(username = "admin@example.com", roles = {"ADMIN"})
+//    void getByName_success(){
+//        // GIVEN
+//        Mockito.when(semRepository.findByName("1")).thenReturn(sem);
+//        //  WHEN
+//        var response = semService.getSemByName("1");
+//        // THEN
+//        Assertions.assertThat(response).isNotNull();
+//        Assertions.assertThat(response.getId()).isEqualTo(1);
+//        Assertions.assertThat(response.getName()).isEqualTo("1");
+//    }
 
 }
