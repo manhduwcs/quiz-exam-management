@@ -1,94 +1,94 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UrlService {
-  constructor() { }
+    constructor() { }
 
-  subjectImageUrl: string = 'http://localhost:8080/uploads/img-subject/';
+    subjectImageUrl: string = 'http://localhost:8081/uploads/img-subject/';
 
-  questionImageUrl: string = 'http://localhost:8080/uploads/img-question/';
+    questionImageUrl: string = 'http://localhost:8081/uploads/img-question/';
 
-  subjectDefaultImageUrl: string = 'http://localhost:8080/uploads/img-subject/default.png';
-  
-  getPageUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? '/admin' : '';
-  }
+    subjectDefaultImageUrl: string = 'http://localhost:8081/uploads/img-subject/default.png';
 
-  getSubjectUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/subject` : '';
-  }
+    getPageUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? '/admin' : '';
+    }
 
-  getChapterUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
-    return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}` : '';
-  }
+    getSubjectUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/subject` : '';
+    }
 
-  getQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
-    return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/question-list` : '';
-  }
+    getChapterUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
+        return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}` : '';
+    }
 
-  getAddQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
-    return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/add-new-question` : '';
-  }
+    getQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
+        return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/question-list` : '';
+    }
 
-  getEditQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number, id?: number): string {
-    return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/edit-question/${id}` : '';
-  }
+    getAddQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number): string {
+        return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/add-new-question` : '';
+    }
 
-  getClassUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? '/admin/class' : '';
-  }
+    getEditQuestionUrl(pageType: 'ADMIN' | 'STUDENT', subjectId?: number, id?: number): string {
+        return pageType === 'ADMIN' ? `${this.getSubjectUrl('ADMIN')}/${subjectId}/edit-question/${id}` : '';
+    }
 
-  getClassDetailUrl(pageType: 'ADMIN' | 'STUDENT', classId?: number): string {
-    return pageType === 'ADMIN' ? `${this.getClassUrl('ADMIN')}/${classId}` : '';
-  }
+    getClassUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? '/admin/class' : '';
+    }
 
-  getStudentListUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/student` : '';
-  }
+    getClassDetailUrl(pageType: 'ADMIN' | 'STUDENT', classId?: number): string {
+        return pageType === 'ADMIN' ? `${this.getClassUrl('ADMIN')}/${classId}` : '';
+    }
 
-  getMarkUrl(pageType: 'ADMIN' | 'STUDENT', studentId?: number, classId?: number): string {
-    return pageType === 'ADMIN' ? `/admin/${classId ? `class/${classId}` : 'student'}/marks/${studentId}` : '/marks';
-  }
+    getStudentListUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/student` : '';
+    }
 
-  getExamUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/exam` : '/exam';
-  }
+    getMarkUrl(pageType: 'ADMIN' | 'STUDENT', studentId?: number, classId?: number): string {
+        return pageType === 'ADMIN' ? `/admin/${classId ? `class/${classId}` : 'student'}/marks/${studentId}` : '/marks';
+    }
 
-  getCreateExamUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/exam/create-exam` : '';
-  }
+    getExamUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/exam` : '/exam';
+    }
 
-  getAddStudentForExamUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
-    return pageType === 'ADMIN' ? `/admin/exam/add-student/${examId}` : '';
-  }
+    getCreateExamUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/exam/create-exam` : '';
+    }
 
-  getExamDetailUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
-    return pageType === 'ADMIN' ? `/admin/exam/detail/${examId}` : `/exam/detail/${examId}`;
-  }
+    getAddStudentForExamUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
+        return pageType === 'ADMIN' ? `/admin/exam/add-student/${examId}` : '';
+    }
 
-  getEditExamInfoUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
-    return pageType === 'ADMIN' ? `/admin/exam/edit-exam/${examId}` : '';
-  }
+    getExamDetailUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
+        return pageType === 'ADMIN' ? `/admin/exam/detail/${examId}` : `/exam/detail/${examId}`;
+    }
 
-  getUpdateExamQuestionsUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
-    return pageType === 'ADMIN' ? `/admin/exam/update-questions/${examId}` : '';
-  }
+    getEditExamInfoUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
+        return pageType === 'ADMIN' ? `/admin/exam/edit-exam/${examId}` : '';
+    }
 
-  getLevelUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/level` : '';
-  }
+    getUpdateExamQuestionsUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
+        return pageType === 'ADMIN' ? `/admin/exam/update-questions/${examId}` : '';
+    }
 
-  getAuthorizeUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/authorize` : '';
-  }
+    getLevelUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/level` : '';
+    }
 
-  getAuthorizeDetailUrl(pageType: 'ADMIN' | 'STUDENT'): string {
-    return pageType === 'ADMIN' ? `/admin/authorize/detail` : '';
-  }
+    getAuthorizeUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/authorize` : '';
+    }
 
-  getExamResultsUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
-    return pageType === 'ADMIN' ? `/admin/exam-results/${examId}` : `/exam/result/${examId}`;
-  }
+    getAuthorizeDetailUrl(pageType: 'ADMIN' | 'STUDENT'): string {
+        return pageType === 'ADMIN' ? `/admin/authorize/detail` : '';
+    }
+
+    getExamResultsUrl(pageType: 'ADMIN' | 'STUDENT', examId: number): string {
+        return pageType === 'ADMIN' ? `/admin/exam-results/${examId}` : `/exam/result/${examId}`;
+    }
 }
