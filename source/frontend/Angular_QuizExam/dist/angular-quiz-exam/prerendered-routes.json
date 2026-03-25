@@ -1,0 +1,25 @@
+{
+  "routes": [
+    "/",
+    "/admin",
+    "/admin/authorize",
+    "/admin/authorize/detail",
+    "/admin/class",
+    "/admin/create-exam",
+    "/admin/employee",
+    "/admin/exam",
+    "/admin/exam/create-exam",
+    "/admin/level",
+    "/admin/login",
+    "/admin/practice",
+    "/admin/practice/create",
+    "/admin/profile",
+    "/admin/sem",
+    "/admin/student",
+    "/admin/subject",
+    "/exam",
+    "/login",
+    "/mark",
+    "/profile"
+  ]
+}

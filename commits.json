@@ -1,0 +1,1412 @@
+[
+    {
+        "old_hash": "e78eafaee1fe2939f8d5f6532e3392a4b138e4a6",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T08:58:15",
+        "message": "Initial commit\n"
+    },
+    {
+        "old_hash": "0498c2f243da06eff6e124d81b0ea8e0a23173a1",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T11:09:48",
+        "message": "Design Base\n"
+    },
+    {
+        "old_hash": "25df82c1ea10ba359b1564e14aa7c127e5e0313c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T13:59:15",
+        "message": "push file sql\n"
+    },
+    {
+        "old_hash": "cfdaa3c24347478325496ef05716f921bddcc976",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T14:24:42",
+        "message": "create angular base\n"
+    },
+    {
+        "old_hash": "cdf639d803f7d96a34e2109e238bacabc398f043",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T17:13:51",
+        "message": "Update Database\n"
+    },
+    {
+        "old_hash": "2619c23a9bb2ce4277e70bc5b645bbed97a58d18",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T19:34:08",
+        "message": "Update base Angular\n"
+    },
+    {
+        "old_hash": "e71fc485fba0ddad4b5074dcf2e7af1226f47dbd",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-02-26T22:32:33",
+        "message": "entity design\n"
+    },
+    {
+        "old_hash": "e05e13cd2614d27869f77e9fea4f3175333c06bb",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-26T22:14:40",
+        "message": "update login html css\n"
+    },
+    {
+        "old_hash": "31d16d2574a904995a76b11e4cad1138975681a6",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-27T01:23:04",
+        "message": "update entity\n"
+    },
+    {
+        "old_hash": "745d98eb5fdb8c7611327df42605e9244a5bc660",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T04:29:00",
+        "message": "update folder\n"
+    },
+    {
+        "old_hash": "f6b690020d0fe473d1576fd6e3e66d4d7400486a",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T06:30:15",
+        "message": "angular call api\n"
+    },
+    {
+        "old_hash": "4e8ac2fba2550522e3e4d6e6f5c6ca65cfefe3fd",
+        "author": "Anh NH <anh.nh.960@aptechlearning.edu.vn>",
+        "date": "2026-02-27T09:24:51",
+        "message": "demo security\n"
+    },
+    {
+        "old_hash": "39fb2853ae8ae7512652340a0b527c64f115cff4",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T09:14:48",
+        "message": "update homepage, combine header footer\n"
+    },
+    {
+        "old_hash": "73c527391587275fcb1662252eae25dc0b026149",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T12:47:47",
+        "message": "update header, footer\n"
+    },
+    {
+        "old_hash": "090229277836bc5c9ee8972344757eadef95a695",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-02-27T14:46:00",
+        "message": "security\n"
+    },
+    {
+        "old_hash": "4adbc744bdcdd96d525d5a0778d9e460ae65ddba",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T17:55:47",
+        "message": ".\n"
+    },
+    {
+        "old_hash": "7680b7d89fef71abed2b3e2853ab087b123d9b93",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T18:26:21",
+        "message": "update structure homepage file\n"
+    },
+    {
+        "old_hash": "220c976bfd2e44c6428affd270f498516c65d5ea",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-27T20:48:58",
+        "message": "update structure homepage file #2\n"
+    },
+    {
+        "old_hash": "e85391483a5516ec5c2aa57f081b2ee261f7664f",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-02-27T23:22:01",
+        "message": "update login\n"
+    },
+    {
+        "old_hash": "372dd48ed2efb196c8f869147a7f9cd798bf1539",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-02-28T02:21:58",
+        "message": "lib\n"
+    },
+    {
+        "old_hash": "8bc8f5a0cd4c6599711e32e7a487132fda8b970d",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-28T02:39:24",
+        "message": "fix component\n"
+    },
+    {
+        "old_hash": "ceeb2108d5a2eca0bd929b657af74332265f2f17",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-02-28T05:24:17",
+        "message": "footer css\n"
+    },
+    {
+        "old_hash": "e31eee11c3a690d0eff76326f8ec829a66d11904",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-28T07:37:43",
+        "message": "fix switch mode\n"
+    },
+    {
+        "old_hash": "070058123452e261976629a3f9a360beb847b9ad",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-28T10:32:57",
+        "message": "fix header\n"
+    },
+    {
+        "old_hash": "a7a1f9a06035460197e4d75b4ca9c1daaaa48a34",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-28T11:06:25",
+        "message": "finish toastr, header, drop down menu\n"
+    },
+    {
+        "old_hash": "b2990e18dc85dca6e3c1bee7c800b1d2dc2f06b1",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-28T13:44:08",
+        "message": "handle exception login + register\n"
+    },
+    {
+        "old_hash": "26e5e43bd4a5a50fec40e02c013ed2371f1dbe80",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-28T15:49:12",
+        "message": "user_profile\n"
+    },
+    {
+        "old_hash": "7a5ba4c8da85d7915981983263a4891330916340",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-28T18:54:03",
+        "message": "fix dark mode\n"
+    },
+    {
+        "old_hash": "8e8fa3e733c61edc058ecc33e98d5fd12f95c810",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-02-28T18:32:27",
+        "message": "update routing\n"
+    },
+    {
+        "old_hash": "5db8c0edd3f38c7d55bfb4cee554c4003479f3bf",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-02-28T21:31:57",
+        "message": "profile dark\n"
+    },
+    {
+        "old_hash": "8df4d621c90a0fc43230b05eb717dec01782252d",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T00:42:52",
+        "message": "fix mark\n"
+    },
+    {
+        "old_hash": "df1fe3b762e719769045230e57de864f3985eb2c",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-01T03:04:37",
+        "message": "validation phone + password, check password incorrect\n"
+    },
+    {
+        "old_hash": "a7df4ce79b421a623fa07d92680e2d47b81f765b",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T06:19:49",
+        "message": "user mark\n"
+    },
+    {
+        "old_hash": "ec50c13b37e08b91ac8269b8ab6d08bbc0d44750",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-01T05:37:17",
+        "message": "fix change password profile\n"
+    },
+    {
+        "old_hash": "18caa6dc65916e9b52a193cd87005582d8af55a0",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T08:46:30",
+        "message": "btn logout\n"
+    },
+    {
+        "old_hash": "da8a375acb5ad61d720147de882d7f6d275964bd",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T11:39:22",
+        "message": "fix icon profile\n"
+    },
+    {
+        "old_hash": "476cf9cd1acb563f05b4ac7aad7cee629300a045",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T14:45:37",
+        "message": "update logout, chia folder admin\n"
+    },
+    {
+        "old_hash": "cb0ae446585b78fd02c709f7ed9a5bc801114206",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-01T14:39:02",
+        "message": "update employee, admin routing module\n"
+    },
+    {
+        "old_hash": "e5ac6ce8f9901616f8c6cfdc32da5bc207753133",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-01T16:53:28",
+        "message": "login admin\n"
+    },
+    {
+        "old_hash": "d7d7160f6cad38547cdd4554ca40c3f30f647257",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-01T20:11:05",
+        "message": "update light-dark admin\n"
+    },
+    {
+        "old_hash": "f24832a6f0fb926435be9dc387a4c1162b66092a",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-01T22:59:31",
+        "message": "fix profile, change module switch mode button\n"
+    },
+    {
+        "old_hash": "eff51bbae03fd441967b8e6627ff1fd7e4616528",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-01T22:57:23",
+        "message": "call api ListEmployee\n"
+    },
+    {
+        "old_hash": "0fcc667fc39fc080815bd794ca5435162538200c",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-02T01:04:29",
+        "message": "update popup employee\n"
+    },
+    {
+        "old_hash": "ceec651be76082c103db2ef2e4533a19f0f80575",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-02T04:10:59",
+        "message": "update admin login\n"
+    },
+    {
+        "old_hash": "da0bb0c4471b59fe373919e7180502ceb15570f5",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-02T07:15:07",
+        "message": "update login admin\n"
+    },
+    {
+        "old_hash": "71784b86afc80efca63ce161a5413d07711dd41f",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-02T06:48:49",
+        "message": "update security\n"
+    },
+    {
+        "old_hash": "dd66bcdf4efaf35688eb297ec7f19e20f3f48c83",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-02T10:10:54",
+        "message": "login admin component\n"
+    },
+    {
+        "old_hash": "acfdd78df1277ac5c82e4516704be29c23514c84",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-02T12:55:16",
+        "message": "login admin validation\n"
+    },
+    {
+        "old_hash": "bf2fe2013c28f3af25c37f7e205e0cdf021c1c9c",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-02T15:00:02",
+        "message": "add datatables, fix popup\n"
+    },
+    {
+        "old_hash": "1b97c9c270e34160091af33ac0d851cdcba67109",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-02T15:19:10",
+        "message": "update entity, css popup\n"
+    },
+    {
+        "old_hash": "95ead5344751c13c9089538e8b6776fc2c87b318",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-02T17:49:44",
+        "message": "fe dashboard-overall\n"
+    },
+    {
+        "old_hash": "c26142e25eec381a57383a8c91eca35904b8ce86",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-02T21:23:51",
+        "message": "api export excel, pdf for student, employee. Edit employee\n"
+    },
+    {
+        "old_hash": "f6ee9935c0e6a9c5764e5983f5939a5c81825b4b",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-02T23:45:14",
+        "message": "update active sidebar\n"
+    },
+    {
+        "old_hash": "249b6b3e5f16f170912797a37d9dbf1e6cf445ec",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-03T02:29:34",
+        "message": "permission\n"
+    },
+    {
+        "old_hash": "4c6a5c7e58246786dc58c2e719900af06ee4692b",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-03T02:14:31",
+        "message": "employee api\n"
+    },
+    {
+        "old_hash": "22d96dd0244db593f3e24fa0c5f32677e53d0fb0",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-03T05:20:20",
+        "message": "login update, dropdown user\n"
+    },
+    {
+        "old_hash": "eddc47d2a1e6fdcad530ded486f793d265fb3485",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-03T07:56:21",
+        "message": "login validator\n"
+    },
+    {
+        "old_hash": "30d41dc13bc35894cc23a4e8647148a974fcc0fe",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-03T11:00:08",
+        "message": "fix phan role employee\n"
+    },
+    {
+        "old_hash": "8bc934bb6464afa888963451ec1ebd740a077065",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-03T10:44:57",
+        "message": "popup move std, fix admin logout\n"
+    },
+    {
+        "old_hash": "2658fd1b09c98e06d4c145294d2fae04cfcb239b",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-03T13:54:50",
+        "message": "login student validator\n"
+    },
+    {
+        "old_hash": "03941153afbfc0a6cc74c98109c79993b2c6b556",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-03T16:14:13",
+        "message": "login validator, css img, footer bg img\n"
+    },
+    {
+        "old_hash": "536639bc7a8f3ff9c07c413e2863937a028f8038",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-03T19:36:48",
+        "message": "get all, create, update (entity class)\n"
+    },
+    {
+        "old_hash": "1bea469cfeba1bbf8a6bec5990b799bed0179d16",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-03T18:46:53",
+        "message": "rename img file\n"
+    },
+    {
+        "old_hash": "5cc4f3912510fcdc4c03f8fe04a313466227a368",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-03T21:45:14",
+        "message": "sort file export api\n"
+    },
+    {
+        "old_hash": "e0a101e7338f25bfee47d10660109c8cd20893c3",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T00:22:35",
+        "message": "fe list + popup subject\n"
+    },
+    {
+        "old_hash": "76c55f84b6262e7be1c9bb141ff38a493ce8617f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-04T03:37:56",
+        "message": "update exception, update class\n"
+    },
+    {
+        "old_hash": "9ca2f89e67825d4f25883ea7935ce47379ef8783",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-04T03:15:24",
+        "message": "fix subject/list\n"
+    },
+    {
+        "old_hash": "8634950c8e4ac277280f0317e899e41f074af519",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-04T06:05:14",
+        "message": "Fix body, footer\n"
+    },
+    {
+        "old_hash": "8d167582f0a642d157ea38e628df990b340c5337",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-04T08:42:27",
+        "message": "profile admin\n"
+    },
+    {
+        "old_hash": "1c1ddc8e7c173814e996baa67d529b2880d13669",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T11:44:23",
+        "message": "profile call api\n"
+    },
+    {
+        "old_hash": "e9699a423c2a69f4dc5431f052ba88257620289e",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-04T12:17:07",
+        "message": "student api\n"
+    },
+    {
+        "old_hash": "018f0fa1bff2d8487d70858e155373e6f0d8ad89",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-04T14:49:15",
+        "message": "user, student api\n"
+    },
+    {
+        "old_hash": "d7355262af7bcc8bf4d88f1645c9b765e36f6658",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T17:17:22",
+        "message": "deleteClass\n"
+    },
+    {
+        "old_hash": "f0dbc3237de170f1d8d4db404e4b4073348c79d8",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T20:26:56",
+        "message": "api crud + export subject\n"
+    },
+    {
+        "old_hash": "1d346a5f3baa0f0775c297f361ceb21877f3ddc0",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T22:32:18",
+        "message": "subject controller\n"
+    },
+    {
+        "old_hash": "5622e51b893386d45e8a36c64d3d19dd695c2884",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-04T22:45:20",
+        "message": "fix source be\n"
+    },
+    {
+        "old_hash": "3bde037380287ce87027abca0a6d491dea4d57be",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-05T01:33:53",
+        "message": "add Student, update Student\n"
+    },
+    {
+        "old_hash": "4aec9de975053d256495e7fe9ac515bf69ff41ad",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T04:22:50",
+        "message": "chapter\n"
+    },
+    {
+        "old_hash": "eedf0e6445b82f703487b2ebaa7401aac6b1c1b6",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T07:21:14",
+        "message": "api subject + export class excel, pdf\n"
+    },
+    {
+        "old_hash": "a8af111e39588b98d95ac098453ba03080cce02a",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T07:03:14",
+        "message": "update student\n"
+    },
+    {
+        "old_hash": "8c2ef3693a9aaa6f66d4184ddd08a1789a9f2a39",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-05T09:48:23",
+        "message": "update class for student\n"
+    },
+    {
+        "old_hash": "aa16aaa91677c43a4d409896973b474d9f0f1977",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T12:25:35",
+        "message": "api chapter crud\n"
+    },
+    {
+        "old_hash": "ea50d720ebd9271e0def9ec0703207000ce569f2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T15:30:53",
+        "message": "admin-subject\n"
+    },
+    {
+        "old_hash": "e02e4ab4b527fcca3aeb14f4861ead85bbbe0530",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-05T15:36:44",
+        "message": "update user, student, security config\n"
+    },
+    {
+        "old_hash": "98dd0ac7cbb17feb777f47081b28e83afbc86d1d",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-05T17:58:09",
+        "message": "export file service fe\n"
+    },
+    {
+        "old_hash": "570edde785d9abe06459087c89e63315403c00c6",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-05T21:42:17",
+        "message": "profile, chapter call api\n"
+    },
+    {
+        "old_hash": "b355ac05b0cba2ef3471ff9852b78f00c2650fdc",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-06T00:19:55",
+        "message": "employee exporter\n"
+    },
+    {
+        "old_hash": "074405fdf7f2de2a974bdee4ca4af9fe141cf4af",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-05T23:49:58",
+        "message": "fix getAll chapter\n"
+    },
+    {
+        "old_hash": "db03fea0685d9f6218c2fd77a17cb7eca7243bf6",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-06T02:35:19",
+        "message": "chapter call api\n"
+    },
+    {
+        "old_hash": "715522ad7e4d59ccb1e0b4722ecb3ad1f1049c42",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-06T05:16:42",
+        "message": "update entity, service, api, component, security\n"
+    },
+    {
+        "old_hash": "fbeb70caecf514b08ee2ee1a85743531edaacb4d",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-06T07:57:29",
+        "message": "base question form\n"
+    },
+    {
+        "old_hash": "42c3ce060cb0fade086fd68e5501c5d79daccf31",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-06T10:41:54",
+        "message": "fix update subject\n"
+    },
+    {
+        "old_hash": "f982eb51069ce9b6c8a0cf1e29a57c29cd3087e2",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-06T11:27:01",
+        "message": "question list\n"
+    },
+    {
+        "old_hash": "3dc56a700df53d9fcbf31e1b910daaadf8e2c203",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-06T13:37:16",
+        "message": "question-form\n"
+    },
+    {
+        "old_hash": "a875e7703ec10746a18dad4d5f125e1d20299073",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-06T16:21:17",
+        "message": "security config, authorization be fe\n"
+    },
+    {
+        "old_hash": "7ed48d60661758935f1195d8ab29a6fbafce34e4",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-06T19:39:32",
+        "message": "fix reponsive\n"
+    },
+    {
+        "old_hash": "7723d823e6082a4c648ee085d37bac534b9bfb8f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-06T19:47:35",
+        "message": "fix router\n"
+    },
+    {
+        "old_hash": "0cca070563eb07bd6f974a114c3f6ee1e2da59bd",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-06T22:36:40",
+        "message": "student export excel, pdf. subject unittest controller, service\n"
+    },
+    {
+        "old_hash": "8b185f6c02b6867773bbce45916082cc092e675b",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-07T01:13:12",
+        "message": "fix gui question form\n"
+    },
+    {
+        "old_hash": "f93f99bab9c9feabbc40bba5658d5681107efd4c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T03:42:13",
+        "message": "exam detail, hiển thị name+role\n"
+    },
+    {
+        "old_hash": "664ae11e09c5a56a482a80bcce7d377c53cce13b",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T03:31:40",
+        "message": "Unit Test Classes,Sem controller, service. Fix UnitTest Subject Controller, Service\n"
+    },
+    {
+        "old_hash": "14c847e4a4ba546f970b58a982842ea1bd027be8",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T06:51:37",
+        "message": "fix export student\n"
+    },
+    {
+        "old_hash": "1d015f383cd7f1c8fe1b6d1062753797a0022d10",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T09:35:32",
+        "message": "fix student export\n"
+    },
+    {
+        "old_hash": "55a1cda643db782f3a8854e26870523cdfb6ce67",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-07T12:24:28",
+        "message": "frontend create question\n"
+    },
+    {
+        "old_hash": "0bb5358357be9ae481b1d565c0419ecb06d31f15",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T11:43:03",
+        "message": "fe exam detail\n"
+    },
+    {
+        "old_hash": "c1c3bb7b4bdd0047cb7baa401cc839646e99ea79",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T14:24:55",
+        "message": "examination list, form\n"
+    },
+    {
+        "old_hash": "19ef69c4d83704de51406e40cfef97b66a71bd8e",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-07T17:20:53",
+        "message": "fix fe table, export student\n"
+    },
+    {
+        "old_hash": "180c66a18203d2bbf62502a07176aec32ae18b77",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-07T20:35:57",
+        "message": "question api\n"
+    },
+    {
+        "old_hash": "cf7ff636938742242a93bbfe7d5f5186c20250fd",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-07T20:42:06",
+        "message": "update question-form\n"
+    },
+    {
+        "old_hash": "046b69c2d380edd5995d170de82d0078947482b8",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-07T23:32:49",
+        "message": "fix create question\n"
+    },
+    {
+        "old_hash": "f482e81f584af88912532481b61eb8d88c3aaefc",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T01:39:29",
+        "message": "fix endpoint export,  unit test chapter controller, service\n"
+    },
+    {
+        "old_hash": "d81fa6a20fb7b3fbdd962840bd8096e265129206",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T04:52:46",
+        "message": "fix responsive table, dob update\n"
+    },
+    {
+        "old_hash": "94c8c33925aeb3fcf803b08ff7bb669b790f424f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-08T07:48:32",
+        "message": "fix popup chapter\n"
+    },
+    {
+        "old_hash": "a837408995f88354cbba2791e7b502d28012851c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T07:27:27",
+        "message": "fix export list\n"
+    },
+    {
+        "old_hash": "58acea08bb34972bab506080b2dc0377a546b021",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-08T10:49:33",
+        "message": "exam list\n"
+    },
+    {
+        "old_hash": "d4e6c00c592c0d9fe3e1a32bd1fb044aaa286e82",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-08T13:15:23",
+        "message": "fix content wrapper\n"
+    },
+    {
+        "old_hash": "1d157b92e93a6d12b2469e0030680b13c74854d9",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T16:08:12",
+        "message": "titlte icon\n"
+    },
+    {
+        "old_hash": "23b05fd01e64f87422e75705e8380804d13fc203",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-08T15:44:38",
+        "message": "fix question api\n"
+    },
+    {
+        "old_hash": "97c9b085be58b1acaaba381f8bb57707b1508844",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T18:46:49",
+        "message": "get 4 answer per question\n"
+    },
+    {
+        "old_hash": "adf9a70a017d13223287acb273a72dfcbb56b895",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-08T21:48:14",
+        "message": "question update\n"
+    },
+    {
+        "old_hash": "eed0e79a197c5c3709aa539bed06965c703c6789",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T23:45:57",
+        "message": "fix get answer\n"
+    },
+    {
+        "old_hash": "743baf70d10b5eac99d0aa49d05b5c63f3f81d90",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-08T23:52:30",
+        "message": "call api popup exam\n"
+    },
+    {
+        "old_hash": "ecea4a0dd088cfd5e5f4c7bac76ecc477f01a14d",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T03:07:23",
+        "message": "fix create popup\n"
+    },
+    {
+        "old_hash": "1634662e6d94d21e392663df1327a8ed612fd2ca",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-09T05:34:19",
+        "message": "generate examination api\n"
+    },
+    {
+        "old_hash": "093d310e3a9b0d75ea82309345cb3875260364ed",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-09T08:09:09",
+        "message": "examination call api\n"
+    },
+    {
+        "old_hash": "4e42e3b83264103f9a09455bb2c1d4b4c808790e",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T08:18:15",
+        "message": "create exam call api\n"
+    },
+    {
+        "old_hash": "976992843e8d2282f558d5d67066f71d5af46552",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-09T10:54:32",
+        "message": "detail\n"
+    },
+    {
+        "old_hash": "f57075eab9dc0b997124ce6937e92b34c5994e61",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T14:36:37",
+        "message": "fix get Question\n"
+    },
+    {
+        "old_hash": "55645ce27659dee345cc613ffd41177782dcb79e",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T16:58:04",
+        "message": "question detail\n"
+    },
+    {
+        "old_hash": "291f4ee082c59fc83bd107a2e54d59781545fcf7",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-09T17:22:06",
+        "message": "fix get chapter in question\n"
+    },
+    {
+        "old_hash": "4f0f769f29fcaad53658952c86508948124bfebc",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T19:24:01",
+        "message": "fix button frontend\n"
+    },
+    {
+        "old_hash": "0090c179a07dc117dda5a27ace603790aa70a052",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-09T22:29:27",
+        "message": "fix update Question\n"
+    },
+    {
+        "old_hash": "f7a69312f41f35b68d459a7ad087e97233e84eb1",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T00:54:58",
+        "message": "exam detail\n"
+    },
+    {
+        "old_hash": "1f893f198bb3d9f76914a3680bb9c78a5497c699",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T03:44:09",
+        "message": "fix entity\n"
+    },
+    {
+        "old_hash": "08a7e2fedec18752bf62f48de67b594dbf3943f0",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-10T03:46:50",
+        "message": "fix class\n"
+    },
+    {
+        "old_hash": "ae0bebcfa35f15aec8bafe64934904759807773d",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-10T06:59:12",
+        "message": "fix css image question\n"
+    },
+    {
+        "old_hash": "5d67b0b32ee1c804bb5675f4abb6a6f26946e4ea",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-10T09:58:18",
+        "message": "valid update Question\n"
+    },
+    {
+        "old_hash": "95ade49440b131a0a2edafec6beafe37122b39ff",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T11:59:53",
+        "message": "routing, create component, base student-exam\n"
+    },
+    {
+        "old_hash": "ee4cb0aa09ecafc7a341169d01d80943d57317e2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T12:45:23",
+        "message": "update exam demo\n"
+    },
+    {
+        "old_hash": "dcc51b5cc767f8083b2d1b698f496fa69fcab242",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-10T14:49:25",
+        "message": "valid create Question\n"
+    },
+    {
+        "old_hash": "3c5f59cc02f26a7da46f203c2f78098b6ed8e604",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T17:24:13",
+        "message": "check all chapter (admin); list, popup exam (student)\n"
+    },
+    {
+        "old_hash": "193f147c993c7c32ce836b7a806aec9fab00dfcd",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T21:05:01",
+        "message": "test generate exam\n"
+    },
+    {
+        "old_hash": "78187ec95bda129bfeb062393b6f61cb1d8af93f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-10T20:52:23",
+        "message": "fix table\n"
+    },
+    {
+        "old_hash": "032ac2389fb5289309f261bacb8bfcf1fef15dc0",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-10T22:57:34",
+        "message": "fix generate exam, update exam, update student for exam\n"
+    },
+    {
+        "old_hash": "d8bf928bc912bee5938ff7baec8bd7e6120fe11f",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-11T02:14:19",
+        "message": "fix examination and warning\n"
+    },
+    {
+        "old_hash": "92ffe81df5475a5708bfba94c950d15510ce0158",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-11T05:08:30",
+        "message": "detail, result\n"
+    },
+    {
+        "old_hash": "5eaacccb5b661f0f2d0cd4d750de630853d8935e",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-11T05:08:52",
+        "message": "student - exam detail\n"
+    },
+    {
+        "old_hash": "34da7f043b94467c6c0b2fe99ebd89bcaf8faef4",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-11T08:04:53",
+        "message": "call api exam list, popup\n"
+    },
+    {
+        "old_hash": "cf1fcc9e4868398e4174d015e79a73e8c7f60d30",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-11T10:12:21",
+        "message": "fix get exam\n"
+    },
+    {
+        "old_hash": "249072f6e5f3e556cd512485a1809d21a24e415c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-11T13:29:18",
+        "message": "student exam list, detail\n"
+    },
+    {
+        "old_hash": "174721d42465a143a602d7cf00ac8c85e511be20",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-11T15:53:00",
+        "message": "practice entity, update examination\n"
+    },
+    {
+        "old_hash": "1031dfe4cda41e8f539db75c0bfec2e80c0c3786",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-11T16:13:00",
+        "message": "update submit exam\n"
+    },
+    {
+        "old_hash": "bb4cae96847d1212ba1203c7f4e804b2f21bb8ef",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-11T18:32:32",
+        "message": "generate exam\n"
+    },
+    {
+        "old_hash": "2b1079ba3f32f2b461160ac91e236f687856d368",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-11T22:05:45",
+        "message": "fix level exam\n"
+    },
+    {
+        "old_hash": "17126f844cdb37280814086ba35c202b22faa888",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-12T00:41:34",
+        "message": "fix create exam\n"
+    },
+    {
+        "old_hash": "0ba18dbd9f3855f3c3107045132958a8f87d0735",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T00:21:58",
+        "message": "mark + level controller\n"
+    },
+    {
+        "old_hash": "ca396a7baa4b36a317ad0f9dbe81689fc1591d67",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T03:27:18",
+        "message": "practice, api profile student\n"
+    },
+    {
+        "old_hash": "82c4efcaedf287226d349ec06226360a314cf6bf",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T05:44:21",
+        "message": "level form create\n"
+    },
+    {
+        "old_hash": "3f4903aece67b6e55ca65b6944a26986f703f4e3",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-12T09:12:36",
+        "message": "fix exam, exam detail, api mark\n"
+    },
+    {
+        "old_hash": "c68f59481427d0ff309efaae40e700f19373b18c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T09:00:54",
+        "message": "fix create subject, update dob student, student mark\n"
+    },
+    {
+        "old_hash": "1af4f309f180d17344467c8d2cf44d36a6e07e0d",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T11:52:29",
+        "message": "question + exam export pdf\n"
+    },
+    {
+        "old_hash": "418141f3a1516dcce556c40d2d1b9badc3cb8f48",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-12T14:00:51",
+        "message": "update exam detail, fix timer and create exam\n"
+    },
+    {
+        "old_hash": "867da2864a78e60253b56dacf909848df7fa723f",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-12T17:02:55",
+        "message": "get list exam for student\n"
+    },
+    {
+        "old_hash": "37c6e7aac5dc943c03bcffc97c6bbf6ecf567e2f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-12T17:16:37",
+        "message": "update result exam\n"
+    },
+    {
+        "old_hash": "a2467c32396cc2ea09132d01fc9bd3457e93db06",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-12T19:50:53",
+        "message": "fix mark, profile, export question + exam\n"
+    },
+    {
+        "old_hash": "963a9c8e8f267dc348300f7a269ca202e3d5b324",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-12T22:40:06",
+        "message": "update result\n"
+    },
+    {
+        "old_hash": "f1ded1264529a9d908b6b5df0ab6593265a64eb3",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-13T01:18:14",
+        "message": "list exam for student call api\n"
+    },
+    {
+        "old_hash": "1248a8f23ae1f03dc09c306998f54c89db985be7",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-13T01:43:03",
+        "message": "fix detail exam, shuffle question and answer, list question, fix change password\n"
+    },
+    {
+        "old_hash": "a0779bd9ba0c35dfe70aa60a09a2324ada262997",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T03:57:14",
+        "message": "api level\n"
+    },
+    {
+        "old_hash": "89f833a421aa7cc27efb7db5456c70cbc10b654a",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T07:28:29",
+        "message": "api get exam,mark by semId\n"
+    },
+    {
+        "old_hash": "f0ebececed186ea44e9258a1d86fd3328f395676",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T10:08:43",
+        "message": "level\n"
+    },
+    {
+        "old_hash": "a5b877bc0dc9fcd849b54da1eb0516ce699e97d4",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-13T12:54:28",
+        "message": "call api level\n"
+    },
+    {
+        "old_hash": "db802e9a4808d27b341f7df19a944a5ca283ff4f",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T12:39:20",
+        "message": "authorize, fix student list, all btn export\n"
+    },
+    {
+        "old_hash": "a1870efce42feab29758bc24eab414d70fde1414",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T15:39:15",
+        "message": "level, chapter fix\n"
+    },
+    {
+        "old_hash": "b0920c12c25dcd86842b4627c06af2f73267d807",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-13T17:58:54",
+        "message": "create exam fix level show\n"
+    },
+    {
+        "old_hash": "0826c9b0ef9fc962f5d36843fdda4d13f7676bed",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-13T20:31:12",
+        "message": "fix question list, question form\n"
+    },
+    {
+        "old_hash": "8edd9619caca6747907cefddd1108607b2856ef7",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-13T20:45:45",
+        "message": "upload image fix\n"
+    },
+    {
+        "old_hash": "97276fa03c328f3fbf2bc943531d4074d7a2c6f2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-13T23:18:07",
+        "message": "api delete\n"
+    },
+    {
+        "old_hash": "dae4bfdd548d62eaa9038c5255bfecebdb76fd9d",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-14T02:54:38",
+        "message": "popup confirm detele question/answer\n"
+    },
+    {
+        "old_hash": "0b23b9027d70479376f5286a138aa62b01a36de2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-14T05:28:57",
+        "message": "exam search, pagination\n"
+    },
+    {
+        "old_hash": "9373c0e704d576ab610857fbf1174e21672edea6",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-14T05:21:15",
+        "message": "search chapter in add Question\n"
+    },
+    {
+        "old_hash": "e769f73134e72d62c0d676f5c5920fd1c02181a0",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-14T08:02:13",
+        "message": "authorize, dashboard #1\n"
+    },
+    {
+        "old_hash": "f59b0b4211ef04656944a5ccfef12c7576fc230d",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-14T10:50:22",
+        "message": "css, fix dark mode, edit popup\n"
+    },
+    {
+        "old_hash": "9d5fb78ed1db4044756715df4c2a7fdb6cf274ac",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-14T13:47:51",
+        "message": "edit title, sidebar collapsed\n"
+    },
+    {
+        "old_hash": "df38246404b7baef87d131eab4222cfb33fcfaaa",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-14T13:22:56",
+        "message": "fix api export\n"
+    },
+    {
+        "old_hash": "d887a9451967aad0b4723c4277345df7f6f16a25",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-14T16:34:23",
+        "message": "dashboard #2\n"
+    },
+    {
+        "old_hash": "b6179811f59c6f3ca7874f08ecddc9e281aca1e6",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-14T19:04:52",
+        "message": "update question, css dashboard\n"
+    },
+    {
+        "old_hash": "2fb45f655cd3aada507c8a7de72962062df486b0",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-14T21:33:09",
+        "message": "security authorize\n"
+    },
+    {
+        "old_hash": "cb6f924d0d2bf684e2a30d802b152c7e3e4f65d5",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-14T21:54:09",
+        "message": "router link fix\n"
+    },
+    {
+        "old_hash": "fd57343ab917e7c1c48f1fa2eec445875b3e7728",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T00:57:00",
+        "message": "fix status, api get exam\n"
+    },
+    {
+        "old_hash": "51e21c342523e4cf245f11279eab8cb25f9d38cc",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T03:05:59",
+        "message": "fix status\n"
+    },
+    {
+        "old_hash": "c4c4a939892b62197ca08cc589edc1366cfd240f",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-15T06:02:10",
+        "message": "fix subject, dashboard\n"
+    },
+    {
+        "old_hash": "85fc201adb61d3885b23ef5d95460dd87fba26b7",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-15T08:51:56",
+        "message": "fix subject, getAllExamBySemId\n"
+    },
+    {
+        "old_hash": "77a647c3c9f70c77c8bcdc1865784d7c3529fc1c",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T09:00:55",
+        "message": "api get all finish exam\n"
+    },
+    {
+        "old_hash": "cb83b30ca56cbdc2dd14d34e872bc7d977426ed7",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-15T12:05:21",
+        "message": "fix navigate\n"
+    },
+    {
+        "old_hash": "cbdb073892a595876859ccc0392392c36e585534",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-15T14:26:54",
+        "message": "fix url\n"
+    },
+    {
+        "old_hash": "1499e599bd43c8482d28e18177b4bda2f28d1daf",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T17:22:42",
+        "message": "dashboard #4, url\n"
+    },
+    {
+        "old_hash": "1a94d86a8bfe2067e8d60cbff8defbc88427fd2a",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-15T17:11:20",
+        "message": "fix update begin-time\n"
+    },
+    {
+        "old_hash": "c0ac6de94a16196792be67d912ef0bda2f11c7d1",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T20:36:01",
+        "message": "finish dashboard, update mark controller\n"
+    },
+    {
+        "old_hash": "476c35fb3a917826175c79687d558cb3bdd72361",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-15T22:40:34",
+        "message": "fix status + api restore std, emp\n"
+    },
+    {
+        "old_hash": "47a05710a951e43fcd5b0ef747bf1a3e5265ab72",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-16T02:07:16",
+        "message": "fix css, update student for exam\n"
+    },
+    {
+        "old_hash": "59314165a7bb624bb5b0c3532242255d54bf8b7a",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-16T01:53:48",
+        "message": "filter employee by status, edit exam info...\n"
+    },
+    {
+        "old_hash": "9a09ddc50cc16e87e0ec0adc8281b057faa717ff",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T04:11:21",
+        "message": "fix bug\n"
+    },
+    {
+        "old_hash": "b485a416535c152f5923c93ecce96a5640c1b1ad",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T07:07:14",
+        "message": "fix security\n"
+    },
+    {
+        "old_hash": "7fbe2619e8d227af8d8062771dd03e72e8f5dd1b",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T09:55:48",
+        "message": "thêm ảnh subject\n"
+    },
+    {
+        "old_hash": "29bcf67fd3cf9a6b74e8554aad8387853dfaf587",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-16T09:32:34",
+        "message": "fix css, update subject\n"
+    },
+    {
+        "old_hash": "a44a601cbeac05ec6c66552463178299226d90c3",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-16T12:46:52",
+        "message": "fix css img exam\n"
+    },
+    {
+        "old_hash": "8e0486a0e060eae300474249ccb9df45253407bc",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-16T15:25:10",
+        "message": "fix css, create subject\n"
+    },
+    {
+        "old_hash": "eb772c25b138ddd0d863c65fa45081f75edcd759",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T18:16:34",
+        "message": "update search class,...\n"
+    },
+    {
+        "old_hash": "f94586e34531db292584f002b04a4c1d8fb257e4",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-16T18:36:17",
+        "message": "create Exam api\n"
+    },
+    {
+        "old_hash": "8f3a6d782eebce9464302d08eb8eeb4041b7d597",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T21:01:34",
+        "message": "create exam update select\n"
+    },
+    {
+        "old_hash": "5501cf92fc164cf7f53e1b9e3e097b11733d1322",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-16T23:58:02",
+        "message": "css create exam select\n"
+    },
+    {
+        "old_hash": "9a1b4dcb2c7219ce7d2f586ef9388a58f5b65f8d",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T02:35:37",
+        "message": "update Employee, valid Employee\n"
+    },
+    {
+        "old_hash": "c50e555b9e1f2a1930cf3364313ea99ed2952260",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T05:25:27",
+        "message": "class\n"
+    },
+    {
+        "old_hash": "c6ea8ec98440f376e3c771900da60ef7b1cb4888",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-17T05:01:21",
+        "message": "fix exam\n"
+    },
+    {
+        "old_hash": "02224d48bbb1a109805e7e91e088ed45f539bd40",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T08:04:46",
+        "message": "handle error in employee, class, level\n"
+    },
+    {
+        "old_hash": "bccdf4e9312a5c96a09b0c58119e9b197e72c38c",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T10:48:26",
+        "message": "fix student-management\n"
+    },
+    {
+        "old_hash": "af41d76ecd843f52d077d39427ac95b12f3f66a7",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T14:08:57",
+        "message": "fix\n"
+    },
+    {
+        "old_hash": "559b79a328ec362e130924a9fc1880ad1f2458e2",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T14:16:13",
+        "message": "edit files\n"
+    },
+    {
+        "old_hash": "265ca71e454229303c87abc3f2ac97ea081dc87c",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T16:13:10",
+        "message": "css dashboard\n"
+    },
+    {
+        "old_hash": "a2135ca6c9011c7eede62489999dd9f4501a6fa1",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T19:14:00",
+        "message": "exam results\n"
+    },
+    {
+        "old_hash": "e8833016975ee9cec346aaa10ee870eb6429de66",
+        "author": "Manh Nguyen <manhnguyenn23077@gmail.com>",
+        "date": "2026-03-17T22:07:24",
+        "message": "css custom-col list exam\n"
+    },
+    {
+        "old_hash": "968f0848303c0add76552234514fddf6085fed29",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-17T22:26:27",
+        "message": "security config exception\n"
+    },
+    {
+        "old_hash": "b13e1b235902d98fbc48ef3ec23ae9b109b4975d",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T01:04:25",
+        "message": "add db onl\n"
+    },
+    {
+        "old_hash": "ed645934b19e245e5493a297544b49548322dc08",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-18T03:56:03",
+        "message": "db online\n"
+    },
+    {
+        "old_hash": "3aeaa31dcbb26c1738d06f31a5c9e2a3eb061b95",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T06:01:31",
+        "message": "Create main.yml\n"
+    },
+    {
+        "old_hash": "7095089bb99586a8ccf2246d138a79861d84f8a3",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T06:24:07",
+        "message": "Create main1.yml\n"
+    },
+    {
+        "old_hash": "05f1d63d36b66d083b03d96cddf0c073c15a6db2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T08:55:41",
+        "message": "Create main2.yml\n"
+    },
+    {
+        "old_hash": "e2de34b36d236c6d387603c144580ba4cdeb7f73",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T11:50:03",
+        "message": "Update main2.yml\n"
+    },
+    {
+        "old_hash": "099899f043f502227163b64907e857e9a428e91f",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-18T14:33:57",
+        "message": "unit test\n"
+    },
+    {
+        "old_hash": "ca267ce0e5c9be17e50200cdd37541af21b3f9d0",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-18T17:51:13",
+        "message": "fix unit test\n"
+    },
+    {
+        "old_hash": "863853d33cbe2f6a4ffd227f00c6af4698e32abd",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-18T17:07:35",
+        "message": "service test\n"
+    },
+    {
+        "old_hash": "fdb080346b69d2a52f9c9f7fe0a340cbe27f4cd0",
+        "author": "Minh LD <minh.ld.2187@aptechlearning.edu.vn>",
+        "date": "2026-03-19T20:00:35",
+        "message": "workflow\n"
+    },
+    {
+        "old_hash": "208628b59bc08da7d5fed2d2cbac50540e372ae2",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-19T22:39:34",
+        "message": "vercel file\n"
+    },
+    {
+        "old_hash": "e2ab126ed92c099074132e58f0438b8218252ae6",
+        "author": "Thanh Nam <thanhnam2425@gmail.com>",
+        "date": "2026-03-21T02:02:05",
+        "message": "demo\n"
+    }
+]
