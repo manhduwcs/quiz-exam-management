@@ -55,7 +55,7 @@ public class ExaminationController {
         return examinationService.getAllExaminationBySubjectId(subjectId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @GetMapping("/sem/{semId}")
     public List<ExaminationResponse> getExaminationBySemId(@PathVariable int semId) {
         return examinationService.getAllExamBySemId(semId);
@@ -73,25 +73,25 @@ public class ExaminationController {
         return examinationService.getAllExaminationsForStudent(marks);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @PostMapping("")
     public ExaminationResponse autoGenerateExam(@RequestBody @Valid ExaminationRequest examinationRequest) {
         return ExaminationMapper.convertToResponse(examinationService.autoGenerateExam(examinationRequest));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @PostMapping("/select-questions")
     public ExaminationResponse selectQuestionsExam(@RequestPart(name = "exam") @Valid ExaminationRequest examinationRequest, @RequestPart(name = "question") List<Integer> questionIds) {
         return ExaminationMapper.convertToResponse(examinationService.createExamBySelectingQuestions(examinationRequest, questionIds));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @PutMapping("/{examinationId}")
     public ExaminationResponse update(@PathVariable int examinationId, @RequestBody ExaminationRequest examinationRequest) {
         return ExaminationMapper.convertToResponse(examinationService.updateExamination(examinationId, examinationRequest));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @PutMapping("/update-question/{examinationId}")
     public ExaminationResponse updateQuestionsInExam(@PathVariable int examinationId, @RequestBody List<Integer> questionIds) {
         return ExaminationMapper.convertToResponse(examinationService.updateQuestionsInExam(examinationId, questionIds));
@@ -103,7 +103,7 @@ public class ExaminationController {
         return examinationService.countAllExams();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO', 'TEACHER')")
     @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<String> exportToPDF(
             HttpServletResponse response,

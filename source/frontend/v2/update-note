@@ -1,0 +1,13 @@
+- update class: ấn vào tên class phát là xem đc detail (list học sinh)
+- đã có màn quản lý câu hỏi: Subject -> Mỗi học kì (SEM) có list subject -> trong mỗi subject có câu hỏi
+    -> phải update xử lí lưu ảnh (ảnh chưa lưu sau khi add vào câu hỏi)
+- update bỏ validate tạo đề thi
+    -> có thể thêm nút tạo đề thi gấp, đề mà thi luôn -> tự điền time
+- (?) update xem kết quả thi của học sinh sau khi thi xong trong từng exam
+- (a Điệp) update cho phép import file excel câu hỏi có sẵn vào hệ thống thay vì nhập tay từng cái
+- khi export excel / pdf mà k có data (data trống) thì sẽ show ra lỗi "you do not have permission"
+- update exam: ngay cả khi exam đã kết thúc -> admin / sro / teacher vẫn có thể vào xem điểm các học sinh đã thi, thay vì bị redirect đá ngược lại ra ngoài
+
+nộp: task sheet, review, nhật ký
+không cần nộp docs vật lý
+t2 tuần sau 06/04 nộp đồ án ; tạo folder đẩy đồ án lên ; hạn cuối cuối t3

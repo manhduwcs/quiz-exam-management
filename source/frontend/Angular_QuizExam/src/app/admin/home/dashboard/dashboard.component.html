@@ -1,206 +1,224 @@
 <div class="content-wrapper" [ngClass]="{'content-wrapper-collapsed': admin.isSidebarCollapsed}">
   <h4>Dashboard</h4>
   <hr class="line">
-  <div class="row">
+  <div class="row mb-4">
     <div class="col-md-6 col-xl-3">
-      <div class="order-card" style="background-color: #4099ff;">
-        <h6 class="text-white">Exam</h6>
-        <h2 class="text-end text-white">
-          <span class="mdi mdi-library-books float-start"></span>
-          <span>{{ examCount }}</span>
-        </h2>
-      </div>
+      <c-card class="mb-3 border-0 shadow-sm bg-info text-white">
+        <c-card-body class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ examCount }}</div>
+            <div class="small text-uppercase fw-bold opacity-75">Exams</div>
+          </div>
+        </c-card-body>
+      </c-card>
     </div>
+
     <div class="col-md-6 col-xl-3">
-      <div class="order-card" style="background-color: #2ed8b6;">
-        <h6 class="text-white">Class</h6>
-        <h2 class="text-end text-white">
-          <span class="mdi mdi-home-outline float-start"></span>
-          <span>{{ classCount }}</span>
-        </h2>
-      </div>
+      <c-card class="mb-3 border-0 shadow-sm bg-success text-white">
+        <c-card-body class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ classCount }}</div>
+            <div class="small text-uppercase fw-bold opacity-75">Classes</div>
+          </div>
+        </c-card-body>
+      </c-card>
     </div>
+
     <div class="col-md-6 col-xl-3">
-      <div class="order-card" style="background-color: #ffb64d;">
-        <h6 class="text-white">Student</h6>
-        <h2 class="text-end text-white">
-          <span class="mdi mdi-account float-start"></span>
-          <span>{{ studentCount }}</span>
-        </h2>
-      </div>
+      <c-card class="mb-3 border-0 shadow-sm bg-warning text-white">
+        <c-card-body class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ studentCount }}</div>
+            <div class="small text-uppercase fw-bold opacity-75">Students</div>
+          </div>
+        </c-card-body>
+      </c-card>
     </div>
+
     <div class="col-md-6 col-xl-3">
-      <div class="order-card" style="background-color: #ff5370;">
-        <h6 class="text-white">Employee</h6>
-        <h2 class="text-end text-white">
-          <span class="mdi mdi-account-card-details float-start"></span>
-          <span>{{ employeeCount }}</span>
-        </h2>
-      </div>
+      <c-card class="mb-3 border-0 shadow-sm bg-danger text-white">
+        <c-card-body class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ employeeCount }}</div>
+            <div class="small text-uppercase fw-bold opacity-75">Employees</div>
+          </div>
+        </c-card-body>
+      </c-card>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xl-6 col-md-12">
-      <div class="card chart-container">
-        <div class="card-body">
-          <apx-chart *ngIf="chartOptions" [chart]="chartOptions.chart" [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels"
+  <!--Chart-->
+  <div class="row mb-4">
+    <div class="col-xl-6 col-md-12 mb-4">
+      <c-card class="border-0 shadow-sm h-100">
+        <c-card-body class="p-4">
+          <h5 class="fw-bold mb-4">Performance Overview</h5>
+          <apx-chart *ngIf="chartOptions"
+            [chart]="chartOptions.chart" [title]="chartOptions.title" [dataLabels]="chartOptions.dataLabels"
             [stroke]="chartOptions.stroke" [series]="chartOptions.series" [xaxis]="chartOptions.xaxis"
             [colors]="chartOptions.colors" [fill]="chartOptions.fill" [markers]="chartOptions.markers"
-            [yaxis]="chartOptions.yaxis"></apx-chart>
-        </div>
-      </div>
+            [yaxis]="chartOptions.yaxis">
+          </apx-chart>
+        </c-card-body>
+      </c-card>
     </div>
+
     <div class="col-xl-6 col-md-12">
       <div class="row">
-        <div class="col-xl-6 col-md-12">
-          <div class="card chart-container donut-chart">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-auto">
-                  <span>Subject by Sem</span>
-                  <select class="form-select select-field" (change)="setSelectedSemChart($event)" style="width: 150px;">
+        <div class="col-xl-6 col-md-12 mb-4">
+          <c-card class="border-0 shadow-sm h-100">
+            <c-card-body class="p-4">
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-baseline lh-1">
+                    <span class="text-muted small fw-bold text-uppercase">Subject by Sem</span>
+                    <span class="fw-bold text-info fs-6">{{ semStats.passPercentage || 0 | number: '1.0-1' }}%</span>
+                  </div>
+                  <select cSelect class="mt-2 border-0 bg-light fw-semibold py-1" (change)="setSelectedSemChart($event)" style="width: 140px;">
                     <option *ngFor="let sem of semList" [value]="sem.id">{{ sem.name }}</option>
                   </select>
                 </div>
-                <div class="col text-end">
-                  <h3 class="mb-0">{{ semStats.passPercentage || 0 | number: '1.0-1' }}%</h3>
-                </div>
-              </div>
-              <apx-chart *ngIf="chartOptions_1" [series]="chartOptions_1.series!" [chart]="chartOptions_1.chart!"
+
+              <apx-chart *ngIf="chartOptions_1"
+                [series]="chartOptions_1.series!" [chart]="chartOptions_1.chart!"
                 [stroke]="chartOptions_1.stroke!" [dataLabels]="chartOptions_1.dataLabels!"
                 [labels]="chartOptions_1.labels!" [legend]="chartOptions_1.legend!" [colors]="chartOptions_1.colors!"
                 [fill]="chartOptions_1.fill!" [grid]="chartOptions_1.grid!" [plotOptions]="chartOptions_1.plotOptions!"
-                [tooltip]="chartOptions_1.tooltip!"></apx-chart>
-              <div class="row mt-3 text-center">
-                <div class="col">
-                  <h3 class="m-0"><i class="fas fa-circle text-success"></i> {{ semStats.totalPass }} </h3>
-                  <span class="ms-3">Pass</span>
+                [tooltip]="chartOptions_1.tooltip!">
+              </apx-chart>
+
+              <div class="row mt-4 text-center">
+                <div class="col border-end">
+                  <h4 class="fw-bold text-success m-0">{{ semStats.totalPass }}</h4>
+                  <span class="small text-muted">Pass</span>
                 </div>
                 <div class="col">
-                  <h3 class="m-0"><i class="fas fa-circle text-danger"></i> {{ semStats.reExam }} </h3>
-                  <span class="ms-3">Fail</span>
+                  <h4 class="fw-bold text-danger m-0">{{ semStats.reExam }}</h4>
+                  <span class="small text-muted">Fail</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </c-card-body>
+          </c-card>
         </div>
-        <div class="col-xl-6 col-md-12">
-          <div class="card chart-container donut-chart">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-auto">
-                  <span>Each subject</span>
-                  <select class="form-select select-field" style="width: 160px;"
-                    (change)="setSelectedSubjectChart($event)">
+
+        <div class="col-xl-6 col-md-12 mb-4">
+          <c-card class="border-0 shadow-sm h-100">
+            <c-card-body class="p-4">
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-baseline lh-1">
+                    <span class="text-muted small fw-bold text-uppercase">Each subject</span>
+                    <span class="fw-bold text-warning fs-6">{{ this.subjectStats.passPercentage || 0 | number: '1.0-1' }}%</span>
+                  </div>
+                  <select cSelect class="mt-2 border-0 bg-light fw-semibold py-1" style="width: 140px;" (change)="setSelectedSubjectChart($event)">
                     <option *ngFor="let subject of subjectListChart" [value]="subject.id">{{ subject.name }}</option>
                   </select>
                 </div>
-                <div class="col text-end">
-                  <h3 class="mb-0">{{ this.subjectStats.passPercentage || 0 | number: '1.0-1' }}%</h3> <!-- Tỷ lệ Pass exam -->
-                </div>
-              </div>
 
-              <!-- Biểu đồ Donut -->
-              <apx-chart *ngIf="chartOptions_2" [series]="chartOptions_2.series!" [chart]="chartOptions_2.chart!"
+              <apx-chart *ngIf="chartOptions_2"
+                [series]="chartOptions_2.series!" [chart]="chartOptions_2.chart!"
                 [stroke]="chartOptions_2.stroke!" [dataLabels]="chartOptions_2.dataLabels!"
                 [labels]="chartOptions_2.labels!" [legend]="chartOptions_2.legend!" [colors]="chartOptions_2.colors!"
                 [fill]="chartOptions_2.fill!" [grid]="chartOptions_2.grid!" [plotOptions]="chartOptions_2.plotOptions!"
                 [tooltip]="chartOptions_2.tooltip!">
               </apx-chart>
 
-              <div class="row mt-3 text-center">
-                <div class="col">
-                  <h3 class="m-0"><i class="fas fa-circle text-success"></i> {{ this.subjectStats.totalPass }} </h3>
-                  <span class="ms-3">Pass</span>
+              <div class="row mt-4 text-center">
+                <div class="col border-end">
+                  <h4 class="fw-bold text-success m-0">{{ subjectStats.totalPass }}</h4>
+                  <span class="small text-muted">Pass</span>
                 </div>
                 <div class="col">
-                  <h3 class="m-0"><i class="fas fa-circle text-danger"></i> {{ this.subjectStats.reExam }} </h3>
-                  <span class="ms-3">Fail</span>
+                  <h4 class="fw-bold text-danger m-0">{{ subjectStats.reExam }}</h4>
+                  <span class="small text-muted">Fail</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </c-card-body>
+          </c-card>
         </div>
       </div>
     </div>
   </div>
+
+  <!--Table: Score of each exam-->
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="title">Score of each exam</h5>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold mb-0">Score of each exam</h5>
+          <button class="btn btn-primary rounded-pill px-4" (click)="resetFilter()">Reset</button>
         </div>
-        <div class="card-body nav-fill">
-          <div class="row">
-            <div class="search-filter-column col-5">
-              <!-- Search Input -->
-              <div class="search-container mb-3">
-                <input type="text" class="form-control" [(ngModel)]="searchExam" (input)="filterExams()"
+
+        <div class="card-body">
+          <div class="row g-4 align-items-end">
+
+            <div class="col-xl-7 col-lg-7 col-md-12">
+              <div class="mb-3">
+                <label class="small text-muted fw-bold text-uppercase mb-1">Search</label>
+                <input type="text" class="form-control bg-light border-light" [(ngModel)]="searchExam" (input)="filterExams()"
                   placeholder="Search by name or code">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
               </div>
-              <div class="d-flex">
-                <div class="form-group-row me-4">
-                  <label for="sem" class="me-2">Sem:</label>
-                  <select class="form-select select-field" (change)="setSelectedSemTable($event)">
+              <div class="row g-2">
+                <div class="col-6">
+                  <label class="small text-muted fw-bold text-uppercase mb-1">Sem</label>
+                  <select class="form-select bg-light border-light" (change)="setSelectedSemTable($event)">
                     <option *ngFor="let sem of semList" [value]="sem.id">{{ sem.name }}</option>
                   </select>
                 </div>
-                <div class="form-group-row">
-                  <label for="subject" class="me-2">Subject:</label>
-                  <select class="form-select select-field" (change)="setSelectedSubjectTable($event)">
+                <div class="col-6">
+                  <label class="small text-muted fw-bold text-uppercase mb-1">Subject</label>
+                  <select class="form-select bg-light border-light" (change)="setSelectedSubjectTable($event)">
                     <option *ngFor="let subject of subjectListTable" [value]="subject.id">{{ subject.name }}</option>
                   </select>
                 </div>
               </div>
             </div>
 
-            <div class="col-6">
-                <div class="form-group-row mb-3">
-                  <label for="startTime" class="col-2 me-2">Start Time:</label>
-                  <input type="datetime-local" class="form-control col-10" [(ngModel)]="startTime" name="startTime" (change)="filterExams()">
-                </div>
-                <div class="form-group-row">
-                  <label for="endTime" class="col-2 me-2">End Time:</label>
-                  <input type="datetime-local" class="form-control col-10" [(ngModel)]="endTime" name="endTime" (change)="filterExams()">
-                </div>
+            <div class="col-xl-5 col-lg-5 col-md-12">
+              <div class="mb-3">
+                <label class="small text-muted fw-bold text-uppercase mb-1">Start Time</label>
+                <input type="datetime-local" class="form-control bg-light border-light" [(ngModel)]="startTime" name="startTime" (change)="filterExams()">
+              </div>
+              <div>
+                <label class="small text-muted fw-bold text-uppercase mb-1">End Time</label>
+                <input type="datetime-local" class="form-control bg-light border-light" [(ngModel)]="endTime" name="endTime" (change)="filterExams()">
+              </div>
             </div>
 
-            <div class="col-1" style="align-content: center;">
-              <button class="btn btn-primary" style="width: 100%;" (click)="resetFilter()">Reset</button>
-            </div>
           </div>
-        </div>
 
-        <div class="tab-content mt-2">
-          <div class="tab-pane fade show active">
-            <table class="table m-b-0 mt-3">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Time</th>
-                  <th>Re-Exam</th>
-                  <th>Pass</th>
-                  <th>Credit</th>
-                  <th>Distinction</th>
+          <div class="table-responsive mt-4">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr class="text-muted small text-uppercase">
+                  <th class="border-0 py-3">Name</th>
+                  <th class="border-0 py-3">Code</th>
+                  <th class="border-0 py-3">Time</th>
+                  <th class="border-0 py-3 text-center">Re-Exam</th>
+                  <th class="border-0 py-3 text-center text-success">Pass</th>
+                  <th class="border-0 py-3 text-center">Credit</th>
+                  <th class="border-0 py-3 text-center text-info">Distinction</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let exam of examFilter | paginate: { itemsPerPage: 5, currentPage: currentPage }" (click)="navigateExamResults(exam.id)">
-                  <td>{{ exam.name }}</td>
-                  <td>{{ exam.code }}</td>
-                  <td>{{ convertDateFormat(exam.endTime) }}</td>
-                  <td>{{ exam.reExamCount }}</td>
-                  <td>{{ exam.passCount }}</td>
-                  <td>{{ exam.creditCount }}</td>
-                  <td>{{ exam.distinctionCount }}</td>
+                <tr *ngFor="let exam of examFilter | paginate: { itemsPerPage: 5, currentPage: currentPage }"
+                    (click)="navigateExamResults(exam.id)"
+                    style="cursor: pointer;">
+                  <td class="py-3 px-3"><span class="fw-semibold text-dark">{{ exam.name }}</span></td>
+                  <td>
+                    <span class="badge border border-secondary text-secondary fw-normal px-2 py-1" style="font-size: 0.75rem;">
+                      {{ exam.code }}
+                    </span>
+                  </td>
+                  <td class="small text-muted">{{ convertDateFormat(exam.endTime) }}</td>
+                  <td class="text-center text-muted">{{ exam.reExamCount }}</td>
+                  <td class="text-center fw-bold text-success">{{ exam.passCount }}</td>
+                  <td class="text-center text-muted">{{ exam.creditCount }}</td>
+                  <td class="text-center fw-bold text-info">{{ exam.distinctionCount }}</td>
                 </tr>
               </tbody>
             </table>
-            <div class="pagination-container text-center mt-3">
-              <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
-            </div>
+          </div>
+
+          <div class="d-flex justify-content-center mt-4">
+            <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
           </div>
         </div>
       </div>

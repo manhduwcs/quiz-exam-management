@@ -21,31 +21,35 @@ import { SharedModule } from '../../shared/shared.module';
 import { MarkComponent } from './mark/mark.component';
 import { SemComponent } from './sem/sem.component';
 import { ExamResultsComponent } from './exam-results/exam-results.component';
+import { GridModule, WidgetModule, CardModule, TableModule, ButtonModule } from '@coreui/angular';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    DashboardComponent,
-    StudentComponent,
-    ClassComponent,
-    EmployeeComponent,
-    ProfileComponent,
-    LevelComponent,
-    MarkComponent,
-    SemComponent,
-    ExamResultsComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule,
-    SubjectModule,
-    ExaminationModule,
-    SharedModule,
-    FormsModule,
-    NgApexchartsModule,
-    NgScrollbarModule,
-    NgxPaginationModule
-  ],
-  providers: [DatePipe]
+    declarations: [
+        HomeComponent,
+        DashboardComponent,
+        StudentComponent,
+        ClassComponent,
+        EmployeeComponent,
+        ProfileComponent,
+        LevelComponent,
+        MarkComponent,
+        SemComponent,
+        ExamResultsComponent
+    ],
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+        SubjectModule,
+        ExaminationModule,
+        SharedModule,
+        FormsModule,
+        NgApexchartsModule,
+        NgScrollbarModule,
+        NgxPaginationModule,
+        WidgetModule,
+        CardModule,
+        GridModule
+    ],
+    providers: [DatePipe]
 })
 export class HomeModule { }

@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   searchExam: string = '';
   startTime: string = '';
   endTime: string = '';
-  
+
   currentPage: number = 1;
 
   semStats = {

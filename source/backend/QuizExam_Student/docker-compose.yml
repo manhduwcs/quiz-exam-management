@@ -2,17 +2,18 @@ services:
     app:
         build: .
         container_name: quiz-exam-backend
-        ports:
-            - "8081:8080"
         environment:
             - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/db_test
             - SPRING_DATASOURCE_USERNAME=root
             - SPRING_DATASOURCE_PASSWORD=12345678
         volumes:
             - ./uploads:/app/uploads
+            - ./target/classes:/app/target/classes
         depends_on:
             db:
                 condition: service_healthy
+        networks:
+            - dev_network
 
     db:
         image: mysql:8.0
@@ -28,6 +29,27 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             timeout: 5s
             retries: 10
+        networks:
+            - dev_network
+
+    quiz-nginx:
+        image: nginx:latest
+        container_name: quiz-nginx
+        ports:
+        - "8081:80"
+        volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        extra_hosts:
+        - "host.docker.internal:host-gateway"
+        restart: always
+        networks:
+            - dev_network
 
 volumes:
     mysql_data:
+
+networks:
+    dev_network:
+        name: dev_network
+        driver: bridge
+        external: true
