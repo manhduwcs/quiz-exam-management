@@ -4,9 +4,10 @@
 * Vai trò của từng nhóm quyền
 - Director: Quản lý nhân sự (employee) và chương trình học (semester + subject). Liên quan tới quản lý nhân sự và lên kế hoạch toàn bộ chương trình học.
 - SRO: Quản lý lớp (class), học sinh (student) và quản lý bài thi (exam). Liên quan tới làm việc trực tiếp với lớp / học sinh và chủ quản việc tổ chức thi cử.
+- Teacher: Quản lý câu hỏi (nội dung câu hỏi / mức độ khó của câu hỏi). SRO là người tổ chức thi duy nhất, Teacher chỉ có vai trò dạy học và soạn câu hỏi.
 
 * Luồng thi (exam)
-- SRO / Teacher tạo bài thi
+- SRO tạo bài thi
 - Ngay khi student vào làm bài thi -> Tạo một record trong bảng t_mark ngay lập tức với begin_time = now, submitted_time = null. lúc này có luôn mark_id
 - Mỗi khi student chọn đáp án trên bài, sẽ tạo ra data với mark_id đã tạo. cuối cùng, đẩy hết lên backend, backend lưu vào db
 
@@ -17,3 +18,4 @@
 
 * Lưu ý bảng
 - t_question là ngân hàng câu hỏi, t_question_record chỉ là snapshot của các câu hỏi của đề thi tại thời điểm đó. nếu link 2 bảng này với nhau, thay đổi của t_question sẽ làm thay đổi cả câu hỏi / đáp án của các đề thi mà đã thi xong trong quá khứ.
+- t_mark: đại diện cho "lượt thi của học sinh, tại 1 đề thi". t_mark lưu lại thông tin tổng quan của học sinh đối với đề thi (id học sinh, id đề thi, subject); t_student_answer là đại diện cho lựa chọn chi tiết của học sinh tại mỗi câu hỏi trong đề thi.

@@ -7,6 +7,7 @@
 - (a Điệp) update cho phép import file excel câu hỏi có sẵn vào hệ thống thay vì nhập tay từng cái
 - khi export excel / pdf mà k có data (data trống) thì sẽ show ra lỗi "you do not have permission"
 - update exam: ngay cả khi exam đã kết thúc -> admin / sro / teacher vẫn có thể vào xem điểm các học sinh đã thi, thay vì bị redirect đá ngược lại ra ngoài
+- trong màn student, home: chỉnh lại tên những người đánh giá thành tên bọn mình
 
 nộp: task sheet, review, nhật ký
 không cần nộp docs vật lý
