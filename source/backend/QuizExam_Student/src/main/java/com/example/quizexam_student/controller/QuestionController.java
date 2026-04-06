@@ -98,13 +98,13 @@ public class QuestionController {
         return questionService.deleteQuestion(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SRO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SRO)")
     @GetMapping("/exam/{examId}")
     public List<QuestionResponse> getAllQuestionsByExam(@PathVariable int examId) {
         return questionService.findAllQuestionsByExam(examId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'DIRECTOR')")
     @PostMapping(value = "/export/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<String> exportToPDF(HttpServletResponse response, @RequestBody List<QuestionResponse> questionResponses) throws IOException {
         exportService.export(response,"question", "pdf");

@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/mark/**").hasAnyRole("ADMIN", "DIRECTOR", "TEACHER", "SRO", "STUDENT")
                 .requestMatchers("/uploads/**").permitAll()
                 .anyRequest().authenticated()
-
+                
                 .and()
                 .httpBasic();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

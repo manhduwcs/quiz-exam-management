@@ -1,18 +1,14 @@
-FROM maven:3.9-eclipse-temurin-17 AS builder
+FROM maven:3.9.6-eclipse-temurin-17-alpine
+
 WORKDIR /app
 
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
 COPY src ./src
-RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jre-jammy
-WORKDIR /app
-
-COPY --from=builder /app/target/*.jar app.jar
+RUN mvn clean compile -DskipTests
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
-ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "app.jar"]
+ENTRYPOINT ["mvn", "spring-boot:run", "-Dspring-boot.run.jvmArguments=-Dspring.devtools.restart.enabled=true"]

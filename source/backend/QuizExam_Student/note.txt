@@ -10,3 +10,6 @@ admin123
 
 / All users pass in database
 $2a$10$6UlHgE1VMUFVg5HDjGyeKudYUeJzwEaySS.YfPC7sQYzhYewXnf0a
+
+-- Reload, apply new changes
+docker exec quiz-exam-backend mvn compile

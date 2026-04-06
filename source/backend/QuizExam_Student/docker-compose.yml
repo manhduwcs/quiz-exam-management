@@ -6,12 +6,17 @@ services:
         #     - "8081:8080"
         volumes:
             - ./uploads:/app/uploads
-            # - ./target/classes:/app/target/classes
+            - ./target/classes:/app/target/classes
         depends_on:
             db:
                 condition: service_healthy
         networks:
             - dev_network
+        x-develop:
+            watch:
+                - action: sync
+                  path: ./target/classes
+                  target: /app/target/classes
 
     db:
         image: mysql:8.0
@@ -21,9 +26,10 @@ services:
             - MYSQL_DATABASE=db_test
             - MYSQL_ROOT_PASSWORD=12345678
         ports:
-            - "3306:3306"
+            - "3309:3306"
         volumes:
             - mysql_data:/var/lib/mysql
+            - ./db.sql:/docker-entrypoint-initdb.d/db.sql:ro
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             timeout: 5s
@@ -38,6 +44,7 @@ services:
             - "8081:80"
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./uploads:/usr/share/nginx/html/uploads:ro
         extra_hosts:
             - "host.docker.internal:host-gateway"
         restart: always
