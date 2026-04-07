@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl = 'http://localhost:8081/api';
+  apiUrl = 'http://localhost:8080/api';
 
   employeeProfile: UserResponse = { } as UserResponse;
 
@@ -112,7 +112,7 @@ export class AuthService {
       const token = localStorage.getItem(tokenKey);
       if (token) {
         this.httpOptions = {
-          headers: new HttpHeaders({
+          headers: new HttpHeaders({ 
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/json'
           }),
@@ -165,7 +165,7 @@ export class AuthService {
     this.studentProfile = profileResponse;
     localStorage.setItem(RoleKey.STUDENT, profileResponse.userResponse.role.name);
   }
-
+  
   handleEmployeeProfile(tokenKey: TokenKey, token: string | null, profileResponse: UserResponse): void {
     if (tokenKey == TokenKey.STUDENT) {
       // Nếu là token student mà lấy ra profile lại là admin, thực hiện chuyển token và điều hướng

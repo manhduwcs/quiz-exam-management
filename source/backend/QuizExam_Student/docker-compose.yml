@@ -2,8 +2,8 @@ services:
     app:
         build: .
         container_name: quiz-exam-backend
-        # ports:
-        #     - "8081:8080"
+        ports:
+            - "8080:8080"
         volumes:
             - ./uploads:/app/uploads
             - ./target/classes:/app/target/classes
@@ -26,7 +26,7 @@ services:
             - MYSQL_DATABASE=db_test
             - MYSQL_ROOT_PASSWORD=12345678
         ports:
-            - "3309:3306"
+            - "3306:3306"
         volumes:
             - mysql_data:/var/lib/mysql
             - ./db.sql:/docker-entrypoint-initdb.d/db.sql:ro
@@ -36,21 +36,6 @@ services:
             retries: 10
         networks:
             - dev_network
-
-    quiz-nginx:
-        image: nginx:latest
-        container_name: quiz-nginx
-        ports:
-            - "8081:80"
-        volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf:ro
-            - ./uploads:/usr/share/nginx/html/uploads:ro
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        restart: always
-        networks:
-            - dev_network
-
 
 volumes:
     mysql_data:
