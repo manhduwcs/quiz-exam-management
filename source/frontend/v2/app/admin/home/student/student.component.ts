@@ -28,7 +28,7 @@ declare var $: any;
 export class StudentComponent implements OnInit, OnDestroy {
   classId: number;
   className: string = '';
-  
+
   dataTable: any;
   classList: ClassResponse[] = [];
   studentList: StudentResponse[] = [];
@@ -230,7 +230,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
     const dataTablesLength = this.el.nativeElement.querySelector('.dataTables_length');
     this.renderer.setStyle(dataTablesLength, 'display', 'inline-flex');
-    
+
     const lengthElement = this.el.nativeElement.querySelector('.dataTables_length label');
     this.renderer.setStyle(lengthElement, 'width', '160px');
 
@@ -310,7 +310,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   openPopupCreate(): void {
     this.isPopupCreate = true;
   }
-  
+
   openPopupUpdate(id: number): void {
     this.loadStudentById(id, () => {
       this.convertToRequest();

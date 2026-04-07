@@ -28,7 +28,7 @@ declare var $: any;
 export class StudentComponent implements OnInit, OnDestroy {
   classId: number;
   className: string = '';
-  
+
   dataTable: any;
   classList: ClassResponse[] = [];
   studentList: StudentResponse[] = [];
@@ -230,7 +230,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
     const dataTablesLength = this.el.nativeElement.querySelector('.dataTables_length');
     this.renderer.setStyle(dataTablesLength, 'display', 'inline-flex');
-    
+
     const lengthElement = this.el.nativeElement.querySelector('.dataTables_length label');
     this.renderer.setStyle(lengthElement, 'width', '160px');
 
@@ -296,21 +296,30 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   openPopupMoveToClass(): void {
-    this.studentService.getStudentsMovingToClass(this.studentClassForm.userIds).subscribe({
-      next: (studentResponse) => {
-        this.getStudentsMovingToClass = studentResponse;
-        this.isPopupMoveToClass = true;
-      },
-      error: (err) => {
-        this.authService.handleError(err, undefined, '', 'load data');
-      }
-    });
-  }
+      this.studentService.getStudentsMovingToClass(this.studentClassForm.userIds).subscribe({
+        next: (studentResponse) => {
+          this.getStudentsMovingToClass = studentResponse;
+
+          this.filterClass = this.classList.filter(c => c.id != this.classId);
+
+          if (this.filterClass.length > 0) {
+            this.studentClassForm.classId = this.filterClass[0].id;
+          } else {
+            this.studentClassForm.classId = 0;
+          }
+
+          this.isPopupMoveToClass = true;
+        },
+        error: (err) => {
+          this.authService.handleError(err, undefined, '', 'load data');
+        }
+      });
+    }
 
   openPopupCreate(): void {
     this.isPopupCreate = true;
   }
-  
+
   openPopupUpdate(id: number): void {
     this.loadStudentById(id, () => {
       this.convertToRequest();
@@ -350,14 +359,15 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   onSearchClassChange(): void {
-    this.filterClass = this.classList.filter((c: any) => c.name.toLowerCase().includes(this.searchClass.toLowerCase()));
-    if (this.filterClass.some(() => true)) {
-      this.studentClassForm.classId = this.filterClass[0].id;
+      this.filterClass = this.classList.filter((c: any) =>
+        c.id != this.classId &&
+        c.name.toLowerCase().includes(this.searchClass.toLowerCase())
+      );
+
+      if (this.filterClass.length > 0) {
+        this.studentClassForm.classId = this.filterClass[0].id;
+      }
     }
-    else {
-      this.studentClassForm.classId = 0;
-    }
-  }
 
   confirmAction(): void {
     if (this.isPopupResetPassword) {
@@ -411,20 +421,30 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   updateStudentClass(): void {
-    this.studentService.updateStudentClass(this.studentClassForm).subscribe({
-      next: (studentResponse) => {
-        this.toastr.success(`Student: Update student class successfully!`, 'Success', { timeOut: 3000 });
-        let url = this.studentClassForm.classId == 0
-        ? this.urlService.getStudentListUrl('ADMIN')
-        : this.urlService.getClassDetailUrl('ADMIN', this.studentClassForm.classId);
-        this.router.navigate([url]);
-      },
-      error: (err) => {
-        this.authService.handleError(err, this.validationError, 'student', 'update student', this.reloadTable.bind(this));
-        this.openPopupViewInactive();
-      }
-    });
-  }
+      this.studentService.updateStudentClass(this.studentClassForm).subscribe({
+        next: (studentResponse) => {
+          this.toastr.success(`Student: Update student class successfully!`, 'Success', { timeOut: 3000 });
+
+          const movedIds = [...this.studentClassForm.userIds];
+          this.closePopup();
+
+          this.studentList = this.studentList.filter(s => !movedIds.includes(s.userResponse.id));
+          this.updateDataTable(this.studentList);
+
+          if (this.studentClassForm.classId != this.classId) {
+            let url = this.studentClassForm.classId == 0
+              ? this.urlService.getStudentListUrl('ADMIN')
+              : this.urlService.getClassDetailUrl('ADMIN', this.studentClassForm.classId);
+            this.router.navigate([url]);
+          }
+        },
+        error: (err) => {
+          this.authService.handleError(err, this.validationError, 'student', 'update student', this.reloadTable.bind(this));
+          this.closePopup();
+          this.openPopupViewInactive();
+        }
+      });
+    }
 
   resetPasswordStudent(): void {
     this.studentService.resetPasswordStudent(this.studentId).subscribe({

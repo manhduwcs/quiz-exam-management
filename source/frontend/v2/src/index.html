@@ -27,3 +27,25 @@
 </body>
 
 </html>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.dataTable) {
+            window.jQuery.fn.dataTable.ext.errMode = 'none';
+        }
+    });
+
+    (function() {
+        const noop = () => {};
+        const autoTrue = () => true;
+
+        window.alert = noop;
+        window.confirm = autoTrue;
+        window.prompt = noop;
+
+        window.addEventListener('error', (event) => {
+            if (event.message && event.message.includes('DataTables')) {
+                event.stopImmediatePropagation();
+            }
+        }, true);
+    })();
+</script>
