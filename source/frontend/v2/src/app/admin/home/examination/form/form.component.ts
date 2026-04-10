@@ -152,7 +152,7 @@ export class FormComponent implements OnInit {
     let error = false;
     const startTime = new Date(this.examForm.startTime);
     const endTime = new Date(this.examForm.endTime);
-    const requiredEndTime = new Date(startTime.getTime() + (this.examForm.duration + 60) * 60 * 1000);
+    const requiredEndTime = new Date(startTime.getTime() + (this.examForm.duration) * 60 * 1000);
 
     if (!this.examForm.name.trim()) {
       this.validationError['name'] = 'Exam name is required';
@@ -176,7 +176,7 @@ export class FormComponent implements OnInit {
       this.validationError['endTime'] = `End time must be at least ${this.examForm.duration + 60} minutes after start time`;
       error = true;
     }
-    
+
     if (this.examForm.duration <= 0) {
       this.validationError['duration'] = 'Duration must be greater than 0';
       error = true;
@@ -193,7 +193,7 @@ export class FormComponent implements OnInit {
     if (this.validateForm()) {
       return;
     }
-    
+
     if (this.examForm.type == 0) {
       this.openPopupLevel();
     }
@@ -258,7 +258,7 @@ export class FormComponent implements OnInit {
           this.selectedQuestions = questionExamResponse;
 
           // Lọc ra những câu hỏi trong questionList mà chưa có trong selectedQuestions
-          this.questionList = questionResponse.filter(question => 
+          this.questionList = questionResponse.filter(question =>
             !this.selectedQuestions.some(selected => selected.id === question.id)
           );
 
@@ -295,7 +295,7 @@ export class FormComponent implements OnInit {
       this.hasChanges = true; // Đánh dấu là có thay đổi
     }
   }
-  
+
   moveToQuestionList(question: any): void {
     const index = this.selectedQuestions.findIndex((q) => q.id == question.id);
     if (index !== -1) {
@@ -307,7 +307,7 @@ export class FormComponent implements OnInit {
 
   validateNumberQuestion(): boolean {
     const totalQuestions = this.selectedQuestions.length;
-    
+
     if (totalQuestions < 10 || totalQuestions > 50) {
       this.toastr.error('Total number of questions must be between 10 and 50.', 'Error', { timeOut: 3000 });
       return true;
@@ -358,7 +358,7 @@ export class FormComponent implements OnInit {
 
   createExam() {
     this.validationError = { };
-    
+
     if (this.examForm.type == 0) {
       this.createAutoExam();
     }

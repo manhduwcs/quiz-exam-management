@@ -94,7 +94,7 @@ export class EditExamInfoComponent implements OnInit {
     let error = false;
     const startTime = new Date(this.examForm.startTime);
     const endTime = new Date(this.examForm.endTime);
-    const requiredEndTime = new Date(startTime.getTime() + (this.examForm.duration + 60) * 60 * 1000);
+    const requiredEndTime = new Date(startTime.getTime() + (this.examForm.duration) * 60 * 1000);
 
     if (!this.examForm.name.trim()) {
       this.validationError['name'] = 'Exam name is required';
@@ -114,7 +114,7 @@ export class EditExamInfoComponent implements OnInit {
       this.validationError['endTime'] = `End time must be at least ${this.examForm.duration + 60} minutes after start time`;
       error = true;
     }
-    
+
     if (this.examForm.duration <= 0) {
       this.validationError['duration'] = 'Duration must be greater than 0';
       error = true;

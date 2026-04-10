@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../shared/service/auth.service';
 
 @Component({
-
   selector: 'app-admin',
   templateUrl: './admin.component.html'
 })
@@ -10,7 +9,7 @@ export class AdminComponent implements OnInit {
   darkMode: boolean = false;
 
   isSidebarCollapsed: boolean = false;
-  
+
   contentSidebar: boolean = true;
 
   constructor(private authService: AuthService) { }

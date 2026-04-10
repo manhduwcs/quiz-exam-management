@@ -1,0 +1,22 @@
+# admin
+admin@example.com
+
+# director
+lethimai25@gmail.com
+
+# sro
+hoangvanduc@example.com
+vuthie@example.com
+
+# teacher
+ngduydai21@gmail.com
+nguyenvanminh@example.com
+
+# student
+vovanthanh@mail.com
+phamquocbinh@mail.com
+dovanson@example.com
+nguyenthitam@example.com
+
+- default password
+@1234567
